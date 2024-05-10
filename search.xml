@@ -1,17 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>team绑定双网卡</title>
-    <url>/2024/01/13/team%E7%BB%91%E5%AE%9A%E5%8F%8C%E7%BD%91%E5%8D%A1/</url>
-    <content><![CDATA[<h1 id="team绑定双网卡"><a href="#team绑定双网卡" class="headerlink" title="team绑定双网卡"></a>team绑定双网卡</h1><p>注意：虚拟机里做，一定要额外添加两块网卡才行，总共三块网卡</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 查看所有的网络连接</span></span><br><span class="line">[root@rhel7 ~]<span class="comment"># nmcli connection show</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#创建接口team，连接名team0，接口agg-eth0，工作模式为activebackup</span></span><br><span class="line">[root@rhel7 ~]<span class="comment"># nmcli connection add type team con-name team0 ifname agg-eth0 config &#x27;&#123;&quot;runner&quot;:&#123;&quot;name&quot;:&quot;activebackup&quot;&#125;&#125;&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 以下为team0接口配置IP信息</span></span><br><span class="line">[root@rhel7 ~]<span class="comment"># nmcli connection modify team0 ipv4.addresses &quot;192.168.80.100/24&quot;</span></span><br><span class="line">[root@rhel7 ~]<span class="comment"># nmcli connection modify team0 ipv4.gateway &quot;192.168.80.2&quot;</span></span><br><span class="line">[root@rhel7 ~]<span class="comment"># nmcli connection modify team0 ipv4.dns &quot;192.168.80.2&quot;</span></span><br><span class="line">[root@rhel7 ~]<span class="comment"># nmcli connection modify team0 ipv4.method manual</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 将 ens38、ens37 加入agg-eth0</span></span><br><span class="line">[root@rhel7 ~]<span class="comment"># nmcli connection add type team-slave con-name team0-port1 ifname ens38 master agg-eth0</span></span><br><span class="line">[root@rhel7 ~]<span class="comment"># nmcli connection add type team-slave con-name team0-port2 ifname ens37 master agg-eth0</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 激活 team0、team0-port1、team0-port2</span></span><br><span class="line">[root@rhel7 ~]<span class="comment"># nmcli connection up team0  </span></span><br><span class="line">[root@rhel7 ~]<span class="comment"># nmcli connection up team0-port1</span></span><br><span class="line">[root@rhel7 ~]<span class="comment"># nmcli connection up team0-port2</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看 agg-eth0 网卡绑定的信息</span></span><br><span class="line">[root@rhel7 ~]<span class="comment"># teamdctl agg-eth0 state</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 执行此命令，并使用ping测试网络连通性，停掉一个，看会不会断，再启用，停掉另外一个测试。再复制一个窗口，一直ping自己的DNS，再用上面的命令看看是哪个网卡在工作</span></span><br><span class="line">[root@rhel7 ~]<span class="comment"># nmcli connection down team0-port1  </span></span><br></pre></td></tr></table></figure>]]></content>
+    <title>Clash配置负载</title>
+    <url>/2024/01/16/clash%E9%85%8D%E7%BD%AE%E8%B4%9F%E8%BD%BD/</url>
+    <content><![CDATA[<h1 id="Clash配置负载"><a href="#Clash配置负载" class="headerlink" title="Clash配置负载"></a>Clash配置负载</h1><h2 id="实现负载，下载拉满带宽"><a href="#实现负载，下载拉满带宽" class="headerlink" title="实现负载，下载拉满带宽"></a>实现负载，下载拉满带宽</h2><ul>
+<li>找到settings—–&gt;Profiles——-&gt;Parsers——&gt;Edit，然后添加下面代码</li>
+</ul>
+<p><img data-src="https://raw.githubusercontent.com/NIANLING-ai/MyPic/img/img/clash.png"></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">parsers:</span><br><span class="line">  - reg: &#x27;slbable$&#x27;</span><br><span class="line">    yaml:</span><br><span class="line">      append-proxy-groups:</span><br><span class="line">        - name:  负载均衡-散列</span><br><span class="line">          type: load-balance</span><br><span class="line">          url: &#x27;http://www.google.com/generate_204&#x27;</span><br><span class="line">          interval: 300</span><br><span class="line">          strategy: consistent-hashing</span><br><span class="line">        - name:  负载均衡-轮询</span><br><span class="line">          type: load-balance</span><br><span class="line">          url: &#x27;http://www.google.com/generate_204&#x27;</span><br><span class="line">          interval: 300</span><br><span class="line">          strategy: round-robin</span><br><span class="line">      commands:</span><br><span class="line">        - proxy-groups. 负载均衡-散列.proxies=[]proxyNames</span><br><span class="line">        - proxy-groups.0.proxies.0+ 负载均衡-散列</span><br><span class="line">        - proxy-groups. 负载均衡-轮询.proxies=[]proxyNames</span><br><span class="line">        - proxy-groups.0.proxies.0+ 负载均衡-轮询</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>然后在订阅链接后面添加触发条件，点击更新</li>
+<li>会出现一个轮询，一个散列，下载建议用轮询，正常用就用散列</li>
+</ul>
+]]></content>
       <categories>
-        <category>Linux</category>
-        <category>team</category>
+        <category>教程</category>
       </categories>
       <tags>
-        <tag>双网卡绑定</tag>
-        <tag>team</tag>
+        <tag>Clash</tag>
+        <tag>小教程</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>mount镜像挂载</title>
+    <url>/2024/01/12/mount%E5%B0%8F%E7%9F%A5%E8%AF%86%E6%8C%82%E8%BD%BD%E9%95%9C%E5%83%8F/</url>
+    <content><![CDATA[<h1 id="mount小知识：挂载镜像"><a href="#mount小知识：挂载镜像" class="headerlink" title="mount小知识：挂载镜像"></a>mount小知识：挂载镜像</h1><h2 id="简单挂载"><a href="#简单挂载" class="headerlink" title="简单挂载"></a>简单挂载</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#查看一下镜像有没有连接，这里是sr0</span></span><br><span class="line">[root@server2 ~]<span class="comment"># lsblk -l</span></span><br><span class="line">NAME        MAJ:MIN RM  SIZE RO TYPE MOUNTPOINT</span><br><span class="line">sda           8:0    0   20G  0 disk </span><br><span class="line">sda1          8:1    0    1G  0 part /boot</span><br><span class="line">sda2          8:2    0   19G  0 part </span><br><span class="line">centos-root 253:0    0   17G  0 lvm  /</span><br><span class="line">centos-swap 253:1    0    2G  0 lvm  [SWAP]</span><br><span class="line">sr0          11:0    1  988M  0 rom  </span><br><span class="line"></span><br><span class="line"><span class="comment">#创建一个挂载目录</span></span><br><span class="line">[root@server2 ~]<span class="comment"># mkdir /mnt/centos7.9</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#将镜像文件挂载到目录里，-t指定一下文件系统</span></span><br><span class="line">[root@server2 ~]<span class="comment"># mount -t iso9660 /dev/sr0 /mnt/centos7.9</span></span><br><span class="line">mount: /dev/sr0 写保护，将以只读方式挂载</span><br><span class="line"></span><br><span class="line"><span class="comment">#可以将配置写进配置文件，开机自动挂载</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;/dev/sr0  /mnt/centos7.9  iso9660 defaults 0 0&quot;</span> &gt;&gt; /etc/fstab</span><br><span class="line"></span><br><span class="line"><span class="comment">#如果开机有错误，将配置文件里自己添加的删除了就行</span></span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>Linux</category>
+        <category>mount</category>
+      </categories>
+      <tags>
+        <tag>挂载</tag>
+        <tag>mount</tag>
       </tags>
   </entry>
   <entry>
@@ -28,20 +50,6 @@
       <tags>
         <tag>磁盘读写</tag>
         <tag>iops</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>mount镜像挂载</title>
-    <url>/2024/01/12/mount%E5%B0%8F%E7%9F%A5%E8%AF%86%E6%8C%82%E8%BD%BD%E9%95%9C%E5%83%8F/</url>
-    <content><![CDATA[<h1 id="mount小知识：挂载镜像"><a href="#mount小知识：挂载镜像" class="headerlink" title="mount小知识：挂载镜像"></a>mount小知识：挂载镜像</h1><h2 id="简单挂载"><a href="#简单挂载" class="headerlink" title="简单挂载"></a>简单挂载</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#查看一下镜像有没有连接，这里是sr0</span></span><br><span class="line">[root@server2 ~]<span class="comment"># lsblk -l</span></span><br><span class="line">NAME        MAJ:MIN RM  SIZE RO TYPE MOUNTPOINT</span><br><span class="line">sda           8:0    0   20G  0 disk </span><br><span class="line">sda1          8:1    0    1G  0 part /boot</span><br><span class="line">sda2          8:2    0   19G  0 part </span><br><span class="line">centos-root 253:0    0   17G  0 lvm  /</span><br><span class="line">centos-swap 253:1    0    2G  0 lvm  [SWAP]</span><br><span class="line">sr0          11:0    1  988M  0 rom  </span><br><span class="line"></span><br><span class="line"><span class="comment">#创建一个挂载目录</span></span><br><span class="line">[root@server2 ~]<span class="comment"># mkdir /mnt/centos7.9</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#将镜像文件挂载到目录里，-t指定一下文件系统</span></span><br><span class="line">[root@server2 ~]<span class="comment"># mount -t iso9660 /dev/sr0 /mnt/centos7.9</span></span><br><span class="line">mount: /dev/sr0 写保护，将以只读方式挂载</span><br><span class="line"></span><br><span class="line"><span class="comment">#可以将配置写进配置文件，开机自动挂载</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;/dev/sr0  /mnt/centos7.9  iso9660 defaults 0 0&quot;</span> &gt;&gt; /etc/fstab</span><br><span class="line"></span><br><span class="line"><span class="comment">#如果开机有错误，将配置文件里自己添加的删除了就行</span></span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>Linux</category>
-        <category>mount</category>
-      </categories>
-      <tags>
-        <tag>挂载</tag>
-        <tag>mount</tag>
       </tags>
   </entry>
   <entry>
@@ -121,6 +129,20 @@
         <tag>域控</tag>
         <tag>powershell</tag>
         <tag>AD</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>team绑定双网卡</title>
+    <url>/2024/01/13/team%E7%BB%91%E5%AE%9A%E5%8F%8C%E7%BD%91%E5%8D%A1/</url>
+    <content><![CDATA[<h1 id="team绑定双网卡"><a href="#team绑定双网卡" class="headerlink" title="team绑定双网卡"></a>team绑定双网卡</h1><p>注意：虚拟机里做，一定要额外添加两块网卡才行，总共三块网卡</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 查看所有的网络连接</span></span><br><span class="line">[root@rhel7 ~]<span class="comment"># nmcli connection show</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#创建接口team，连接名team0，接口agg-eth0，工作模式为activebackup</span></span><br><span class="line">[root@rhel7 ~]<span class="comment"># nmcli connection add type team con-name team0 ifname agg-eth0 config &#x27;&#123;&quot;runner&quot;:&#123;&quot;name&quot;:&quot;activebackup&quot;&#125;&#125;&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 以下为team0接口配置IP信息</span></span><br><span class="line">[root@rhel7 ~]<span class="comment"># nmcli connection modify team0 ipv4.addresses &quot;192.168.80.100/24&quot;</span></span><br><span class="line">[root@rhel7 ~]<span class="comment"># nmcli connection modify team0 ipv4.gateway &quot;192.168.80.2&quot;</span></span><br><span class="line">[root@rhel7 ~]<span class="comment"># nmcli connection modify team0 ipv4.dns &quot;192.168.80.2&quot;</span></span><br><span class="line">[root@rhel7 ~]<span class="comment"># nmcli connection modify team0 ipv4.method manual</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 将 ens38、ens37 加入agg-eth0</span></span><br><span class="line">[root@rhel7 ~]<span class="comment"># nmcli connection add type team-slave con-name team0-port1 ifname ens38 master agg-eth0</span></span><br><span class="line">[root@rhel7 ~]<span class="comment"># nmcli connection add type team-slave con-name team0-port2 ifname ens37 master agg-eth0</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 激活 team0、team0-port1、team0-port2</span></span><br><span class="line">[root@rhel7 ~]<span class="comment"># nmcli connection up team0  </span></span><br><span class="line">[root@rhel7 ~]<span class="comment"># nmcli connection up team0-port1</span></span><br><span class="line">[root@rhel7 ~]<span class="comment"># nmcli connection up team0-port2</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看 agg-eth0 网卡绑定的信息</span></span><br><span class="line">[root@rhel7 ~]<span class="comment"># teamdctl agg-eth0 state</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 执行此命令，并使用ping测试网络连通性，停掉一个，看会不会断，再启用，停掉另外一个测试。再复制一个窗口，一直ping自己的DNS，再用上面的命令看看是哪个网卡在工作</span></span><br><span class="line">[root@rhel7 ~]<span class="comment"># nmcli connection down team0-port1  </span></span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>Linux</category>
+        <category>team</category>
+      </categories>
+      <tags>
+        <tag>双网卡绑定</tag>
+        <tag>team</tag>
       </tags>
   </entry>
   <entry>

@@ -44,6 +44,29 @@
   </entry>
   
   <entry>
+    <title>Clash配置负载</title>
+    <link href="http://example.com/2024/01/16/clash%E9%85%8D%E7%BD%AE%E8%B4%9F%E8%BD%BD/"/>
+    <id>http://example.com/2024/01/16/clash%E9%85%8D%E7%BD%AE%E8%B4%9F%E8%BD%BD/</id>
+    <published>2024-01-16T01:25:00.000Z</published>
+    <updated>2024-01-16T01:25:00.000Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="Clash配置负载"><a href="#Clash配置负载" class="headerlink" title="Clash配置负载"></a>Clash配置负载</h1><h2 id="实现负载，下载拉满带宽"><a href="#实现负载，下载拉满带宽" class="headerlink" title="实现负载，下载拉满带宽"></a>实现负载，下载拉满带宽</h2><ul><li>找到settings—–&gt;Profiles——-&gt;Parsers——&gt;Edit，然后添加下面代码</li></ul><p><img data-src="https://raw.githubusercontent.com/NIANLING-ai/MyPic/img/img/clash.png"></p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">parsers:</span><br><span class="line">  - reg: &#x27;slbable$&#x27;</span><br><span class="line">    yaml:</span><br><span class="line">      append-proxy-groups:</span><br><span class="line">        - name:  负载均衡-散列</span><br><span class="line">          type: load-balance</span><br><span class="line">          url: &#x27;http://www.google.com/generate_204&#x27;</span><br><span class="line">          interval: 300</span><br><span class="line">          strategy: consistent-hashing</span><br><span class="line">        - name:  负载均衡-轮询</span><br><span class="line">          type: load-balance</span><br><span class="line">          url: &#x27;http://www.google.com/generate_204&#x27;</span><br><span class="line">          interval: 300</span><br><span class="line">          strategy: round-robin</span><br><span class="line">      commands:</span><br><span class="line">        - proxy-groups. 负载均衡-散列.proxies=[]proxyNames</span><br><span class="line">        - proxy-groups.0.proxies.0+ 负载均衡-散列</span><br><span class="line">        - proxy-groups. 负载均衡-轮询.proxies=[]proxyNames</span><br><span class="line">        - proxy-groups.0.proxies.0+ 负载均衡-轮询</span><br></pre></td></tr></table></figure><ul><li>然后在订阅链接后面添加触发条件，点击更新</li><li>会出现一个轮询，一个散列，下载建议用轮询，正常用就用散列</li></ul>]]></content>
+    
+    
+    <summary type="html">Clash设置负载的脚本，可以让节点满速下载</summary>
+    
+    
+    
+    <category term="教程" scheme="http://example.com/categories/%E6%95%99%E7%A8%8B/"/>
+    
+    
+    <category term="Clash" scheme="http://example.com/tags/Clash/"/>
+    
+    <category term="小教程" scheme="http://example.com/tags/%E5%B0%8F%E6%95%99%E7%A8%8B/"/>
+    
+  </entry>
+  
+  <entry>
     <title>监控Mysql脚本</title>
     <link href="http://example.com/2024/01/15/%E7%9B%91%E6%8E%A7mysql%E8%84%9A%E6%9C%AC/"/>
     <id>http://example.com/2024/01/15/%E7%9B%91%E6%8E%A7mysql%E8%84%9A%E6%9C%AC/</id>
