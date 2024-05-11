@@ -6,7 +6,7 @@
     <content><![CDATA[<h1 id="Clash配置负载"><a href="#Clash配置负载" class="headerlink" title="Clash配置负载"></a>Clash配置负载</h1><h2 id="实现负载，下载拉满带宽"><a href="#实现负载，下载拉满带宽" class="headerlink" title="实现负载，下载拉满带宽"></a>实现负载，下载拉满带宽</h2><ul>
 <li>找到settings—–&gt;Profiles——-&gt;Parsers——&gt;Edit，然后添加下面代码</li>
 </ul>
-<p><img data-src="https://raw.githubusercontent.com/NIANLING-ai/MyPic/img/img/clash.png"></p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/NIANLING-ai/MyPic@img/img/xunihua.png"></p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">parsers:</span><br><span class="line">  - reg: &#x27;slbable$&#x27;</span><br><span class="line">    yaml:</span><br><span class="line">      append-proxy-groups:</span><br><span class="line">        - name:  负载均衡-散列</span><br><span class="line">          type: load-balance</span><br><span class="line">          url: &#x27;http://www.google.com/generate_204&#x27;</span><br><span class="line">          interval: 300</span><br><span class="line">          strategy: consistent-hashing</span><br><span class="line">        - name:  负载均衡-轮询</span><br><span class="line">          type: load-balance</span><br><span class="line">          url: &#x27;http://www.google.com/generate_204&#x27;</span><br><span class="line">          interval: 300</span><br><span class="line">          strategy: round-robin</span><br><span class="line">      commands:</span><br><span class="line">        - proxy-groups. 负载均衡-散列.proxies=[]proxyNames</span><br><span class="line">        - proxy-groups.0.proxies.0+ 负载均衡-散列</span><br><span class="line">        - proxy-groups. 负载均衡-轮询.proxies=[]proxyNames</span><br><span class="line">        - proxy-groups.0.proxies.0+ 负载均衡-轮询</span><br></pre></td></tr></table></figure>
 
 <ul>
@@ -20,6 +20,20 @@
       <tags>
         <tag>Clash</tag>
         <tag>小教程</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>mount镜像挂载</title>
+    <url>/2024/01/12/mount%E5%B0%8F%E7%9F%A5%E8%AF%86%E6%8C%82%E8%BD%BD%E9%95%9C%E5%83%8F/</url>
+    <content><![CDATA[<h1 id="mount小知识：挂载镜像"><a href="#mount小知识：挂载镜像" class="headerlink" title="mount小知识：挂载镜像"></a>mount小知识：挂载镜像</h1><h2 id="简单挂载"><a href="#简单挂载" class="headerlink" title="简单挂载"></a>简单挂载</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#查看一下镜像有没有连接，这里是sr0</span></span><br><span class="line">[root@server2 ~]<span class="comment"># lsblk -l</span></span><br><span class="line">NAME        MAJ:MIN RM  SIZE RO TYPE MOUNTPOINT</span><br><span class="line">sda           8:0    0   20G  0 disk </span><br><span class="line">sda1          8:1    0    1G  0 part /boot</span><br><span class="line">sda2          8:2    0   19G  0 part </span><br><span class="line">centos-root 253:0    0   17G  0 lvm  /</span><br><span class="line">centos-swap 253:1    0    2G  0 lvm  [SWAP]</span><br><span class="line">sr0          11:0    1  988M  0 rom  </span><br><span class="line"></span><br><span class="line"><span class="comment">#创建一个挂载目录</span></span><br><span class="line">[root@server2 ~]<span class="comment"># mkdir /mnt/centos7.9</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#将镜像文件挂载到目录里，-t指定一下文件系统</span></span><br><span class="line">[root@server2 ~]<span class="comment"># mount -t iso9660 /dev/sr0 /mnt/centos7.9</span></span><br><span class="line">mount: /dev/sr0 写保护，将以只读方式挂载</span><br><span class="line"></span><br><span class="line"><span class="comment">#可以将配置写进配置文件，开机自动挂载</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;/dev/sr0  /mnt/centos7.9  iso9660 defaults 0 0&quot;</span> &gt;&gt; /etc/fstab</span><br><span class="line"></span><br><span class="line"><span class="comment">#如果开机有错误，将配置文件里自己添加的删除了就行</span></span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>Linux</category>
+        <category>mount</category>
+      </categories>
+      <tags>
+        <tag>挂载</tag>
+        <tag>mount</tag>
       </tags>
   </entry>
   <entry>
@@ -67,7 +81,7 @@
 <h3 id="9-根分区磁盘增加成功之后使用xfs-growfs-dev-centos-root-格式化磁盘空间"><a href="#9-根分区磁盘增加成功之后使用xfs-growfs-dev-centos-root-格式化磁盘空间" class="headerlink" title="9.根分区磁盘增加成功之后使用xfs_growfs &#x2F;dev&#x2F;centos&#x2F;root 格式化磁盘空间"></a>9.根分区磁盘增加成功之后使用xfs_growfs &#x2F;dev&#x2F;centos&#x2F;root 格式化磁盘空间</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@localhost ~]<span class="comment"># xfs_growfs /dev/centos/root</span></span><br><span class="line">meta-data=/dev/mapper/centos-root isize=512    agcount=4, agsize=1113856 blks</span><br><span class="line">         =                       sectsz=512   attr=2, projid32bit=1</span><br><span class="line">         =                       crc=1        finobt=0 spinodes=0</span><br><span class="line">data     =                       bsize=4096   blocks=4455424, imaxpct=25</span><br><span class="line">         =                       sunit=0      swidth=0 blks</span><br><span class="line">naming   =version 2              bsize=4096   ascii-ci=0 ftype=1</span><br><span class="line"><span class="built_in">log</span>      =internal               bsize=4096   blocks=2560, version=2</span><br><span class="line">         =                       sectsz=512   sunit=0 blks, lazy-count=1</span><br><span class="line">realtime =bash                   extsz=4096   blocks=0, rtextents=0</span><br><span class="line">data blocks changed from 4455424 to 9436160</span><br></pre></td></tr></table></figure>
 
 <h3 id="10-确认一下"><a href="#10-确认一下" class="headerlink" title="10.确认一下"></a>10.确认一下</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@localhost ~]<span class="comment"># df -h</span></span><br><span class="line">文件系统                 容量  已用  可用 已用% 挂载点</span><br><span class="line">devtmpfs                 898M     0  898M    0% /dev</span><br><span class="line">tmpfs                    910M     0  910M    0% /dev/shm</span><br><span class="line">tmpfs                    910M  9.6M  901M    2% /run</span><br><span class="line">tmpfs                    910M     0  910M    0% /sys/fs/cgroup</span><br><span class="line">/dev/mapper/centos-root   36G  1.3G   35G    4% /  <span class="comment">#增加了</span></span><br><span class="line">/dev/sda1               1014M  151M  864M   15% /boot</span><br><span class="line">tmpfs                    182M     0  182M    0% /run/user/0</span><br></pre></td></tr></table></figure>
-<h2 id="在原有空间上修改磁盘大小的情况"><a href="#在原有空间上修改磁盘大小的情况" class="headerlink" title="在原有空间上修改磁盘大小的情况"></a>在原有空间上修改磁盘大小的情况</h2><p><img data-src="https://raw.githubusercontent.com/NIANLING-ai/MyPic/img/img/xunihua.png"></p>
+<h2 id="在原有空间上修改磁盘大小的情况"><a href="#在原有空间上修改磁盘大小的情况" class="headerlink" title="在原有空间上修改磁盘大小的情况"></a>在原有空间上修改磁盘大小的情况</h2><p><img data-src="https://cdn.jsdelivr.net/gh/NIANLING-ai/MyPic@img/img/xunihua.png"></p>
 <ul>
 <li>比如从50G,直接修改成100G，新增加的磁盘是不识别的</li>
 </ul>
@@ -87,20 +101,6 @@
       <tags>
         <tag>Linux</tag>
         <tag>LVM</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>mount镜像挂载</title>
-    <url>/2024/01/12/mount%E5%B0%8F%E7%9F%A5%E8%AF%86%E6%8C%82%E8%BD%BD%E9%95%9C%E5%83%8F/</url>
-    <content><![CDATA[<h1 id="mount小知识：挂载镜像"><a href="#mount小知识：挂载镜像" class="headerlink" title="mount小知识：挂载镜像"></a>mount小知识：挂载镜像</h1><h2 id="简单挂载"><a href="#简单挂载" class="headerlink" title="简单挂载"></a>简单挂载</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#查看一下镜像有没有连接，这里是sr0</span></span><br><span class="line">[root@server2 ~]<span class="comment"># lsblk -l</span></span><br><span class="line">NAME        MAJ:MIN RM  SIZE RO TYPE MOUNTPOINT</span><br><span class="line">sda           8:0    0   20G  0 disk </span><br><span class="line">sda1          8:1    0    1G  0 part /boot</span><br><span class="line">sda2          8:2    0   19G  0 part </span><br><span class="line">centos-root 253:0    0   17G  0 lvm  /</span><br><span class="line">centos-swap 253:1    0    2G  0 lvm  [SWAP]</span><br><span class="line">sr0          11:0    1  988M  0 rom  </span><br><span class="line"></span><br><span class="line"><span class="comment">#创建一个挂载目录</span></span><br><span class="line">[root@server2 ~]<span class="comment"># mkdir /mnt/centos7.9</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#将镜像文件挂载到目录里，-t指定一下文件系统</span></span><br><span class="line">[root@server2 ~]<span class="comment"># mount -t iso9660 /dev/sr0 /mnt/centos7.9</span></span><br><span class="line">mount: /dev/sr0 写保护，将以只读方式挂载</span><br><span class="line"></span><br><span class="line"><span class="comment">#可以将配置写进配置文件，开机自动挂载</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;/dev/sr0  /mnt/centos7.9  iso9660 defaults 0 0&quot;</span> &gt;&gt; /etc/fstab</span><br><span class="line"></span><br><span class="line"><span class="comment">#如果开机有错误，将配置文件里自己添加的删除了就行</span></span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>Linux</category>
-        <category>mount</category>
-      </categories>
-      <tags>
-        <tag>挂载</tag>
-        <tag>mount</tag>
       </tags>
   </entry>
   <entry>
