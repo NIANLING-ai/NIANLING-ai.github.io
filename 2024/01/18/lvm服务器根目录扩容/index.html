@@ -30,14 +30,14 @@
 <meta property="og:site_name" content="清风">
 <meta property="og:description" content="服务器根目录扩容，两种情况">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/NIANLING-ai/MyPic@img/img/xunihua.png">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2024/png/44392316/1715394977723-2b1bec51-765f-4f94-a18b-99c39fcfbc2a.png?x-oss-process=image/format,webp">
 <meta property="article:published_time" content="2024-01-18T01:25:00.000Z">
 <meta property="article:modified_time" content="2024-01-18T01:25:00.000Z">
 <meta property="article:author" content="ZHANG">
 <meta property="article:tag" content="Linux">
 <meta property="article:tag" content="LVM">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/NIANLING-ai/MyPic@img/img/xunihua.png">
+<meta name="twitter:image" content="https://cdn.nlark.com/yuque/0/2024/png/44392316/1715394977723-2b1bec51-765f-4f94-a18b-99c39fcfbc2a.png?x-oss-process=image/format,webp">
 
 
 <link rel="canonical" href="http://example.com/2024/01/18/lvm%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%A0%B9%E7%9B%AE%E5%BD%95%E6%89%A9%E5%AE%B9/">
@@ -328,7 +328,7 @@
 <h3 id="9-根分区磁盘增加成功之后使用xfs-growfs-dev-centos-root-格式化磁盘空间"><a href="#9-根分区磁盘增加成功之后使用xfs-growfs-dev-centos-root-格式化磁盘空间" class="headerlink" title="9.根分区磁盘增加成功之后使用xfs_growfs &#x2F;dev&#x2F;centos&#x2F;root 格式化磁盘空间"></a>9.根分区磁盘增加成功之后使用xfs_growfs &#x2F;dev&#x2F;centos&#x2F;root 格式化磁盘空间</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]<span class="comment"># xfs_growfs /dev/centos/root</span></span><br><span class="line">meta-data=/dev/mapper/centos-root isize=512    agcount=4, agsize=1113856 blks</span><br><span class="line">         =                       sectsz=512   attr=2, projid32bit=1</span><br><span class="line">         =                       crc=1        finobt=0 spinodes=0</span><br><span class="line">data     =                       bsize=4096   blocks=4455424, imaxpct=25</span><br><span class="line">         =                       sunit=0      swidth=0 blks</span><br><span class="line">naming   =version 2              bsize=4096   ascii-ci=0 ftype=1</span><br><span class="line"><span class="built_in">log</span>      =internal               bsize=4096   blocks=2560, version=2</span><br><span class="line">         =                       sectsz=512   sunit=0 blks, lazy-count=1</span><br><span class="line">realtime =bash                   extsz=4096   blocks=0, rtextents=0</span><br><span class="line">data blocks changed from 4455424 to 9436160</span><br></pre></td></tr></table></figure>
 
 <h3 id="10-确认一下"><a href="#10-确认一下" class="headerlink" title="10.确认一下"></a>10.确认一下</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]<span class="comment"># df -h</span></span><br><span class="line">文件系统                 容量  已用  可用 已用% 挂载点</span><br><span class="line">devtmpfs                 898M     0  898M    0% /dev</span><br><span class="line">tmpfs                    910M     0  910M    0% /dev/shm</span><br><span class="line">tmpfs                    910M  9.6M  901M    2% /run</span><br><span class="line">tmpfs                    910M     0  910M    0% /sys/fs/cgroup</span><br><span class="line">/dev/mapper/centos-root   36G  1.3G   35G    4% /  <span class="comment">#增加了</span></span><br><span class="line">/dev/sda1               1014M  151M  864M   15% /boot</span><br><span class="line">tmpfs                    182M     0  182M    0% /run/user/0</span><br></pre></td></tr></table></figure>
-<h2 id="在原有空间上修改磁盘大小的情况"><a href="#在原有空间上修改磁盘大小的情况" class="headerlink" title="在原有空间上修改磁盘大小的情况"></a>在原有空间上修改磁盘大小的情况</h2><p><img data-src="https://cdn.jsdelivr.net/gh/NIANLING-ai/MyPic@img/img/xunihua.png"></p>
+<h2 id="在原有空间上修改磁盘大小的情况"><a href="#在原有空间上修改磁盘大小的情况" class="headerlink" title="在原有空间上修改磁盘大小的情况"></a>在原有空间上修改磁盘大小的情况</h2><p><img data-src="https://cdn.nlark.com/yuque/0/2024/png/44392316/1715394977723-2b1bec51-765f-4f94-a18b-99c39fcfbc2a.png?x-oss-process=image/format,webp" alt="xunihua.png"></p>
 <ul>
 <li>比如从50G,直接修改成100G，新增加的磁盘是不识别的</li>
 </ul>

@@ -30,14 +30,14 @@
 <meta property="og:site_name" content="清风">
 <meta property="og:description" content="Clash设置负载的脚本，可以让节点满速下载">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/NIANLING-ai/MyPic@img/img/clash.png">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2024/png/44392316/1715394977690-301524ad-84c5-4be1-8982-251476fabfb3.png?x-oss-process=image/format,webp">
 <meta property="article:published_time" content="2024-01-16T01:25:00.000Z">
 <meta property="article:modified_time" content="2024-01-16T01:25:00.000Z">
 <meta property="article:author" content="ZHANG">
 <meta property="article:tag" content="Clash">
 <meta property="article:tag" content="小教程">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/NIANLING-ai/MyPic@img/img/clash.png">
+<meta name="twitter:image" content="https://cdn.nlark.com/yuque/0/2024/png/44392316/1715394977690-301524ad-84c5-4be1-8982-251476fabfb3.png?x-oss-process=image/format,webp">
 
 
 <link rel="canonical" href="http://example.com/2024/01/16/clash%E9%85%8D%E7%BD%AE%E8%B4%9F%E8%BD%BD/">
@@ -301,7 +301,7 @@
     <div class="post-body" itemprop="articleBody"><h1 id="Clash配置负载"><a href="#Clash配置负载" class="headerlink" title="Clash配置负载"></a>Clash配置负载</h1><h2 id="实现负载，下载拉满带宽"><a href="#实现负载，下载拉满带宽" class="headerlink" title="实现负载，下载拉满带宽"></a>实现负载，下载拉满带宽</h2><ul>
 <li>找到settings—–&gt;Profiles——-&gt;Parsers——&gt;Edit，然后添加下面代码</li>
 </ul>
-<p><img data-src="https://cdn.jsdelivr.net/gh/NIANLING-ai/MyPic@img/img/clash.png"></p>
+<p><img data-src="https://cdn.nlark.com/yuque/0/2024/png/44392316/1715394977690-301524ad-84c5-4be1-8982-251476fabfb3.png?x-oss-process=image/format,webp" alt="clash.png"></p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">parsers:</span><br><span class="line">  - reg: &#x27;slbable$&#x27;</span><br><span class="line">    yaml:</span><br><span class="line">      append-proxy-groups:</span><br><span class="line">        - name:  负载均衡-散列</span><br><span class="line">          type: load-balance</span><br><span class="line">          url: &#x27;http://www.google.com/generate_204&#x27;</span><br><span class="line">          interval: 300</span><br><span class="line">          strategy: consistent-hashing</span><br><span class="line">        - name:  负载均衡-轮询</span><br><span class="line">          type: load-balance</span><br><span class="line">          url: &#x27;http://www.google.com/generate_204&#x27;</span><br><span class="line">          interval: 300</span><br><span class="line">          strategy: round-robin</span><br><span class="line">      commands:</span><br><span class="line">        - proxy-groups. 负载均衡-散列.proxies=[]proxyNames</span><br><span class="line">        - proxy-groups.0.proxies.0+ 负载均衡-散列</span><br><span class="line">        - proxy-groups. 负载均衡-轮询.proxies=[]proxyNames</span><br><span class="line">        - proxy-groups.0.proxies.0+ 负载均衡-轮询</span><br></pre></td></tr></table></figure>
 
 <ul>
