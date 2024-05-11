@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 7.2.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=ZCOOL+XiaoWei:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha256-XOqroi11tY4EFQMR9ZYwZWKj5ZXiftSx36RRuC3anlA=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancyapps-ui/5.0.31/fancybox/fancybox.css" integrity="sha256-gkQVf8UKZgQ0HyuxL/VnacadJ+D2Kox2TCEBuNQg5+w=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/black/pace-theme-material.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.20.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"copycode":{"enable":true,"style":"flat"},"fold":{"enable":false,"height":500},"bookmark":{"enable":true,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="十分详细的PHP编译安装过程，红帽系列机器，亲测无坑">
+<meta property="og:type" content="blog">
+<meta property="og:title" content="编译安装PHP7.4">
+<meta property="og:url" content="http://example.com/2024/01/16/%E7%BC%96%E8%AF%91%E5%AE%89%E8%A3%85php7.4/index.html">
+<meta property="og:site_name" content="清风">
+<meta property="og:description" content="十分详细的PHP编译安装过程，红帽系列机器，亲测无坑">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2024-01-16T01:25:00.000Z">
+<meta property="article:modified_time" content="2024-01-16T01:25:00.000Z">
+<meta property="article:author" content="ZHANG">
+<meta property="article:tag" content="Linux">
+<meta property="article:tag" content="PHP">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://example.com/2024/01/16/%E7%BC%96%E8%AF%91%E5%AE%89%E8%A3%85php7.4/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2024/01/16/%E7%BC%96%E8%AF%91%E5%AE%89%E8%A3%85php7.4/","path":"2024/01/16/编译安装php7.4/","title":"编译安装PHP7.4"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>编译安装PHP7.4 | 清风</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/atom.xml" title="清风" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">清风</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">虽不能至，心向往之</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li><li class="menu-item menu-item-rss"><a href="/atom.xml" rel="section"><i class="fa fa-rss fa-fw"></i>RSS</a></li><li class="menu-item menu-item-资源"><a href="/resources/" rel="section"><i class="fa fa-download fa-fw"></i>资源</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="搜索..." spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%BC%96%E8%AF%91%E5%AE%89%E8%A3%85PHP7-4"><span class="nav-number">1.</span> <span class="nav-text">编译安装PHP7.4</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BE%9D%E8%B5%96%E7%8E%AF%E5%A2%83%E5%87%86%E5%A4%87"><span class="nav-number">1.1.</span> <span class="nav-text">依赖环境准备</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85%E6%B5%81%E7%A8%8B"><span class="nav-number">1.2.</span> <span class="nav-text">安装流程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B7%BB%E5%8A%A0%E5%85%A8%E5%B1%80%E5%8F%98%E9%87%8F"><span class="nav-number">1.2.1.</span> <span class="nav-text">添加全局变量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#systemctl%E7%AE%A1%E7%90%86PHP"><span class="nav-number">1.2.2.</span> <span class="nav-text">systemctl管理PHP</span></a></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="ZHANG"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">ZHANG</p>
+  <div class="site-description" itemprop="description">不闻不若闻之，闻之不若见之，见之不若知之，知之不若行之</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">12</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">22</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://nianling-ai.github.io/" title="GitHub → https:&#x2F;&#x2F;nianling-ai.github.io" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:zyxjga@foxmail.com" title="E-Mail → mailto:zyxjga@foxmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+    <div class="sidebar-inner sidebar-blogroll">
+      <div class="links-of-blogroll animated">
+        <div class="links-of-blogroll-title"><i class="fa fa-globe fa-fw"></i>
+          链接
+        </div>
+        <ul class="links-of-blogroll-list">
+            <li class="links-of-blogroll-item">
+              <a href="https://www.runoob.com/" title="https:&#x2F;&#x2F;www.runoob.com&#x2F;" rel="noopener" target="_blank">菜鸟教程</a>
+            </li>
+            <li class="links-of-blogroll-item">
+              <a href="http://c.biancheng.net/sitemap/" title="http:&#x2F;&#x2F;c.biancheng.net&#x2F;sitemap&#x2F;" rel="noopener" target="_blank">C语言中文网</a>
+            </li>
+            <li class="links-of-blogroll-item">
+              <a href="https://csdiy.wiki/" title="https:&#x2F;&#x2F;csdiy.wiki&#x2F;" rel="noopener" target="_blank">CS自学指南</a>
+            </li>
+            <li class="links-of-blogroll-item">
+              <a href="https://www.r2coding.com/#/" title="https:&#x2F;&#x2F;www.r2coding.com&#x2F;#&#x2F;" rel="noopener" target="_blank">Road To Coding</a>
+            </li>
+            <li class="links-of-blogroll-item">
+              <a href="https://hackway.org/docs/cs/intro" title="https:&#x2F;&#x2F;hackway.org&#x2F;docs&#x2F;cs&#x2F;intro" rel="noopener" target="_blank">计算机专业学习路线</a>
+            </li>
+        </ul>
+      </div>
+    </div>
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2024/01/16/%E7%BC%96%E8%AF%91%E5%AE%89%E8%A3%85php7.4/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="ZHANG">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="清风">
+      <meta itemprop="description" content="不闻不若闻之，闻之不若见之，见之不若知之，知之不若行之">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="编译安装PHP7.4 | 清风">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          编译安装PHP7.4
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2024-01-16 09:25:00" itemprop="dateCreated datePublished" datetime="2024-01-16T09:25:00+08:00">2024-01-16</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Linux/" itemprop="url" rel="index"><span itemprop="name">Linux</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Linux/PHP/" itemprop="url" rel="index"><span itemprop="name">PHP</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>3.7k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>3 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h1 id="编译安装PHP7-4"><a href="#编译安装PHP7-4" class="headerlink" title="编译安装PHP7.4"></a>编译安装PHP7.4</h1><h2 id="依赖环境准备"><a href="#依赖环境准备" class="headerlink" title="依赖环境准备"></a>依赖环境准备</h2><ul>
+<li>下载安装编译工具</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum groupinstall <span class="string">&#x27;Development Tools&#x27;</span> -y</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>安装依赖包，否则可能会报错</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line">yum update -y</span><br><span class="line">yum install zlib-devel -y</span><br><span class="line">yum install libxml2-devel -y</span><br><span class="line">yum install libcurl-devel -y</span><br><span class="line">yum install openssl-devel -y</span><br><span class="line">yum install libjpeg-devel -y</span><br><span class="line">yum install libpng-devel -y</span><br><span class="line">yum install freetype-devel -y</span><br><span class="line">yum install libpq-devel -y</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">yum install bzip2-devel -y</span><br><span class="line">yum install sqlite-devel -y</span><br><span class="line">yum install libcurl-devel -y</span><br><span class="line">yum install libpng-devel -y</span><br><span class="line">yum install automake -y</span><br><span class="line">yum install autoconf -y</span><br><span class="line">yum install libtool -y</span><br><span class="line">yum install libicu-devel -y</span><br><span class="line">yum install gmp-devel -y</span><br><span class="line">yum install libzip-devel -y</span><br><span class="line">yum -y install postgresql-devel</span><br><span class="line"></span><br><span class="line"><span class="comment">#报错：configure: error: Cannot find ldap.h </span></span><br><span class="line">yum install openldap.i686 -y</span><br><span class="line">yum install openldap-devel.i686 -y</span><br><span class="line">yum install openldap-devel -y</span><br><span class="line"></span><br><span class="line"><span class="comment">#遇到oniguruma的报错，要安装6.9以上版本的才行</span></span><br><span class="line">wget https://github.com/kkos/oniguruma/releases/download/v6.9.8/onig-6.9.8.tar.gz</span><br><span class="line">tar -xzvf oniguruma-6.9.4.tar.gz &amp;&amp; <span class="built_in">cd</span> oniguruma-6.9.4</span><br><span class="line">./autogen.sh &amp;&amp; ./configure --prefix=/usr</span><br><span class="line">make &amp;&amp; make install</span><br><span class="line"></span><br><span class="line"><span class="comment">##较低版本的系统，libzip是低版本的，要安装高版本libzip</span></span><br><span class="line">yum install bzip2-devel</span><br><span class="line">wget https://libzip.org/download/libzip-1.7.3.tar.gz</span><br><span class="line">tar -xvzf libzip-1.7.3.tar.gz </span><br><span class="line"><span class="built_in">cd</span> libzip-1.7.3</span><br><span class="line">cmake -DCMAKE_INSTALL_PREFIX=/usr/libs</span><br><span class="line">make &amp;&amp; make install</span><br><span class="line"></span><br><span class="line"><span class="built_in">export</span> PKG_CONFIG_PATH=/usr/libs/lib64/pkgconfig:<span class="variable">$PKG_CONFIG_PATH</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="安装流程"><a href="#安装流程" class="headerlink" title="安装流程"></a>安装流程</h2><ul>
+<li>下载php7.4源码与安装</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">[root@rocky1 src]<span class="comment"># cd /usr/local/src &amp;&amp; wget https://www.php.net/distributions/php-7.4.30.tar.gz</span></span><br><span class="line">[root@rocky1 src]<span class="comment"># tar xzvf php-7.4.30.tar.gz &amp;&amp; cd php-7.4.30</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#创建用户</span></span><br><span class="line">useradd -r php -s /sbin/nologin</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">#在php-7.4.30目录下预编译</span></span><br><span class="line">./configure --prefix=/apps/php --with-fpm-user=php --with-fpm-group=php  --with-curl --enable-gd --enable-sockets --enable-bcmath --with-ldap --enable-gettext --enable-mbstring --with-openssl --with-zip --with-zlib  --enable-fpm --with pgsql=/apps/postgresql --with-pdo-pgsql=/apps/postgresql/bin/pg_config --with-gd --with-jpeg --with-freetype</span><br><span class="line"></span><br><span class="line"><span class="comment">#不指定路径</span></span><br><span class="line">./configure --with-fpm-user=php --with-fpm-group=php  --with-curl --enable-gd --enable-sockets --enable-bcmath --with-ldap --enable-gettext --enable-mbstring --with-openssl --with-zip --with-zlib  --enable-fpm --with-pgsql --with-pdo-pgsql --with-gd --with-jpeg --with-freetype --with-mysqli --with-pdo-mysql</span><br><span class="line"></span><br><span class="line"><span class="built_in">export</span> PKG_CONFIG_PATH=/usr/lib/pkgconfig:/usr/libzip/lib64/pkgconfig ONIG_CFLAGS=<span class="string">&quot;-I/usr/include&quot;</span> ONIG_LIBS=<span class="string">&quot;-L/usr/lib -lonig&quot;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">#8.29版本的</span></span><br><span class="line">./configure --prefix=/apps/php --with-fpm-user=php --with-fpm-group=php --with-curl --with-gd --with-jpeg --with-freetype --enable-sockets --enable-bcmath --with-ldap --enable-gettext --enable-mbstring --with-openssl --with-zip --with-zlib --enable-fpm --with-pgsql=/apps/postgresql --with-pdo-pgsql=/apps/postgresql/bin/pg_config</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">#编译</span></span><br><span class="line">make &amp;&amp; make install</span><br><span class="line"></span><br><span class="line"><span class="built_in">chown</span> -R php.php /apps/php</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>复制PHP配置文件模板</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cp</span> /usr/local/src/php-7.4.30/php.ini-development /apps/php/lib/php.ini</span><br></pre></td></tr></table></figure>
+
+<h3 id="添加全局变量"><a href="#添加全局变量" class="headerlink" title="添加全局变量"></a>添加全局变量</h3><ul>
+<li>1.打开终端，并以root权限登录</li>
+<li>2.编辑&#x2F;etc&#x2F;profile文件，可以使用文本编辑器（如vi或nano）进行编辑：</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#最后一行添加</span></span><br><span class="line">[root@rocky1 src]<span class="comment"># vim /etc/profile</span></span><br><span class="line"><span class="built_in">export</span> PATH=<span class="string">&quot;/apps/php/bin:<span class="variable">$PATH</span>&quot;</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>3.重启配置生效</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">source</span> /etc/profile</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>4.确认PHP命令是否可以全局使用</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@rocky1 php]<span class="comment"># php -v</span></span><br><span class="line">PHP 7.4.30 (cli) (built: Aug 14 2023 09:37:56) ( NTS )</span><br><span class="line">Copyright (c) The PHP Group</span><br><span class="line">Zend Engine v3.4.0, Copyright (c) Zend Technologies</span><br></pre></td></tr></table></figure>
+
+<h3 id="systemctl管理PHP"><a href="#systemctl管理PHP" class="headerlink" title="systemctl管理PHP"></a>systemctl管理PHP</h3><ul>
+<li>创建一个名为php-fpm.service的服务单元文件</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">[root@rocky1~]<span class="comment"># vim /etc/systemd/system/php-fpm.service</span></span><br><span class="line">[Unit]</span><br><span class="line">Description=PHP-FPM FastCGI Process Manager</span><br><span class="line">[Service]</span><br><span class="line">ExecStart=/apps/php/sbin/php-fpm --nodaemonize --fpm-config /apps/php/etc/php-fpm.conf</span><br><span class="line">ExecReload=/bin/kill -USR2 <span class="variable">$MAINPID</span></span><br><span class="line">[Install]</span><br><span class="line">WantedBy=multi-user.target</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">几个小坑：</span><br><span class="line">1./apps/php/etc/php-fpm.conf配置文件名字必须为conf结尾的，默认的是php-fpm.conf.default，需要手动修改</span><br><span class="line">2./apps/php/etc/php-fpm.d目录下的www.conf.default文件也需要修改成www.conf</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>启用并启动PHP-FPM服务</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">systemctl <span class="built_in">enable</span> php-fpm</span><br><span class="line">systemctl start php-fpm</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>在&#x2F;apps&#x2F;php&#x2F;etc&#x2F;php-fpm.d目录下的<a target="_blank" rel="noopener" href="http://www.conf里添加以下行/">www.conf里添加以下行</a></li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">php_admin_value[php.ini] = /apps/php/lib/php.ini</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>重启生效</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl restart php-fpm</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>www.conf</code>文件中的参数优化</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#</span></span><br><span class="line">pm = dynamic</span><br></pre></td></tr></table></figure>
+    </div>
+
+
+  <div style="text-align:center;color: #ccc;font-size:18px;">
+    ---------Thanks for your attention---------
+  </div>
+
+
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="followme">
+  <span>欢迎关注我的其它发布渠道</span>
+
+  <div class="social-list">
+
+      <div class="social-item">
+          <a target="_blank" class="social-link" href="/atom.xml">
+            <span class="icon">
+              <i class="fa fa-rss"></i>
+            </span>
+
+            <span class="label">RSS</span>
+          </a>
+      </div>
+  </div>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/Linux/" rel="tag"><i class="fa fa-tag"></i> Linux</a>
+              <a href="/tags/PHP/" rel="tag"><i class="fa fa-tag"></i> PHP</a>
+          </div>
+
+
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2024/01/15/%E7%9B%91%E6%8E%A7mysql%E8%84%9A%E6%9C%AC/" rel="prev" title="监控Mysql脚本">
+                  <i class="fa fa-angle-left"></i> 监控Mysql脚本
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2024/01/16/clash%E9%85%8D%E7%BD%AE%E8%B4%9F%E8%BD%BD/" rel="next" title="Clash配置负载">
+                  Clash配置负载 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2024</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">ZHANG</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+      <span>站点总字数：</span>
+    <span title="站点总字数">30k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span>站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">27 分钟</span>
+  </span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script size="30" alpha="0.6" zIndex="-1" src="https://cdnjs.cloudflare.com/ajax/libs/ribbon.js/1.0.2/ribbon.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fancyapps-ui/5.0.31/fancybox/fancybox.umd.js" integrity="sha256-a+H7FYzJv6oU2hfsfDGM2Ohw/cR9v+hPfxHCLdmCrE8=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lozad.js/1.16.0/lozad.min.js" integrity="sha256-mOFREFhqmHeQbXpK2lp4nA3qooVgACfh88fpJftLBbc=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pangu/4.0.7/pangu.min.js" integrity="sha256-j+yj56cdEY2CwkVtGyz18fNybFGpMGJ8JxG3GSyO2+I=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/sidebar.js"></script><script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+  <script src="/js/third-party/fancybox.js"></script>
+
+  <script src="/js/third-party/pace.js"></script>
+
+
+  
+
+
+
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/quicklink/2.3.0/quicklink.umd.js" integrity="sha256-yvJQOINiH9fWemHn0vCA5lsHWJaHs6/ZmO+1Ft04SvM=" crossorigin="anonymous"></script>
+  <script class="next-config" data-name="quicklink" type="application/json">{"enable":true,"home":true,"archive":true,"delay":true,"timeout":3000,"priority":true,"url":"http://example.com/2024/01/16/%E7%BC%96%E8%AF%91%E5%AE%89%E8%A3%85php7.4/"}</script>
+  <script src="/js/third-party/quicklink.js"></script>
+
+</body>
+</html>
