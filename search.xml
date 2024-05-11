@@ -23,20 +23,6 @@
       </tags>
   </entry>
   <entry>
-    <title>mount镜像挂载</title>
-    <url>/2024/01/12/mount%E5%B0%8F%E7%9F%A5%E8%AF%86%E6%8C%82%E8%BD%BD%E9%95%9C%E5%83%8F/</url>
-    <content><![CDATA[<h1 id="mount小知识：挂载镜像"><a href="#mount小知识：挂载镜像" class="headerlink" title="mount小知识：挂载镜像"></a>mount小知识：挂载镜像</h1><h2 id="简单挂载"><a href="#简单挂载" class="headerlink" title="简单挂载"></a>简单挂载</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#查看一下镜像有没有连接，这里是sr0</span></span><br><span class="line">[root@server2 ~]<span class="comment"># lsblk -l</span></span><br><span class="line">NAME        MAJ:MIN RM  SIZE RO TYPE MOUNTPOINT</span><br><span class="line">sda           8:0    0   20G  0 disk </span><br><span class="line">sda1          8:1    0    1G  0 part /boot</span><br><span class="line">sda2          8:2    0   19G  0 part </span><br><span class="line">centos-root 253:0    0   17G  0 lvm  /</span><br><span class="line">centos-swap 253:1    0    2G  0 lvm  [SWAP]</span><br><span class="line">sr0          11:0    1  988M  0 rom  </span><br><span class="line"></span><br><span class="line"><span class="comment">#创建一个挂载目录</span></span><br><span class="line">[root@server2 ~]<span class="comment"># mkdir /mnt/centos7.9</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#将镜像文件挂载到目录里，-t指定一下文件系统</span></span><br><span class="line">[root@server2 ~]<span class="comment"># mount -t iso9660 /dev/sr0 /mnt/centos7.9</span></span><br><span class="line">mount: /dev/sr0 写保护，将以只读方式挂载</span><br><span class="line"></span><br><span class="line"><span class="comment">#可以将配置写进配置文件，开机自动挂载</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;/dev/sr0  /mnt/centos7.9  iso9660 defaults 0 0&quot;</span> &gt;&gt; /etc/fstab</span><br><span class="line"></span><br><span class="line"><span class="comment">#如果开机有错误，将配置文件里自己添加的删除了就行</span></span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>Linux</category>
-        <category>mount</category>
-      </categories>
-      <tags>
-        <tag>挂载</tag>
-        <tag>mount</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>iops查看</title>
     <url>/2024/01/11/iops%E6%9F%A5%E7%9C%8B/</url>
     <content><![CDATA[<h1 id="IOPS查看"><a href="#IOPS查看" class="headerlink" title="IOPS查看"></a>IOPS查看</h1><h3 id="iostat命令"><a href="#iostat命令" class="headerlink" title="iostat命令"></a>iostat命令</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#每隔5秒执行一次iostat，连续执行3次</span></span><br><span class="line">iostat -xmtc 5 3</span><br><span class="line">Linux 3.10.0-1160.92.1.el7.x86_64 (zhang)       10/17/2023      _x86_64_        (2 CPU)</span><br><span class="line"></span><br><span class="line">10/17/2023 08:19:03 PM</span><br><span class="line">avg-cpu:  %user   %<span class="built_in">nice</span> %system %iowait  %steal   %idle</span><br><span class="line">           0.62    0.00    0.24    0.05    0.00   99.09</span><br><span class="line"></span><br><span class="line">Device:         rrqm/s   wrqm/s     r/s     w/s    rMB/s    wMB/s avgrq-sz avgqu-sz   await r_await w_await  svctm  %util</span><br><span class="line">vda               0.00     1.65    0.10    4.11     0.00     0.04    19.24     0.00    0.61    2.36    0.57   0.63   0.27</span><br><span class="line"></span><br><span class="line">– 设备（设备的名称）</span><br><span class="line">– rrqm/s（每秒钟进行的读操作的合并请求数）</span><br><span class="line">– wrqm/s（每秒钟进行的写操作的合并请求数）</span><br><span class="line">– r/s（每秒钟的读请求次数）</span><br><span class="line">– w/s（每秒钟的写请求次数）</span><br><span class="line">– rkB/s（每秒钟的读取数据量，单位KB）</span><br><span class="line">– wkB/s（每秒钟的写入数据量，单位KB）</span><br><span class="line">– avgrq-sz（每个请求的平均扇区数）</span><br><span class="line">– avgqu-sz（平均I / O请求数量）</span><br><span class="line">– awt（平均处理时间）</span><br><span class="line">– svctm（平均服务时间）</span><br><span class="line">– %util（每秒已使用磁盘时间的百分比）</span><br></pre></td></tr></table></figure>
@@ -115,6 +101,20 @@
       <tags>
         <tag>双网卡绑定</tag>
         <tag>team</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>mount镜像挂载</title>
+    <url>/2024/01/12/mount%E5%B0%8F%E7%9F%A5%E8%AF%86%E6%8C%82%E8%BD%BD%E9%95%9C%E5%83%8F/</url>
+    <content><![CDATA[<h1 id="mount小知识：挂载镜像"><a href="#mount小知识：挂载镜像" class="headerlink" title="mount小知识：挂载镜像"></a>mount小知识：挂载镜像</h1><h2 id="简单挂载"><a href="#简单挂载" class="headerlink" title="简单挂载"></a>简单挂载</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#查看一下镜像有没有连接，这里是sr0</span></span><br><span class="line">[root@server2 ~]<span class="comment"># lsblk -l</span></span><br><span class="line">NAME        MAJ:MIN RM  SIZE RO TYPE MOUNTPOINT</span><br><span class="line">sda           8:0    0   20G  0 disk </span><br><span class="line">sda1          8:1    0    1G  0 part /boot</span><br><span class="line">sda2          8:2    0   19G  0 part </span><br><span class="line">centos-root 253:0    0   17G  0 lvm  /</span><br><span class="line">centos-swap 253:1    0    2G  0 lvm  [SWAP]</span><br><span class="line">sr0          11:0    1  988M  0 rom  </span><br><span class="line"></span><br><span class="line"><span class="comment">#创建一个挂载目录</span></span><br><span class="line">[root@server2 ~]<span class="comment"># mkdir /mnt/centos7.9</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#将镜像文件挂载到目录里，-t指定一下文件系统</span></span><br><span class="line">[root@server2 ~]<span class="comment"># mount -t iso9660 /dev/sr0 /mnt/centos7.9</span></span><br><span class="line">mount: /dev/sr0 写保护，将以只读方式挂载</span><br><span class="line"></span><br><span class="line"><span class="comment">#可以将配置写进配置文件，开机自动挂载</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;/dev/sr0  /mnt/centos7.9  iso9660 defaults 0 0&quot;</span> &gt;&gt; /etc/fstab</span><br><span class="line"></span><br><span class="line"><span class="comment">#如果开机有错误，将配置文件里自己添加的删除了就行</span></span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>Linux</category>
+        <category>mount</category>
+      </categories>
+      <tags>
+        <tag>挂载</tag>
+        <tag>mount</tag>
       </tags>
   </entry>
   <entry>
