@@ -1,6 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>Clash配置负载</title>
+    <url>/2024/01/16/clash%E9%85%8D%E7%BD%AE%E8%B4%9F%E8%BD%BD/</url>
+    <content><![CDATA[<h1 id="Clash配置负载"><a href="#Clash配置负载" class="headerlink" title="Clash配置负载"></a>Clash配置负载</h1><h2 id="实现负载，下载拉满带宽"><a href="#实现负载，下载拉满带宽" class="headerlink" title="实现负载，下载拉满带宽"></a>实现负载，下载拉满带宽</h2><ul>
+<li>找到settings—–&gt;Profiles——-&gt;Parsers——&gt;Edit，然后添加下面代码</li>
+</ul>
+<p><img data-src="https://img-130165.oss-cn-shanghai.aliyuncs.com/img/clash.png"></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">parsers:</span><br><span class="line">  - reg: &#x27;slbable$&#x27;</span><br><span class="line">    yaml:</span><br><span class="line">      append-proxy-groups:</span><br><span class="line">        - name:  负载均衡-散列</span><br><span class="line">          type: load-balance</span><br><span class="line">          url: &#x27;http://www.google.com/generate_204&#x27;</span><br><span class="line">          interval: 300</span><br><span class="line">          strategy: consistent-hashing</span><br><span class="line">        - name:  负载均衡-轮询</span><br><span class="line">          type: load-balance</span><br><span class="line">          url: &#x27;http://www.google.com/generate_204&#x27;</span><br><span class="line">          interval: 300</span><br><span class="line">          strategy: round-robin</span><br><span class="line">      commands:</span><br><span class="line">        - proxy-groups. 负载均衡-散列.proxies=[]proxyNames</span><br><span class="line">        - proxy-groups.0.proxies.0+ 负载均衡-散列</span><br><span class="line">        - proxy-groups. 负载均衡-轮询.proxies=[]proxyNames</span><br><span class="line">        - proxy-groups.0.proxies.0+ 负载均衡-轮询</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>然后在订阅链接后面添加触发条件，点击更新</li>
+<li>会出现一个轮询，一个散列，下载建议用轮询，正常用就用散列</li>
+</ul>
+]]></content>
+      <categories>
+        <category>教程</category>
+      </categories>
+      <tags>
+        <tag>Clash</tag>
+        <tag>小教程</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>FTP安装并配置虚拟用户</title>
     <url>/2024/01/19/ftp%E5%AE%89%E8%A3%85%E5%B9%B6%E9%85%8D%E7%BD%AE%E8%99%9A%E6%8B%9F%E7%94%A8%E6%88%B7/</url>
     <content><![CDATA[<h2 id="FTP安装并配置虚拟用户"><a href="#FTP安装并配置虚拟用户" class="headerlink" title="FTP安装并配置虚拟用户"></a>FTP安装并配置虚拟用户</h2><h3 id="1-安装软件"><a href="#1-安装软件" class="headerlink" title="1.安装软件"></a>1.安装软件</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">yum -y install vsftpd</span><br></pre></td></tr></table></figure>
@@ -68,56 +90,6 @@
       </tags>
   </entry>
   <entry>
-    <title>Clash配置负载</title>
-    <url>/2024/01/16/clash%E9%85%8D%E7%BD%AE%E8%B4%9F%E8%BD%BD/</url>
-    <content><![CDATA[<h1 id="Clash配置负载"><a href="#Clash配置负载" class="headerlink" title="Clash配置负载"></a>Clash配置负载</h1><h2 id="实现负载，下载拉满带宽"><a href="#实现负载，下载拉满带宽" class="headerlink" title="实现负载，下载拉满带宽"></a>实现负载，下载拉满带宽</h2><ul>
-<li>找到settings—–&gt;Profiles——-&gt;Parsers——&gt;Edit，然后添加下面代码</li>
-</ul>
-<p><img data-src="https://img-130165.oss-cn-shanghai.aliyuncs.com/img/clash.png"></p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">parsers:</span><br><span class="line">  - reg: &#x27;slbable$&#x27;</span><br><span class="line">    yaml:</span><br><span class="line">      append-proxy-groups:</span><br><span class="line">        - name:  负载均衡-散列</span><br><span class="line">          type: load-balance</span><br><span class="line">          url: &#x27;http://www.google.com/generate_204&#x27;</span><br><span class="line">          interval: 300</span><br><span class="line">          strategy: consistent-hashing</span><br><span class="line">        - name:  负载均衡-轮询</span><br><span class="line">          type: load-balance</span><br><span class="line">          url: &#x27;http://www.google.com/generate_204&#x27;</span><br><span class="line">          interval: 300</span><br><span class="line">          strategy: round-robin</span><br><span class="line">      commands:</span><br><span class="line">        - proxy-groups. 负载均衡-散列.proxies=[]proxyNames</span><br><span class="line">        - proxy-groups.0.proxies.0+ 负载均衡-散列</span><br><span class="line">        - proxy-groups. 负载均衡-轮询.proxies=[]proxyNames</span><br><span class="line">        - proxy-groups.0.proxies.0+ 负载均衡-轮询</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>然后在订阅链接后面添加触发条件，点击更新</li>
-<li>会出现一个轮询，一个散列，下载建议用轮询，正常用就用散列</li>
-</ul>
-]]></content>
-      <categories>
-        <category>教程</category>
-      </categories>
-      <tags>
-        <tag>Clash</tag>
-        <tag>小教程</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>team绑定双网卡</title>
-    <url>/2024/01/13/team%E7%BB%91%E5%AE%9A%E5%8F%8C%E7%BD%91%E5%8D%A1/</url>
-    <content><![CDATA[<h1 id="team绑定双网卡"><a href="#team绑定双网卡" class="headerlink" title="team绑定双网卡"></a>team绑定双网卡</h1><p>注意：虚拟机里做，一定要额外添加两块网卡才行，总共三块网卡</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 查看所有的网络连接</span></span><br><span class="line">[root@rhel7 ~]<span class="comment"># nmcli connection show</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#创建接口team，连接名team0，接口agg-eth0，工作模式为activebackup</span></span><br><span class="line">[root@rhel7 ~]<span class="comment"># nmcli connection add type team con-name team0 ifname agg-eth0 config &#x27;&#123;&quot;runner&quot;:&#123;&quot;name&quot;:&quot;activebackup&quot;&#125;&#125;&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 以下为team0接口配置IP信息</span></span><br><span class="line">[root@rhel7 ~]<span class="comment"># nmcli connection modify team0 ipv4.addresses &quot;192.168.80.100/24&quot;</span></span><br><span class="line">[root@rhel7 ~]<span class="comment"># nmcli connection modify team0 ipv4.gateway &quot;192.168.80.2&quot;</span></span><br><span class="line">[root@rhel7 ~]<span class="comment"># nmcli connection modify team0 ipv4.dns &quot;192.168.80.2&quot;</span></span><br><span class="line">[root@rhel7 ~]<span class="comment"># nmcli connection modify team0 ipv4.method manual</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 将 ens38、ens37 加入agg-eth0</span></span><br><span class="line">[root@rhel7 ~]<span class="comment"># nmcli connection add type team-slave con-name team0-port1 ifname ens38 master agg-eth0</span></span><br><span class="line">[root@rhel7 ~]<span class="comment"># nmcli connection add type team-slave con-name team0-port2 ifname ens37 master agg-eth0</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 激活 team0、team0-port1、team0-port2</span></span><br><span class="line">[root@rhel7 ~]<span class="comment"># nmcli connection up team0  </span></span><br><span class="line">[root@rhel7 ~]<span class="comment"># nmcli connection up team0-port1</span></span><br><span class="line">[root@rhel7 ~]<span class="comment"># nmcli connection up team0-port2</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看 agg-eth0 网卡绑定的信息</span></span><br><span class="line">[root@rhel7 ~]<span class="comment"># teamdctl agg-eth0 state</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 执行此命令，并使用ping测试网络连通性，停掉一个，看会不会断，再启用，停掉另外一个测试。再复制一个窗口，一直ping自己的DNS，再用上面的命令看看是哪个网卡在工作</span></span><br><span class="line">[root@rhel7 ~]<span class="comment"># nmcli connection down team0-port1  </span></span><br></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>Linux</category>
-        <category>team</category>
-      </categories>
-      <tags>
-        <tag>双网卡绑定</tag>
-        <tag>team</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>mount镜像挂载</title>
-    <url>/2024/01/12/mount%E5%B0%8F%E7%9F%A5%E8%AF%86%E6%8C%82%E8%BD%BD%E9%95%9C%E5%83%8F/</url>
-    <content><![CDATA[<h1 id="mount小知识：挂载镜像"><a href="#mount小知识：挂载镜像" class="headerlink" title="mount小知识：挂载镜像"></a>mount小知识：挂载镜像</h1><h2 id="简单挂载"><a href="#简单挂载" class="headerlink" title="简单挂载"></a>简单挂载</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#查看一下镜像有没有连接，这里是sr0</span></span><br><span class="line">[root@server2 ~]<span class="comment"># lsblk -l</span></span><br><span class="line">NAME        MAJ:MIN RM  SIZE RO TYPE MOUNTPOINT</span><br><span class="line">sda           8:0    0   20G  0 disk </span><br><span class="line">sda1          8:1    0    1G  0 part /boot</span><br><span class="line">sda2          8:2    0   19G  0 part </span><br><span class="line">centos-root 253:0    0   17G  0 lvm  /</span><br><span class="line">centos-swap 253:1    0    2G  0 lvm  [SWAP]</span><br><span class="line">sr0          11:0    1  988M  0 rom  </span><br><span class="line"></span><br><span class="line"><span class="comment">#创建一个挂载目录</span></span><br><span class="line">[root@server2 ~]<span class="comment"># mkdir /mnt/centos7.9</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#将镜像文件挂载到目录里，-t指定一下文件系统</span></span><br><span class="line">[root@server2 ~]<span class="comment"># mount -t iso9660 /dev/sr0 /mnt/centos7.9</span></span><br><span class="line">mount: /dev/sr0 写保护，将以只读方式挂载</span><br><span class="line"></span><br><span class="line"><span class="comment">#可以将配置写进配置文件，开机自动挂载</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;/dev/sr0  /mnt/centos7.9  iso9660 defaults 0 0&quot;</span> &gt;&gt; /etc/fstab</span><br><span class="line"></span><br><span class="line"><span class="comment">#如果开机有错误，将配置文件里自己添加的删除了就行</span></span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>Linux</category>
-        <category>mount</category>
-      </categories>
-      <tags>
-        <tag>挂载</tag>
-        <tag>mount</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>LVM服务器根目录扩容</title>
     <url>/2024/01/18/lvm%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%A0%B9%E7%9B%AE%E5%BD%95%E6%89%A9%E5%AE%B9/</url>
     <content><![CDATA[<h1 id="LVM服务器根目录扩容"><a href="#LVM服务器根目录扩容" class="headerlink" title="LVM服务器根目录扩容"></a>LVM服务器根目录扩容</h1><h2 id="新增加一块硬盘的情况"><a href="#新增加一块硬盘的情况" class="headerlink" title="新增加一块硬盘的情况"></a>新增加一块硬盘的情况</h2><h3 id="1-给根分区扩展容量"><a href="#1-给根分区扩展容量" class="headerlink" title="1.给根分区扩展容量"></a>1.给根分区扩展容量</h3><ul>
@@ -166,6 +138,34 @@
       <tags>
         <tag>Linux</tag>
         <tag>LVM</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>team绑定双网卡</title>
+    <url>/2024/01/13/team%E7%BB%91%E5%AE%9A%E5%8F%8C%E7%BD%91%E5%8D%A1/</url>
+    <content><![CDATA[<h1 id="team绑定双网卡"><a href="#team绑定双网卡" class="headerlink" title="team绑定双网卡"></a>team绑定双网卡</h1><p>注意：虚拟机里做，一定要额外添加两块网卡才行，总共三块网卡</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 查看所有的网络连接</span></span><br><span class="line">[root@rhel7 ~]<span class="comment"># nmcli connection show</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#创建接口team，连接名team0，接口agg-eth0，工作模式为activebackup</span></span><br><span class="line">[root@rhel7 ~]<span class="comment"># nmcli connection add type team con-name team0 ifname agg-eth0 config &#x27;&#123;&quot;runner&quot;:&#123;&quot;name&quot;:&quot;activebackup&quot;&#125;&#125;&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 以下为team0接口配置IP信息</span></span><br><span class="line">[root@rhel7 ~]<span class="comment"># nmcli connection modify team0 ipv4.addresses &quot;192.168.80.100/24&quot;</span></span><br><span class="line">[root@rhel7 ~]<span class="comment"># nmcli connection modify team0 ipv4.gateway &quot;192.168.80.2&quot;</span></span><br><span class="line">[root@rhel7 ~]<span class="comment"># nmcli connection modify team0 ipv4.dns &quot;192.168.80.2&quot;</span></span><br><span class="line">[root@rhel7 ~]<span class="comment"># nmcli connection modify team0 ipv4.method manual</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 将 ens38、ens37 加入agg-eth0</span></span><br><span class="line">[root@rhel7 ~]<span class="comment"># nmcli connection add type team-slave con-name team0-port1 ifname ens38 master agg-eth0</span></span><br><span class="line">[root@rhel7 ~]<span class="comment"># nmcli connection add type team-slave con-name team0-port2 ifname ens37 master agg-eth0</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 激活 team0、team0-port1、team0-port2</span></span><br><span class="line">[root@rhel7 ~]<span class="comment"># nmcli connection up team0  </span></span><br><span class="line">[root@rhel7 ~]<span class="comment"># nmcli connection up team0-port1</span></span><br><span class="line">[root@rhel7 ~]<span class="comment"># nmcli connection up team0-port2</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看 agg-eth0 网卡绑定的信息</span></span><br><span class="line">[root@rhel7 ~]<span class="comment"># teamdctl agg-eth0 state</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 执行此命令，并使用ping测试网络连通性，停掉一个，看会不会断，再启用，停掉另外一个测试。再复制一个窗口，一直ping自己的DNS，再用上面的命令看看是哪个网卡在工作</span></span><br><span class="line">[root@rhel7 ~]<span class="comment"># nmcli connection down team0-port1  </span></span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>Linux</category>
+        <category>team</category>
+      </categories>
+      <tags>
+        <tag>双网卡绑定</tag>
+        <tag>team</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>mount镜像挂载</title>
+    <url>/2024/01/12/mount%E5%B0%8F%E7%9F%A5%E8%AF%86%E6%8C%82%E8%BD%BD%E9%95%9C%E5%83%8F/</url>
+    <content><![CDATA[<h1 id="mount小知识：挂载镜像"><a href="#mount小知识：挂载镜像" class="headerlink" title="mount小知识：挂载镜像"></a>mount小知识：挂载镜像</h1><h2 id="简单挂载"><a href="#简单挂载" class="headerlink" title="简单挂载"></a>简单挂载</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#查看一下镜像有没有连接，这里是sr0</span></span><br><span class="line">[root@server2 ~]<span class="comment"># lsblk -l</span></span><br><span class="line">NAME        MAJ:MIN RM  SIZE RO TYPE MOUNTPOINT</span><br><span class="line">sda           8:0    0   20G  0 disk </span><br><span class="line">sda1          8:1    0    1G  0 part /boot</span><br><span class="line">sda2          8:2    0   19G  0 part </span><br><span class="line">centos-root 253:0    0   17G  0 lvm  /</span><br><span class="line">centos-swap 253:1    0    2G  0 lvm  [SWAP]</span><br><span class="line">sr0          11:0    1  988M  0 rom  </span><br><span class="line"></span><br><span class="line"><span class="comment">#创建一个挂载目录</span></span><br><span class="line">[root@server2 ~]<span class="comment"># mkdir /mnt/centos7.9</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#将镜像文件挂载到目录里，-t指定一下文件系统</span></span><br><span class="line">[root@server2 ~]<span class="comment"># mount -t iso9660 /dev/sr0 /mnt/centos7.9</span></span><br><span class="line">mount: /dev/sr0 写保护，将以只读方式挂载</span><br><span class="line"></span><br><span class="line"><span class="comment">#可以将配置写进配置文件，开机自动挂载</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;/dev/sr0  /mnt/centos7.9  iso9660 defaults 0 0&quot;</span> &gt;&gt; /etc/fstab</span><br><span class="line"></span><br><span class="line"><span class="comment">#如果开机有错误，将配置文件里自己添加的删除了就行</span></span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>Linux</category>
+        <category>mount</category>
+      </categories>
+      <tags>
+        <tag>挂载</tag>
+        <tag>mount</tag>
       </tags>
   </entry>
   <entry>
@@ -261,7 +261,22 @@
       </tags>
   </entry>
   <entry>
-    <title>Clash配置负载</title>
+    <title>监控Mysql脚本</title>
+    <url>/2024/01/15/%E7%9B%91%E6%8E%A7mysql%E8%84%9A%E6%9C%AC/</url>
+    <content><![CDATA[<h1 id="监控Mysql脚本"><a href="#监控Mysql脚本" class="headerlink" title="监控Mysql脚本"></a>监控Mysql脚本</h1><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 定义MySQL用户名、密码和主机</span></span><br><span class="line">MYSQL_USER=<span class="string">&quot;root&quot;</span></span><br><span class="line">MYSQL_PASSWORD=<span class="string">&quot;123456&quot;</span></span><br><span class="line">MYSQL_HOST=<span class="string">&quot;localhost&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 检测MySQL服务是否运行</span></span><br><span class="line"><span class="keyword">if</span> ! pgrep mysqld &gt;/dev/null 2&gt;&amp;1 ; <span class="keyword">then</span></span><br><span class="line">    <span class="comment"># 如果MySQL服务未运行，则尝试启动服务</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">&quot;MySQL is not running, attempting to start...&quot;</span></span><br><span class="line">    systemctl start mysqld</span><br><span class="line">    <span class="built_in">sleep</span> 5</span><br><span class="line">    <span class="comment"># 再次检查MySQL服务是否已经运行</span></span><br><span class="line">    <span class="keyword">if</span> ! pgrep mysqld &gt;/dev/null 2&gt;&amp;1 ; <span class="keyword">then</span></span><br><span class="line">        <span class="built_in">echo</span> <span class="string">&quot;Failed to start MySQL.&quot;</span></span><br><span class="line">        <span class="built_in">exit</span> 1</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        <span class="built_in">echo</span> <span class="string">&quot;MySQL started successfully.&quot;</span></span><br><span class="line">    <span class="keyword">fi</span></span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 检查能否连接到MySQL服务器</span></span><br><span class="line"><span class="keyword">if</span> ! mysqladmin ping -h <span class="string">&quot;<span class="variable">$MYSQL_HOST</span>&quot;</span> -u <span class="string">&quot;<span class="variable">$MYSQL_USER</span>&quot;</span> -p<span class="string">&quot;<span class="variable">$MYSQL_PASSWORD</span>&quot;</span> &gt;/dev/null 2&gt;&amp;1; <span class="keyword">then</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">&quot;Could not connect to MySQL server. Attempting to restart MySQL.&quot;</span></span><br><span class="line">    /etc/init.d/mysql restart</span><br><span class="line">    <span class="built_in">sleep</span> 5</span><br><span class="line">    <span class="keyword">if</span> ! mysqladmin ping -h <span class="string">&quot;<span class="variable">$MYSQL_HOST</span>&quot;</span> -u <span class="string">&quot;<span class="variable">$MYSQL_USER</span>&quot;</span> -p<span class="string">&quot;<span class="variable">$MYSQL_PASSWORD</span>&quot;</span> &gt;/dev/null 2&gt;&amp;1; <span class="keyword">then</span></span><br><span class="line">        <span class="built_in">echo</span> <span class="string">&quot;Failed to restart MySQL.&quot;</span></span><br><span class="line">        <span class="built_in">exit</span> 1</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        <span class="built_in">echo</span> <span class="string">&quot;MySQL restarted successfully.&quot;</span></span><br><span class="line">    <span class="keyword">fi</span></span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">&quot;MySQL is running.&quot;</span></span><br><span class="line"><span class="keyword">fi</span></span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>Linux</category>
+        <category>Mysql</category>
+      </categories>
+      <tags>
+        <tag>监控</tag>
+        <tag>Mysql</tag>
+        <tag>shell</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>编译Zabbix6.0.5</title>
     <url>/2024/01/20/%E7%BC%96%E8%AF%91zabbix6.0.5/</url>
     <content><![CDATA[<h1 id="编译Zabbix6-0-5"><a href="#编译Zabbix6-0-5" class="headerlink" title="编译Zabbix6.0.5"></a>编译Zabbix6.0.5</h1><h3 id="pgsql数据库配置"><a href="#pgsql数据库配置" class="headerlink" title="pgsql数据库配置"></a>pgsql数据库配置</h3><p>环境为Nginx1.24+PHP7.4+PGSQL13.7+Zabbix6.0.5</p>
 <ul>
@@ -352,6 +367,55 @@
       </tags>
   </entry>
   <entry>
+    <title>编译安装Postgresql13.7</title>
+    <url>/2024/01/20/%E7%BC%96%E8%AF%91%E5%AE%89%E8%A3%85postgresql13.7/</url>
+    <content><![CDATA[<h1 id="编译安装Postgresql13-7"><a href="#编译安装Postgresql13-7" class="headerlink" title="编译安装Postgresql13.7"></a>编译安装Postgresql13.7</h1><h3 id="创建postgres用户及安装目录"><a href="#创建postgres用户及安装目录" class="headerlink" title="创建postgres用户及安装目录"></a>创建postgres用户及安装目录</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># useradd postgres</span></span><br><span class="line"><span class="comment"># mkdir -p /apps/postgresql</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="安装PostgreSQL依赖包"><a href="#安装PostgreSQL依赖包" class="headerlink" title="安装PostgreSQL依赖包"></a>安装PostgreSQL依赖包</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">yum install perl-ExtUtils-Embed -y</span><br><span class="line">yum install readline-devel -y</span><br><span class="line">yum install python-devel -y</span><br><span class="line">yum install python3 -y</span><br><span class="line">yum install python3-devel -y&amp;nbsp;</span><br><span class="line">yum install gcc-c++ -y</span><br><span class="line">yum install cmake -y</span><br><span class="line">yum install libarchive -y</span><br><span class="line">yum install openssl-devel -y</span><br></pre></td></tr></table></figure>
+
+<h3 id="部署PostgreSQL"><a href="#部署PostgreSQL" class="headerlink" title="部署PostgreSQL"></a>部署PostgreSQL</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">##下载安装包</span></span><br><span class="line">wget https://ftp.postgresql.org/pub/source/v13.7/postgresql-13.7.tar.gz  </span><br><span class="line">tar -zxvf postgresql-13.7.tar.gz  <span class="comment">##解压安装包</span></span><br><span class="line"><span class="built_in">cd</span> postgresql-13.7/</span><br><span class="line">./configure --prefix=/apps/postgresql --with-python --with-perl --with-openssl</span><br><span class="line">make &amp;&amp; make install</span><br><span class="line"></span><br><span class="line"><span class="comment">##查看已经安装成功</span></span><br><span class="line">[root@rocky1 postgresql-13.7]<span class="comment"># /apps/postgresql/bin/pg_ctl --version</span></span><br><span class="line">pg_ctl (PostgreSQL) 13.7</span><br></pre></td></tr></table></figure>
+
+<h3 id="配置环境变量"><a href="#配置环境变量" class="headerlink" title="配置环境变量"></a>配置环境变量</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">mkdir</span> -p /apps/postgresql/pgdata <span class="comment">##创建数据库的数据目录</span></span><br><span class="line"><span class="built_in">cat</span> &gt;&gt; /etc/profile &lt;&lt; <span class="string">EOF</span></span><br><span class="line"><span class="string">### postgres ###</span></span><br><span class="line"><span class="string">export PATH=/apps/postgresql/bin:$PATH</span></span><br><span class="line"><span class="string">export LD_LIBRARY_PATH=/apps/postgresql/lib</span></span><br><span class="line"><span class="string">export PGDATA=/apps/postgresql/pgdata</span></span><br><span class="line"><span class="string">EOF</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">source</span> /etc/profile</span><br><span class="line"></span><br><span class="line">pg_ctl --version  <span class="comment">##环境变量配置成功</span></span><br></pre></td></tr></table></figure>
+
+<p>给用户目录赋权并创建数据库簇</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">chown</span> -R postgres.postgres /apps/postgresql  <span class="comment">##修改postgresql所属组和所属用户</span></span><br><span class="line">su - postgres</span><br><span class="line">initdb  <span class="comment">##初始化数据库</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="后续配置"><a href="#后续配置" class="headerlink" title="后续配置"></a>后续配置</h3><h4 id="自定义开放访问的IP-修改data目录下的pg-hba-conf文件"><a href="#自定义开放访问的IP-修改data目录下的pg-hba-conf文件" class="headerlink" title="自定义开放访问的IP ,修改data目录下的pg_hba.conf文件"></a>自定义开放访问的IP ,修改data目录下的pg_hba.conf文件</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span> /apps/postgresql/pgdata</span><br><span class="line">[root@rocky1 pgdata]<span class="comment"># vim pg_hba.conf</span></span><br><span class="line"><span class="comment"># IPv4 out connections:</span></span><br><span class="line">host    all             all             0.0.0.0/0                md5</span><br></pre></td></tr></table></figure>
+
+<h4 id="添加主机ip和主机名"><a href="#添加主机ip和主机名" class="headerlink" title="添加主机ip和主机名"></a>添加主机ip和主机名</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@rocky1 pgdata]<span class="comment"># vim postgresql.conf</span></span><br><span class="line">listen_addresses = <span class="string">&#x27;*&#x27;</span>          <span class="comment"># what IP address(es) to listen on;</span></span><br><span class="line">port = 5432 </span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>切换到root用户，并到postgresql源码包的解压目录下(&#x2F;root&#x2F;postgresql-13.7&#x2F;)</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">mkdir</span> -p /apps/postgresql/log</span><br><span class="line"><span class="built_in">cd</span> /apps/postgresql/log</span><br><span class="line"><span class="built_in">touch</span> server.log</span><br><span class="line"><span class="built_in">chown</span> -R postgres.postgres <span class="built_in">log</span></span><br><span class="line"><span class="comment">#在/root/postgresql-13.7/contrib/start-scripts里面</span></span><br><span class="line"><span class="string">&#x27;&#x27;</span><span class="string">&#x27;</span></span><br><span class="line"><span class="string">将 PostgreSQL 的启动脚本从源码包的 contrib/start-scripts/linux 目录复制到 /etc/init.d 目录中。这个脚本是用于启动、停止和管理 PostgreSQL 服务器的脚本。</span></span><br><span class="line"><span class="string">&#x27;</span><span class="string">&#x27;&#x27;</span></span><br><span class="line">[root@rocky1 start-scripts]<span class="comment"># cp linux /etc/init.d/postgresql</span></span><br><span class="line">vim /etc/init.d/postgresql</span><br><span class="line">prefix=/apps/postgresql</span><br><span class="line">PGDATA=<span class="string">&quot;/apps/postgresql/pgdata&quot;</span></span><br><span class="line">PGLOG=<span class="string">&quot;/apps/postgresql/log/server.log&quot;</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>赋予该文件执行权限</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">chmod</span> +x /etc/init.d/postgresql</span><br><span class="line"><span class="comment">#设置服务开机自启</span></span><br><span class="line">chkconfig --add postgresql</span><br><span class="line"></span><br><span class="line"><span class="built_in">mkdir</span> -p /home/postgres</span><br><span class="line"><span class="built_in">chown</span> -R postgres.postgres /home/postgres</span><br><span class="line"></span><br><span class="line"><span class="comment">#启动数据库</span></span><br><span class="line">service postgresql restart</span><br></pre></td></tr></table></figure>
+
+<h3 id="源码安装timesacledb"><a href="#源码安装timesacledb" class="headerlink" title="源码安装timesacledb"></a>源码安装timesacledb</h3><h5 id="cmake需要3-0以上版本"><a href="#cmake需要3-0以上版本" class="headerlink" title="cmake需要3.0以上版本"></a>cmake需要3.0以上版本</h5><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">wget&amp;nbsp;https://github.com/Kitware/CMake/releases/download/v3.27.4/cmake-3.27.4.tar.gz</span><br><span class="line"></span><br><span class="line">tar zxvf cmake-3.27.4.tar.gz</span><br><span class="line"><span class="built_in">cd</span> cmake-3.27.4</span><br><span class="line">./bootstrap --prefix=/usr/local</span><br><span class="line">make &amp;&amp; make install</span><br><span class="line">vi ~/.bash_profile</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>下载源码，或者直接下载包，传上去</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">wget https://github.com/timescale/timescaledb/archive/refs/tags/2.11.2.tar.gz</span><br><span class="line">tar zxvf timescaledb-2.11.1.tar.gz</span><br><span class="line"><span class="built_in">cd</span> timescaledb-2.11.1</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>安装和编译</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">./bootstrap <span class="comment">#如果有需要openssl就安装重新构建pgsql</span></span><br><span class="line"><span class="built_in">cd</span> ./build &amp;&amp; make</span><br><span class="line">make install</span><br><span class="line"></span><br><span class="line"><span class="comment">#加在最后一行</span></span><br><span class="line"><span class="built_in">cd</span> /apps/postgresql/pgdata</span><br><span class="line">[root@rocky1 pgdata]<span class="comment"># vim postgresql.conf</span></span><br><span class="line">shared_preload_libraries = <span class="string">&#x27;timescaledb&#x27;</span></span><br><span class="line"></span><br><span class="line">service postgresql restart</span><br><span class="line"></span><br><span class="line">CREATE DATABASE example;</span><br><span class="line">\c example</span><br><span class="line">CREATE EXTENSION IF NOT EXISTS timescaledb;</span><br><span class="line">SELECT * FROM pg_extension WHERE extname=<span class="string">&#x27;timescaledb&#x27;</span>;</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>Linux</category>
+        <category>Postgresql</category>
+      </categories>
+      <tags>
+        <tag>Linux</tag>
+        <tag>Postgresql</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>编译安装PHP7.4</title>
     <url>/2024/01/16/%E7%BC%96%E8%AF%91%E5%AE%89%E8%A3%85php7.4/</url>
     <content><![CDATA[<h1 id="编译安装PHP7-4"><a href="#编译安装PHP7-4" class="headerlink" title="编译安装PHP7.4"></a>编译安装PHP7.4</h1><h2 id="依赖环境准备"><a href="#依赖环境准备" class="headerlink" title="依赖环境准备"></a>依赖环境准备</h2><ul>
@@ -421,70 +485,6 @@
       <tags>
         <tag>Linux</tag>
         <tag>PHP</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>监控Mysql脚本</title>
-    <url>/2024/01/15/%E7%9B%91%E6%8E%A7mysql%E8%84%9A%E6%9C%AC/</url>
-    <content><![CDATA[<h1 id="监控Mysql脚本"><a href="#监控Mysql脚本" class="headerlink" title="监控Mysql脚本"></a>监控Mysql脚本</h1><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 定义MySQL用户名、密码和主机</span></span><br><span class="line">MYSQL_USER=<span class="string">&quot;root&quot;</span></span><br><span class="line">MYSQL_PASSWORD=<span class="string">&quot;123456&quot;</span></span><br><span class="line">MYSQL_HOST=<span class="string">&quot;localhost&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 检测MySQL服务是否运行</span></span><br><span class="line"><span class="keyword">if</span> ! pgrep mysqld &gt;/dev/null 2&gt;&amp;1 ; <span class="keyword">then</span></span><br><span class="line">    <span class="comment"># 如果MySQL服务未运行，则尝试启动服务</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">&quot;MySQL is not running, attempting to start...&quot;</span></span><br><span class="line">    systemctl start mysqld</span><br><span class="line">    <span class="built_in">sleep</span> 5</span><br><span class="line">    <span class="comment"># 再次检查MySQL服务是否已经运行</span></span><br><span class="line">    <span class="keyword">if</span> ! pgrep mysqld &gt;/dev/null 2&gt;&amp;1 ; <span class="keyword">then</span></span><br><span class="line">        <span class="built_in">echo</span> <span class="string">&quot;Failed to start MySQL.&quot;</span></span><br><span class="line">        <span class="built_in">exit</span> 1</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        <span class="built_in">echo</span> <span class="string">&quot;MySQL started successfully.&quot;</span></span><br><span class="line">    <span class="keyword">fi</span></span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 检查能否连接到MySQL服务器</span></span><br><span class="line"><span class="keyword">if</span> ! mysqladmin ping -h <span class="string">&quot;<span class="variable">$MYSQL_HOST</span>&quot;</span> -u <span class="string">&quot;<span class="variable">$MYSQL_USER</span>&quot;</span> -p<span class="string">&quot;<span class="variable">$MYSQL_PASSWORD</span>&quot;</span> &gt;/dev/null 2&gt;&amp;1; <span class="keyword">then</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">&quot;Could not connect to MySQL server. Attempting to restart MySQL.&quot;</span></span><br><span class="line">    /etc/init.d/mysql restart</span><br><span class="line">    <span class="built_in">sleep</span> 5</span><br><span class="line">    <span class="keyword">if</span> ! mysqladmin ping -h <span class="string">&quot;<span class="variable">$MYSQL_HOST</span>&quot;</span> -u <span class="string">&quot;<span class="variable">$MYSQL_USER</span>&quot;</span> -p<span class="string">&quot;<span class="variable">$MYSQL_PASSWORD</span>&quot;</span> &gt;/dev/null 2&gt;&amp;1; <span class="keyword">then</span></span><br><span class="line">        <span class="built_in">echo</span> <span class="string">&quot;Failed to restart MySQL.&quot;</span></span><br><span class="line">        <span class="built_in">exit</span> 1</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        <span class="built_in">echo</span> <span class="string">&quot;MySQL restarted successfully.&quot;</span></span><br><span class="line">    <span class="keyword">fi</span></span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">&quot;MySQL is running.&quot;</span></span><br><span class="line"><span class="keyword">fi</span></span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>Linux</category>
-        <category>Mysql</category>
-      </categories>
-      <tags>
-        <tag>监控</tag>
-        <tag>Mysql</tag>
-        <tag>shell</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>编译安装Postgresql13.7</title>
-    <url>/2024/01/20/%E7%BC%96%E8%AF%91%E5%AE%89%E8%A3%85postgresql13.7/</url>
-    <content><![CDATA[<h1 id="编译安装Postgresql13-7"><a href="#编译安装Postgresql13-7" class="headerlink" title="编译安装Postgresql13.7"></a>编译安装Postgresql13.7</h1><h3 id="创建postgres用户及安装目录"><a href="#创建postgres用户及安装目录" class="headerlink" title="创建postgres用户及安装目录"></a>创建postgres用户及安装目录</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># useradd postgres</span></span><br><span class="line"><span class="comment"># mkdir -p /apps/postgresql</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="安装PostgreSQL依赖包"><a href="#安装PostgreSQL依赖包" class="headerlink" title="安装PostgreSQL依赖包"></a>安装PostgreSQL依赖包</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">yum install perl-ExtUtils-Embed -y</span><br><span class="line">yum install readline-devel -y</span><br><span class="line">yum install python-devel -y</span><br><span class="line">yum install python3 -y</span><br><span class="line">yum install python3-devel -y&amp;nbsp;</span><br><span class="line">yum install gcc-c++ -y</span><br><span class="line">yum install cmake -y</span><br><span class="line">yum install libarchive -y</span><br><span class="line">yum install openssl-devel -y</span><br></pre></td></tr></table></figure>
-
-<h3 id="部署PostgreSQL"><a href="#部署PostgreSQL" class="headerlink" title="部署PostgreSQL"></a>部署PostgreSQL</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">##下载安装包</span></span><br><span class="line">wget https://ftp.postgresql.org/pub/source/v13.7/postgresql-13.7.tar.gz  </span><br><span class="line">tar -zxvf postgresql-13.7.tar.gz  <span class="comment">##解压安装包</span></span><br><span class="line"><span class="built_in">cd</span> postgresql-13.7/</span><br><span class="line">./configure --prefix=/apps/postgresql --with-python --with-perl --with-openssl</span><br><span class="line">make &amp;&amp; make install</span><br><span class="line"></span><br><span class="line"><span class="comment">##查看已经安装成功</span></span><br><span class="line">[root@rocky1 postgresql-13.7]<span class="comment"># /apps/postgresql/bin/pg_ctl --version</span></span><br><span class="line">pg_ctl (PostgreSQL) 13.7</span><br></pre></td></tr></table></figure>
-
-<h3 id="配置环境变量"><a href="#配置环境变量" class="headerlink" title="配置环境变量"></a>配置环境变量</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">mkdir</span> -p /apps/postgresql/pgdata <span class="comment">##创建数据库的数据目录</span></span><br><span class="line"><span class="built_in">cat</span> &gt;&gt; /etc/profile &lt;&lt; <span class="string">EOF</span></span><br><span class="line"><span class="string">### postgres ###</span></span><br><span class="line"><span class="string">export PATH=/apps/postgresql/bin:$PATH</span></span><br><span class="line"><span class="string">export LD_LIBRARY_PATH=/apps/postgresql/lib</span></span><br><span class="line"><span class="string">export PGDATA=/apps/postgresql/pgdata</span></span><br><span class="line"><span class="string">EOF</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">source</span> /etc/profile</span><br><span class="line"></span><br><span class="line">pg_ctl --version  <span class="comment">##环境变量配置成功</span></span><br></pre></td></tr></table></figure>
-
-<p>给用户目录赋权并创建数据库簇</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">chown</span> -R postgres.postgres /apps/postgresql  <span class="comment">##修改postgresql所属组和所属用户</span></span><br><span class="line">su - postgres</span><br><span class="line">initdb  <span class="comment">##初始化数据库</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="后续配置"><a href="#后续配置" class="headerlink" title="后续配置"></a>后续配置</h3><h4 id="自定义开放访问的IP-修改data目录下的pg-hba-conf文件"><a href="#自定义开放访问的IP-修改data目录下的pg-hba-conf文件" class="headerlink" title="自定义开放访问的IP ,修改data目录下的pg_hba.conf文件"></a>自定义开放访问的IP ,修改data目录下的pg_hba.conf文件</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span> /apps/postgresql/pgdata</span><br><span class="line">[root@rocky1 pgdata]<span class="comment"># vim pg_hba.conf</span></span><br><span class="line"><span class="comment"># IPv4 out connections:</span></span><br><span class="line">host    all             all             0.0.0.0/0                md5</span><br></pre></td></tr></table></figure>
-
-<h4 id="添加主机ip和主机名"><a href="#添加主机ip和主机名" class="headerlink" title="添加主机ip和主机名"></a>添加主机ip和主机名</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@rocky1 pgdata]<span class="comment"># vim postgresql.conf</span></span><br><span class="line">listen_addresses = <span class="string">&#x27;*&#x27;</span>          <span class="comment"># what IP address(es) to listen on;</span></span><br><span class="line">port = 5432 </span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>切换到root用户，并到postgresql源码包的解压目录下(&#x2F;root&#x2F;postgresql-13.7&#x2F;)</li>
-</ul>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">mkdir</span> -p /apps/postgresql/log</span><br><span class="line"><span class="built_in">cd</span> /apps/postgresql/log</span><br><span class="line"><span class="built_in">touch</span> server.log</span><br><span class="line"><span class="built_in">chown</span> -R postgres.postgres <span class="built_in">log</span></span><br><span class="line"><span class="comment">#在/root/postgresql-13.7/contrib/start-scripts里面</span></span><br><span class="line"><span class="string">&#x27;&#x27;</span><span class="string">&#x27;</span></span><br><span class="line"><span class="string">将 PostgreSQL 的启动脚本从源码包的 contrib/start-scripts/linux 目录复制到 /etc/init.d 目录中。这个脚本是用于启动、停止和管理 PostgreSQL 服务器的脚本。</span></span><br><span class="line"><span class="string">&#x27;</span><span class="string">&#x27;&#x27;</span></span><br><span class="line">[root@rocky1 start-scripts]<span class="comment"># cp linux /etc/init.d/postgresql</span></span><br><span class="line">vim /etc/init.d/postgresql</span><br><span class="line">prefix=/apps/postgresql</span><br><span class="line">PGDATA=<span class="string">&quot;/apps/postgresql/pgdata&quot;</span></span><br><span class="line">PGLOG=<span class="string">&quot;/apps/postgresql/log/server.log&quot;</span></span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>赋予该文件执行权限</li>
-</ul>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">chmod</span> +x /etc/init.d/postgresql</span><br><span class="line"><span class="comment">#设置服务开机自启</span></span><br><span class="line">chkconfig --add postgresql</span><br><span class="line"></span><br><span class="line"><span class="built_in">mkdir</span> -p /home/postgres</span><br><span class="line"><span class="built_in">chown</span> -R postgres.postgres /home/postgres</span><br><span class="line"></span><br><span class="line"><span class="comment">#启动数据库</span></span><br><span class="line">service postgresql restart</span><br></pre></td></tr></table></figure>
-
-<h3 id="源码安装timesacledb"><a href="#源码安装timesacledb" class="headerlink" title="源码安装timesacledb"></a>源码安装timesacledb</h3><h5 id="cmake需要3-0以上版本"><a href="#cmake需要3-0以上版本" class="headerlink" title="cmake需要3.0以上版本"></a>cmake需要3.0以上版本</h5><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">wget&amp;nbsp;https://github.com/Kitware/CMake/releases/download/v3.27.4/cmake-3.27.4.tar.gz</span><br><span class="line"></span><br><span class="line">tar zxvf cmake-3.27.4.tar.gz</span><br><span class="line"><span class="built_in">cd</span> cmake-3.27.4</span><br><span class="line">./bootstrap --prefix=/usr/local</span><br><span class="line">make &amp;&amp; make install</span><br><span class="line">vi ~/.bash_profile</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>下载源码，或者直接下载包，传上去</li>
-</ul>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">wget https://github.com/timescale/timescaledb/archive/refs/tags/2.11.2.tar.gz</span><br><span class="line">tar zxvf timescaledb-2.11.1.tar.gz</span><br><span class="line"><span class="built_in">cd</span> timescaledb-2.11.1</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>安装和编译</li>
-</ul>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">./bootstrap <span class="comment">#如果有需要openssl就安装重新构建pgsql</span></span><br><span class="line"><span class="built_in">cd</span> ./build &amp;&amp; make</span><br><span class="line">make install</span><br><span class="line"></span><br><span class="line"><span class="comment">#加在最后一行</span></span><br><span class="line"><span class="built_in">cd</span> /apps/postgresql/pgdata</span><br><span class="line">[root@rocky1 pgdata]<span class="comment"># vim postgresql.conf</span></span><br><span class="line">shared_preload_libraries = <span class="string">&#x27;timescaledb&#x27;</span></span><br><span class="line"></span><br><span class="line">service postgresql restart</span><br><span class="line"></span><br><span class="line">CREATE DATABASE example;</span><br><span class="line">\c example</span><br><span class="line">CREATE EXTENSION IF NOT EXISTS timescaledb;</span><br><span class="line">SELECT * FROM pg_extension WHERE extname=<span class="string">&#x27;timescaledb&#x27;</span>;</span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>Linux</category>
-        <category>Postgresql</category>
-      </categories>
-      <tags>
-        <tag>Linux</tag>
-        <tag>Postgresql</tag>
       </tags>
   </entry>
 </search>
