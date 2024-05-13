@@ -653,11 +653,29 @@ code.hljs {
   padding: 2px 6px;
   position: absolute;
   transition: opacity 0.2s ease-in-out;
-  background: #fff;
-  border: 0;
-  font-size: 0.8125em;
+  color: var(--highlight-foreground);
+  font-size: 14px;
   right: 0;
-  top: 0;
+  top: 2px;
+}
+figure.highlight {
+  border-radius: 5px;
+  box-shadow: 0 10px 30px 0 rgba(0,0,0,0.4);
+  padding-top: 30px;
+}
+figure.highlight .table-container {
+  border-radius: 0 0 5px 5px;
+}
+figure.highlight::before {
+  background: #fc625d;
+  box-shadow: 20px 0 #fdbc40, 40px 0 #35cd4b;
+  left: 12px;
+  margin-top: -20px;
+  position: absolute;
+  border-radius: 50%;
+  content: ' ';
+  height: 12px;
+  width: 12px;
 }
 code,
 kbd,
@@ -964,6 +982,15 @@ pre code {
 .post-body .note :last-child {
   margin-bottom: 0;
 }
+.post-body .note:not(.no-icon) {
+  padding-left: 2.5em;
+}
+.post-body .note:not(.no-icon)::before {
+  font-size: 1.5em;
+  left: 0.3em;
+  position: absolute;
+  top: calc(50% - 1em);
+}
 .post-body .note.default {
   background: #f3f3f3;
   border-color: #e1e1e1;
@@ -976,6 +1003,11 @@ pre code {
 .post-body .note.default a:not(.btn):hover {
   border-bottom-color: #454545;
   color: #454545;
+}
+.post-body .note.default:not(.no-icon)::before {
+  content: '\f0a9';
+  font-family: 'Font Awesome 6 Free';
+  font-weight: 900;
 }
 .post-body .note.primary {
   background: #f3daff;
@@ -990,6 +1022,11 @@ pre code {
   border-bottom-color: #453298;
   color: #453298;
 }
+.post-body .note.primary:not(.no-icon)::before {
+  content: '\f055';
+  font-family: 'Font Awesome 6 Free';
+  font-weight: 900;
+}
 .post-body .note.info {
   background: #d9edf7;
   border-color: #b3e5ef;
@@ -1002,6 +1039,11 @@ pre code {
 .post-body .note.info a:not(.btn):hover {
   border-bottom-color: #215761;
   color: #215761;
+}
+.post-body .note.info:not(.no-icon)::before {
+  content: '\f05a';
+  font-family: 'Font Awesome 6 Free';
+  font-weight: 900;
 }
 .post-body .note.success {
   background: #dff0d8;
@@ -1016,6 +1058,11 @@ pre code {
   border-bottom-color: #32562c;
   color: #32562c;
 }
+.post-body .note.success:not(.no-icon)::before {
+  content: '\f058';
+  font-family: 'Font Awesome 6 Free';
+  font-weight: 900;
+}
 .post-body .note.warning {
   background: #fcf4e3;
   border-color: #fae4cd;
@@ -1029,6 +1076,11 @@ pre code {
   border-bottom-color: #714f30;
   color: #714f30;
 }
+.post-body .note.warning:not(.no-icon)::before {
+  content: '\f06a';
+  font-family: 'Font Awesome 6 Free';
+  font-weight: 900;
+}
 .post-body .note.danger {
   background: #f2dfdf;
   border-color: #ebcdd2;
@@ -1041,6 +1093,11 @@ pre code {
 .post-body .note.danger a:not(.btn):hover {
   border-bottom-color: #84333f;
   color: #84333f;
+}
+.post-body .note.danger:not(.no-icon)::before {
+  content: '\f056';
+  font-family: 'Font Awesome 6 Free';
+  font-weight: 900;
 }
 .post-body .tabs {
   margin-bottom: 20px;
@@ -1457,7 +1514,7 @@ pre code {
     transition: all 0.2s ease-in-out;
   }
   .links-of-author a::before {
-    background: #911b0a;
+    background: #ffe452;
     display: inline-block;
     margin-right: 3px;
     transform: translateY(-2px);
