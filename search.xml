@@ -1,28 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>Clash配置负载</title>
-    <url>/2024/01/16/clash%E9%85%8D%E7%BD%AE%E8%B4%9F%E8%BD%BD/</url>
-    <content><![CDATA[<h1 id="Clash配置负载"><a href="#Clash配置负载" class="headerlink" title="Clash配置负载"></a>Clash配置负载</h1><h2 id="实现负载，下载拉满带宽"><a href="#实现负载，下载拉满带宽" class="headerlink" title="实现负载，下载拉满带宽"></a>实现负载，下载拉满带宽</h2><ul>
-<li>找到settings—–&gt;Profiles——-&gt;Parsers——&gt;Edit，然后添加下面代码</li>
-</ul>
-<p><img data-src="https://img-130165.oss-cn-shanghai.aliyuncs.com/img/clash.png"></p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">parsers:</span><br><span class="line">  - reg: &#x27;slbable$&#x27;</span><br><span class="line">    yaml:</span><br><span class="line">      append-proxy-groups:</span><br><span class="line">        - name:  负载均衡-散列</span><br><span class="line">          type: load-balance</span><br><span class="line">          url: &#x27;http://www.google.com/generate_204&#x27;</span><br><span class="line">          interval: 300</span><br><span class="line">          strategy: consistent-hashing</span><br><span class="line">        - name:  负载均衡-轮询</span><br><span class="line">          type: load-balance</span><br><span class="line">          url: &#x27;http://www.google.com/generate_204&#x27;</span><br><span class="line">          interval: 300</span><br><span class="line">          strategy: round-robin</span><br><span class="line">      commands:</span><br><span class="line">        - proxy-groups. 负载均衡-散列.proxies=[]proxyNames</span><br><span class="line">        - proxy-groups.0.proxies.0+ 负载均衡-散列</span><br><span class="line">        - proxy-groups. 负载均衡-轮询.proxies=[]proxyNames</span><br><span class="line">        - proxy-groups.0.proxies.0+ 负载均衡-轮询</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>然后在订阅链接后面添加触发条件，点击更新</li>
-<li>会出现一个轮询，一个散列，下载建议用轮询，正常用就用散列</li>
-</ul>
-]]></content>
-      <categories>
-        <category>教程</category>
-      </categories>
-      <tags>
-        <tag>Clash</tag>
-        <tag>小教程</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>CentOS 7升级内核方案</title>
     <url>/2024/01/23/centos-7%E5%8D%87%E7%BA%A7%E5%86%85%E6%A0%B8%E6%96%B9%E6%A1%88/</url>
     <content><![CDATA[<h2 id="CentOS7升级内核方案"><a href="#CentOS7升级内核方案" class="headerlink" title="CentOS7升级内核方案"></a>CentOS7升级内核方案</h2><p>CentOS 7自带的内核版本还停留在<code>3.x</code>，如果某些软件对Linux内核版本有要求，就不得不升级内核来支持。</p>
@@ -135,6 +113,79 @@
       <tags>
         <tag>磁盘读写</tag>
         <tag>iops</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>LVM服务器根目录扩容</title>
+    <url>/2024/01/18/lvm%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%A0%B9%E7%9B%AE%E5%BD%95%E6%89%A9%E5%AE%B9/</url>
+    <content><![CDATA[<h1 id="LVM服务器根目录扩容"><a href="#LVM服务器根目录扩容" class="headerlink" title="LVM服务器根目录扩容"></a>LVM服务器根目录扩容</h1><h2 id="新增加一块硬盘的情况"><a href="#新增加一块硬盘的情况" class="headerlink" title="新增加一块硬盘的情况"></a>新增加一块硬盘的情况</h2><h3 id="1-给根分区扩展容量"><a href="#1-给根分区扩展容量" class="headerlink" title="1.给根分区扩展容量"></a>1.给根分区扩展容量</h3><ul>
+<li>使用<code>fdisk-l</code> 查看磁盘分区路径<br>先在虚拟机里增加一块磁盘</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@localhost ~]<span class="comment"># fdisk -l</span></span><br><span class="line"></span><br><span class="line">磁盘 /dev/sda：21.5 GB, 21474836480 字节，41943040 个扇区</span><br><span class="line">Units = 扇区 of 1 * 512 = 512 bytes</span><br><span class="line">扇区大小(逻辑/物理)：512 字节 / 512 字节</span><br><span class="line">I/O 大小(最小/最佳)：512 字节 / 512 字节</span><br><span class="line">磁盘标签类型：dos</span><br><span class="line">磁盘标识符：0x000a0ffa</span><br><span class="line"></span><br><span class="line">   设备 Boot      Start         End      Blocks   Id  System</span><br><span class="line">/dev/sda1   *        2048     2099199     1048576   83  Linux</span><br><span class="line">/dev/sda2         2099200    41943039    19921920   8e  Linux LVM</span><br><span class="line"></span><br><span class="line"><span class="comment">#这一个是新加的</span></span><br><span class="line">磁盘 /dev/sdb：21.5 GB, 21474836480 字节，41943040 个扇区</span><br><span class="line">Units = 扇区 of 1 * 512 = 512 bytes</span><br><span class="line">扇区大小(逻辑/物理)：512 字节 / 512 字节</span><br><span class="line">I/O 大小(最小/最佳)：512 字节 / 512 字节</span><br><span class="line"></span><br><span class="line"><span class="comment">#这个是原来的/目录</span></span><br><span class="line">磁盘 /dev/mapper/centos-root：18.2 GB, 18249416704 字节，35643392 个扇区</span><br><span class="line">Units = 扇区 of 1 * 512 = 512 bytes</span><br><span class="line">扇区大小(逻辑/物理)：512 字节 / 512 字节</span><br><span class="line">I/O 大小(最小/最佳)：512 字节 / 512 字节</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">磁盘 /dev/mapper/centos-swap：2147 MB, 2147483648 字节，4194304 个扇区</span><br><span class="line">Units = 扇区 of 1 * 512 = 512 bytes</span><br><span class="line">扇区大小(逻辑/物理)：512 字节 / 512 字节</span><br><span class="line">I/O 大小(最小/最佳)：512 字节 / 512 字节</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-使用fdisk-dev-sdb-给新增硬盘进行分区"><a href="#2-使用fdisk-dev-sdb-给新增硬盘进行分区" class="headerlink" title="2.使用fdisk &#x2F;dev&#x2F;sdb 给新增硬盘进行分区"></a>2.使用fdisk &#x2F;dev&#x2F;sdb 给新增硬盘进行分区</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@localhost ~]<span class="comment"># fdisk /dev/sdb</span></span><br><span class="line">欢迎使用 fdisk (util-linux 2.23.2)。</span><br><span class="line"></span><br><span class="line">更改将停留在内存中，直到您决定将更改写入磁盘。</span><br><span class="line">使用写入命令前请三思。</span><br><span class="line"></span><br><span class="line">Device does not contain a recognized partition table</span><br><span class="line">使用磁盘标识符 0x5371ec78 创建新的 DOS 磁盘标签。</span><br><span class="line"></span><br><span class="line">命令(输入 m 获取帮助)：n</span><br><span class="line">Partition <span class="built_in">type</span>:</span><br><span class="line">   p   primary (0 primary, 0 extended, 4 free)</span><br><span class="line">   e   extended</span><br><span class="line">Select (default p): p</span><br><span class="line">分区号 (1-4，默认 1)：</span><br><span class="line">起始 扇区 (2048-41943039，默认为 2048)：</span><br><span class="line">将使用默认值 2048</span><br><span class="line">Last 扇区, +扇区 or +size&#123;K,M,G&#125; (2048-41943039，默认为 41943039)：</span><br><span class="line">将使用默认值 41943039</span><br><span class="line">分区 1 已设置为 Linux 类型，大小设为 20 GiB</span><br><span class="line"></span><br><span class="line">命令(输入 m 获取帮助)：p</span><br><span class="line"></span><br><span class="line">磁盘 /dev/sdb：21.5 GB, 21474836480 字节，41943040 个扇区</span><br><span class="line">Units = 扇区 of 1 * 512 = 512 bytes</span><br><span class="line">扇区大小(逻辑/物理)：512 字节 / 512 字节</span><br><span class="line">I/O 大小(最小/最佳)：512 字节 / 512 字节</span><br><span class="line">磁盘标签类型：dos</span><br><span class="line">磁盘标识符：0x5371ec78</span><br><span class="line"></span><br><span class="line">   设备 Boot      Start         End      Blocks   Id  System</span><br><span class="line">/dev/sdb1            2048    41943039    20970496   83  Linux</span><br><span class="line"></span><br><span class="line">命令(输入 m 获取帮助)：w</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-确定新增成功"><a href="#3-确定新增成功" class="headerlink" title="3.确定新增成功"></a>3.确定新增成功</h3><p><code>fdisk -l</code> 确定&#x2F;dev&#x2F;sdb&#x2F;新增分区成功 新分区为&#x2F;dev&#x2F;sdb1</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@localhost ~]<span class="comment"># fdisk -l</span></span><br><span class="line"></span><br><span class="line">磁盘 /dev/sda：21.5 GB, 21474836480 字节，41943040 个扇区</span><br><span class="line">Units = 扇区 of 1 * 512 = 512 bytes</span><br><span class="line">扇区大小(逻辑/物理)：512 字节 / 512 字节</span><br><span class="line">I/O 大小(最小/最佳)：512 字节 / 512 字节</span><br><span class="line">磁盘标签类型：dos</span><br><span class="line">磁盘标识符：0x000a0ffa</span><br><span class="line"></span><br><span class="line">   设备 Boot      Start         End      Blocks   Id  System</span><br><span class="line">/dev/sda1   *        2048     2099199     1048576   83  Linux</span><br><span class="line">/dev/sda2         2099200    41943039    19921920   8e  Linux LVM</span><br><span class="line"></span><br><span class="line">磁盘 /dev/sdb：21.5 GB, 21474836480 字节，41943040 个扇区</span><br><span class="line">Units = 扇区 of 1 * 512 = 512 bytes</span><br><span class="line">扇区大小(逻辑/物理)：512 字节 / 512 字节</span><br><span class="line">I/O 大小(最小/最佳)：512 字节 / 512 字节</span><br><span class="line">磁盘标签类型：dos</span><br><span class="line">磁盘标识符：0x5371ec78</span><br><span class="line"></span><br><span class="line">   设备 Boot      Start         End      Blocks   Id  System</span><br><span class="line">/dev/sdb1            2048    41943039    20970496   83  Linux</span><br><span class="line"></span><br><span class="line">磁盘 /dev/mapper/centos-root：18.2 GB, 18249416704 字节，35643392 个扇区</span><br><span class="line">Units = 扇区 of 1 * 512 = 512 bytes</span><br><span class="line">扇区大小(逻辑/物理)：512 字节 / 512 字节</span><br><span class="line">I/O 大小(最小/最佳)：512 字节 / 512 字节</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-使用LVM-给根分区扩展空间"><a href="#4-使用LVM-给根分区扩展空间" class="headerlink" title="4.使用LVM 给根分区扩展空间"></a>4.使用LVM 给根分区扩展空间</h3><ul>
+<li>使用vgdisplay 命令查看VG 组名</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@localhost ~]<span class="comment"># vgdisplay</span></span><br><span class="line">  --- Volume group ---</span><br><span class="line">  VG Name               centos</span><br></pre></td></tr></table></figure>
+
+<h3 id="5-使用vgextend-命令把新增磁盘追加到centos-VG组"><a href="#5-使用vgextend-命令把新增磁盘追加到centos-VG组" class="headerlink" title="5.使用vgextend 命令把新增磁盘追加到centos VG组"></a>5.使用vgextend 命令把新增磁盘追加到centos VG组</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@localhost ~]<span class="comment"># vgextend centos /dev/sdb1</span></span><br><span class="line">  Physical volume <span class="string">&quot;/dev/sdb1&quot;</span> successfully created.</span><br><span class="line">  Volume group <span class="string">&quot;centos&quot;</span> successfully extended</span><br></pre></td></tr></table></figure>
+
+<h3 id="6-添加完成之后使用vgdisplay-查看是否扩容成功"><a href="#6-添加完成之后使用vgdisplay-查看是否扩容成功" class="headerlink" title="6.添加完成之后使用vgdisplay 查看是否扩容成功"></a>6.添加完成之后使用vgdisplay 查看是否扩容成功</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@localhost ~]<span class="comment"># vgdisplay</span></span><br><span class="line">  --- Volume group ---</span><br><span class="line">  VG Name               centos</span><br><span class="line">  System ID</span><br><span class="line">  Format                lvm2</span><br><span class="line">  Metadata Areas        2</span><br><span class="line">  Metadata Sequence No  4</span><br><span class="line">  VG Access             <span class="built_in">read</span>/write</span><br><span class="line">  VG Status             resizable</span><br><span class="line">  MAX LV                0</span><br><span class="line">  Cur LV                2</span><br><span class="line">  Open LV               2</span><br><span class="line">  Max PV                0</span><br><span class="line">  Cur PV                2</span><br><span class="line">  Act PV                2</span><br><span class="line">  VG Size               38.99 GiB</span><br><span class="line">  PE Size               4.00 MiB</span><br><span class="line">  Total PE              9982</span><br><span class="line">  Alloc PE / Size       4863 / &lt;19.00 GiB</span><br><span class="line">  Free  PE / Size       5119 / &lt;20.00 GiB   <span class="comment">#看这个</span></span><br><span class="line">  VG UUID               uIB4kO-ywhz-ee5U-DzS7-Kja6-sPvZ-rbi3Bl</span><br></pre></td></tr></table></figure>
+
+<h3 id="7-使用lvdisplay确定根分区路径"><a href="#7-使用lvdisplay确定根分区路径" class="headerlink" title="7.使用lvdisplay确定根分区路径"></a>7.使用lvdisplay确定根分区路径</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@localhost ~]<span class="comment"># lvdisplay</span></span><br><span class="line">  --- Logical volume ---</span><br><span class="line">  LV Path                /dev/centos/root  <span class="comment">#这里</span></span><br><span class="line">  LV Name                root</span><br><span class="line">  VG Name                centos</span><br><span class="line">  LV UUID                VrUURF-GOCQ-TvkL-Yd4O-OYJk-ZMBo-gqMEaI</span><br><span class="line">  LV Write Access        <span class="built_in">read</span>/write</span><br><span class="line">  LV Creation host, time localhost, 2023-09-14 13:18:10 +0800</span><br><span class="line">  LV Status              available</span><br><span class="line">  <span class="comment"># open                 1</span></span><br><span class="line">  LV Size                &lt;17.00 GiB</span><br><span class="line">  Current LE             4351</span><br><span class="line">  Segments               1</span><br><span class="line">  Allocation             inherit</span><br><span class="line">  Read ahead sectors     auto</span><br><span class="line">  - currently <span class="built_in">set</span> to     8192</span><br><span class="line">  Block device           253:0</span><br></pre></td></tr></table></figure>
+
+<h3 id="8-使用lvresize-给根分区扩展空间"><a href="#8-使用lvresize-给根分区扩展空间" class="headerlink" title="8.使用lvresize 给根分区扩展空间"></a>8.使用lvresize 给根分区扩展空间</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@localhost ~]<span class="comment"># lvresize  -L +20G  /dev/centos/root</span></span><br><span class="line"><span class="comment">#分区增加必须得加-L +20G,如果不写+号会改变原磁盘空间</span></span><br><span class="line">  Size of logical volume centos/root changed from &lt;17.00 GiB (4351 extents) to &lt;36.00 GiB (9215 extents).</span><br><span class="line">  Logical volume centos/root successfully resized.</span><br></pre></td></tr></table></figure>
+
+<h3 id="9-根分区磁盘增加成功之后使用xfs-growfs-dev-centos-root-格式化磁盘空间"><a href="#9-根分区磁盘增加成功之后使用xfs-growfs-dev-centos-root-格式化磁盘空间" class="headerlink" title="9.根分区磁盘增加成功之后使用xfs_growfs &#x2F;dev&#x2F;centos&#x2F;root 格式化磁盘空间"></a>9.根分区磁盘增加成功之后使用xfs_growfs &#x2F;dev&#x2F;centos&#x2F;root 格式化磁盘空间</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@localhost ~]<span class="comment"># xfs_growfs /dev/centos/root</span></span><br><span class="line">meta-data=/dev/mapper/centos-root isize=512    agcount=4, agsize=1113856 blks</span><br><span class="line">         =                       sectsz=512   attr=2, projid32bit=1</span><br><span class="line">         =                       crc=1        finobt=0 spinodes=0</span><br><span class="line">data     =                       bsize=4096   blocks=4455424, imaxpct=25</span><br><span class="line">         =                       sunit=0      swidth=0 blks</span><br><span class="line">naming   =version 2              bsize=4096   ascii-ci=0 ftype=1</span><br><span class="line"><span class="built_in">log</span>      =internal               bsize=4096   blocks=2560, version=2</span><br><span class="line">         =                       sectsz=512   sunit=0 blks, lazy-count=1</span><br><span class="line">realtime =bash                   extsz=4096   blocks=0, rtextents=0</span><br><span class="line">data blocks changed from 4455424 to 9436160</span><br></pre></td></tr></table></figure>
+
+<h3 id="10-确认一下"><a href="#10-确认一下" class="headerlink" title="10.确认一下"></a>10.确认一下</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@localhost ~]<span class="comment"># df -h</span></span><br><span class="line">文件系统                 容量  已用  可用 已用% 挂载点</span><br><span class="line">devtmpfs                 898M     0  898M    0% /dev</span><br><span class="line">tmpfs                    910M     0  910M    0% /dev/shm</span><br><span class="line">tmpfs                    910M  9.6M  901M    2% /run</span><br><span class="line">tmpfs                    910M     0  910M    0% /sys/fs/cgroup</span><br><span class="line">/dev/mapper/centos-root   36G  1.3G   35G    4% /  <span class="comment">#增加了</span></span><br><span class="line">/dev/sda1               1014M  151M  864M   15% /boot</span><br><span class="line">tmpfs                    182M     0  182M    0% /run/user/0</span><br></pre></td></tr></table></figure>
+<h2 id="在原有空间上修改磁盘大小的情况"><a href="#在原有空间上修改磁盘大小的情况" class="headerlink" title="在原有空间上修改磁盘大小的情况"></a>在原有空间上修改磁盘大小的情况</h2><p><img data-src="https://img-130165.oss-cn-shanghai.aliyuncs.com/img/xunihua.png"></p>
+<ul>
+<li>比如从50G,直接修改成100G，新增加的磁盘是不识别的</li>
+</ul>
+<h3 id="1-新建分区"><a href="#1-新建分区" class="headerlink" title="1.新建分区"></a>1.新建分区</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">fdisk /dev/sda</span><br><span class="line">n</span><br><span class="line">p</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">w</span><br><span class="line"><span class="comment">#使用lvm方式的话，是下面的操作，上面是基于传统的分区</span></span><br><span class="line">fdisk /dev/sda</span><br><span class="line">n</span><br><span class="line">p</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">t</span><br><span class="line"></span><br><span class="line">L</span><br><span class="line">8e</span><br><span class="line">w</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-对新增的磁盘处理"><a href="#2-对新增的磁盘处理" class="headerlink" title="2.对新增的磁盘处理"></a>2.对新增的磁盘处理</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">partprobe <span class="comment">#识别新增分区</span></span><br><span class="line"></span><br><span class="line">pvcreate /dev/sda3  <span class="comment">#使用 pvcreate 创建物理卷</span></span><br><span class="line"></span><br><span class="line">pvdisplay <span class="comment">#显示物理卷的属性 查看卷组信息</span></span><br><span class="line"></span><br><span class="line">vgextend centos /dev/sda3  <span class="comment">#使用vgextend命令动态扩展</span></span><br><span class="line"></span><br><span class="line">lvresize -L +100%FREE /dev/mapper/centos-root  <span class="comment">#扩招到/目录</span></span><br><span class="line"></span><br><span class="line">xfs_growfs /dev/mapper/centos-root <span class="comment">#重新识别/分区</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">df</span> -h</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+]]></content>
+      <categories>
+        <category>Linux</category>
+        <category>运维</category>
+      </categories>
+      <tags>
+        <tag>Linux</tag>
+        <tag>LVM</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Clash配置负载</title>
+    <url>/2024/01/16/clash%E9%85%8D%E7%BD%AE%E8%B4%9F%E8%BD%BD/</url>
+    <content><![CDATA[<h1 id="Clash配置负载"><a href="#Clash配置负载" class="headerlink" title="Clash配置负载"></a>Clash配置负载</h1><h2 id="实现负载，下载拉满带宽"><a href="#实现负载，下载拉满带宽" class="headerlink" title="实现负载，下载拉满带宽"></a>实现负载，下载拉满带宽</h2><ul>
+<li>找到settings—–&gt;Profiles——-&gt;Parsers——&gt;Edit，然后添加下面代码</li>
+</ul>
+<p><img data-src="https://img-130165.oss-cn-shanghai.aliyuncs.com/img/clash.png"></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">parsers:</span><br><span class="line">  - reg: &#x27;slbable$&#x27;</span><br><span class="line">    yaml:</span><br><span class="line">      append-proxy-groups:</span><br><span class="line">        - name:  负载均衡-散列</span><br><span class="line">          type: load-balance</span><br><span class="line">          url: &#x27;http://www.google.com/generate_204&#x27;</span><br><span class="line">          interval: 300</span><br><span class="line">          strategy: consistent-hashing</span><br><span class="line">        - name:  负载均衡-轮询</span><br><span class="line">          type: load-balance</span><br><span class="line">          url: &#x27;http://www.google.com/generate_204&#x27;</span><br><span class="line">          interval: 300</span><br><span class="line">          strategy: round-robin</span><br><span class="line">      commands:</span><br><span class="line">        - proxy-groups. 负载均衡-散列.proxies=[]proxyNames</span><br><span class="line">        - proxy-groups.0.proxies.0+ 负载均衡-散列</span><br><span class="line">        - proxy-groups. 负载均衡-轮询.proxies=[]proxyNames</span><br><span class="line">        - proxy-groups.0.proxies.0+ 负载均衡-轮询</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>然后在订阅链接后面添加触发条件，点击更新</li>
+<li>会出现一个轮询，一个散列，下载建议用轮询，正常用就用散列</li>
+</ul>
+]]></content>
+      <categories>
+        <category>教程</category>
+      </categories>
+      <tags>
+        <tag>Clash</tag>
+        <tag>小教程</tag>
       </tags>
   </entry>
   <entry>
@@ -283,57 +334,6 @@
       </tags>
   </entry>
   <entry>
-    <title>LVM服务器根目录扩容</title>
-    <url>/2024/01/18/lvm%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%A0%B9%E7%9B%AE%E5%BD%95%E6%89%A9%E5%AE%B9/</url>
-    <content><![CDATA[<h1 id="LVM服务器根目录扩容"><a href="#LVM服务器根目录扩容" class="headerlink" title="LVM服务器根目录扩容"></a>LVM服务器根目录扩容</h1><h2 id="新增加一块硬盘的情况"><a href="#新增加一块硬盘的情况" class="headerlink" title="新增加一块硬盘的情况"></a>新增加一块硬盘的情况</h2><h3 id="1-给根分区扩展容量"><a href="#1-给根分区扩展容量" class="headerlink" title="1.给根分区扩展容量"></a>1.给根分区扩展容量</h3><ul>
-<li>使用<code>fdisk-l</code> 查看磁盘分区路径<br>先在虚拟机里增加一块磁盘</li>
-</ul>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@localhost ~]<span class="comment"># fdisk -l</span></span><br><span class="line"></span><br><span class="line">磁盘 /dev/sda：21.5 GB, 21474836480 字节，41943040 个扇区</span><br><span class="line">Units = 扇区 of 1 * 512 = 512 bytes</span><br><span class="line">扇区大小(逻辑/物理)：512 字节 / 512 字节</span><br><span class="line">I/O 大小(最小/最佳)：512 字节 / 512 字节</span><br><span class="line">磁盘标签类型：dos</span><br><span class="line">磁盘标识符：0x000a0ffa</span><br><span class="line"></span><br><span class="line">   设备 Boot      Start         End      Blocks   Id  System</span><br><span class="line">/dev/sda1   *        2048     2099199     1048576   83  Linux</span><br><span class="line">/dev/sda2         2099200    41943039    19921920   8e  Linux LVM</span><br><span class="line"></span><br><span class="line"><span class="comment">#这一个是新加的</span></span><br><span class="line">磁盘 /dev/sdb：21.5 GB, 21474836480 字节，41943040 个扇区</span><br><span class="line">Units = 扇区 of 1 * 512 = 512 bytes</span><br><span class="line">扇区大小(逻辑/物理)：512 字节 / 512 字节</span><br><span class="line">I/O 大小(最小/最佳)：512 字节 / 512 字节</span><br><span class="line"></span><br><span class="line"><span class="comment">#这个是原来的/目录</span></span><br><span class="line">磁盘 /dev/mapper/centos-root：18.2 GB, 18249416704 字节，35643392 个扇区</span><br><span class="line">Units = 扇区 of 1 * 512 = 512 bytes</span><br><span class="line">扇区大小(逻辑/物理)：512 字节 / 512 字节</span><br><span class="line">I/O 大小(最小/最佳)：512 字节 / 512 字节</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">磁盘 /dev/mapper/centos-swap：2147 MB, 2147483648 字节，4194304 个扇区</span><br><span class="line">Units = 扇区 of 1 * 512 = 512 bytes</span><br><span class="line">扇区大小(逻辑/物理)：512 字节 / 512 字节</span><br><span class="line">I/O 大小(最小/最佳)：512 字节 / 512 字节</span><br></pre></td></tr></table></figure>
-
-<h3 id="2-使用fdisk-dev-sdb-给新增硬盘进行分区"><a href="#2-使用fdisk-dev-sdb-给新增硬盘进行分区" class="headerlink" title="2.使用fdisk &#x2F;dev&#x2F;sdb 给新增硬盘进行分区"></a>2.使用fdisk &#x2F;dev&#x2F;sdb 给新增硬盘进行分区</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@localhost ~]<span class="comment"># fdisk /dev/sdb</span></span><br><span class="line">欢迎使用 fdisk (util-linux 2.23.2)。</span><br><span class="line"></span><br><span class="line">更改将停留在内存中，直到您决定将更改写入磁盘。</span><br><span class="line">使用写入命令前请三思。</span><br><span class="line"></span><br><span class="line">Device does not contain a recognized partition table</span><br><span class="line">使用磁盘标识符 0x5371ec78 创建新的 DOS 磁盘标签。</span><br><span class="line"></span><br><span class="line">命令(输入 m 获取帮助)：n</span><br><span class="line">Partition <span class="built_in">type</span>:</span><br><span class="line">   p   primary (0 primary, 0 extended, 4 free)</span><br><span class="line">   e   extended</span><br><span class="line">Select (default p): p</span><br><span class="line">分区号 (1-4，默认 1)：</span><br><span class="line">起始 扇区 (2048-41943039，默认为 2048)：</span><br><span class="line">将使用默认值 2048</span><br><span class="line">Last 扇区, +扇区 or +size&#123;K,M,G&#125; (2048-41943039，默认为 41943039)：</span><br><span class="line">将使用默认值 41943039</span><br><span class="line">分区 1 已设置为 Linux 类型，大小设为 20 GiB</span><br><span class="line"></span><br><span class="line">命令(输入 m 获取帮助)：p</span><br><span class="line"></span><br><span class="line">磁盘 /dev/sdb：21.5 GB, 21474836480 字节，41943040 个扇区</span><br><span class="line">Units = 扇区 of 1 * 512 = 512 bytes</span><br><span class="line">扇区大小(逻辑/物理)：512 字节 / 512 字节</span><br><span class="line">I/O 大小(最小/最佳)：512 字节 / 512 字节</span><br><span class="line">磁盘标签类型：dos</span><br><span class="line">磁盘标识符：0x5371ec78</span><br><span class="line"></span><br><span class="line">   设备 Boot      Start         End      Blocks   Id  System</span><br><span class="line">/dev/sdb1            2048    41943039    20970496   83  Linux</span><br><span class="line"></span><br><span class="line">命令(输入 m 获取帮助)：w</span><br></pre></td></tr></table></figure>
-
-<h3 id="3-确定新增成功"><a href="#3-确定新增成功" class="headerlink" title="3.确定新增成功"></a>3.确定新增成功</h3><p><code>fdisk -l</code> 确定&#x2F;dev&#x2F;sdb&#x2F;新增分区成功 新分区为&#x2F;dev&#x2F;sdb1</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@localhost ~]<span class="comment"># fdisk -l</span></span><br><span class="line"></span><br><span class="line">磁盘 /dev/sda：21.5 GB, 21474836480 字节，41943040 个扇区</span><br><span class="line">Units = 扇区 of 1 * 512 = 512 bytes</span><br><span class="line">扇区大小(逻辑/物理)：512 字节 / 512 字节</span><br><span class="line">I/O 大小(最小/最佳)：512 字节 / 512 字节</span><br><span class="line">磁盘标签类型：dos</span><br><span class="line">磁盘标识符：0x000a0ffa</span><br><span class="line"></span><br><span class="line">   设备 Boot      Start         End      Blocks   Id  System</span><br><span class="line">/dev/sda1   *        2048     2099199     1048576   83  Linux</span><br><span class="line">/dev/sda2         2099200    41943039    19921920   8e  Linux LVM</span><br><span class="line"></span><br><span class="line">磁盘 /dev/sdb：21.5 GB, 21474836480 字节，41943040 个扇区</span><br><span class="line">Units = 扇区 of 1 * 512 = 512 bytes</span><br><span class="line">扇区大小(逻辑/物理)：512 字节 / 512 字节</span><br><span class="line">I/O 大小(最小/最佳)：512 字节 / 512 字节</span><br><span class="line">磁盘标签类型：dos</span><br><span class="line">磁盘标识符：0x5371ec78</span><br><span class="line"></span><br><span class="line">   设备 Boot      Start         End      Blocks   Id  System</span><br><span class="line">/dev/sdb1            2048    41943039    20970496   83  Linux</span><br><span class="line"></span><br><span class="line">磁盘 /dev/mapper/centos-root：18.2 GB, 18249416704 字节，35643392 个扇区</span><br><span class="line">Units = 扇区 of 1 * 512 = 512 bytes</span><br><span class="line">扇区大小(逻辑/物理)：512 字节 / 512 字节</span><br><span class="line">I/O 大小(最小/最佳)：512 字节 / 512 字节</span><br></pre></td></tr></table></figure>
-
-<h3 id="4-使用LVM-给根分区扩展空间"><a href="#4-使用LVM-给根分区扩展空间" class="headerlink" title="4.使用LVM 给根分区扩展空间"></a>4.使用LVM 给根分区扩展空间</h3><ul>
-<li>使用vgdisplay 命令查看VG 组名</li>
-</ul>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@localhost ~]<span class="comment"># vgdisplay</span></span><br><span class="line">  --- Volume group ---</span><br><span class="line">  VG Name               centos</span><br></pre></td></tr></table></figure>
-
-<h3 id="5-使用vgextend-命令把新增磁盘追加到centos-VG组"><a href="#5-使用vgextend-命令把新增磁盘追加到centos-VG组" class="headerlink" title="5.使用vgextend 命令把新增磁盘追加到centos VG组"></a>5.使用vgextend 命令把新增磁盘追加到centos VG组</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@localhost ~]<span class="comment"># vgextend centos /dev/sdb1</span></span><br><span class="line">  Physical volume <span class="string">&quot;/dev/sdb1&quot;</span> successfully created.</span><br><span class="line">  Volume group <span class="string">&quot;centos&quot;</span> successfully extended</span><br></pre></td></tr></table></figure>
-
-<h3 id="6-添加完成之后使用vgdisplay-查看是否扩容成功"><a href="#6-添加完成之后使用vgdisplay-查看是否扩容成功" class="headerlink" title="6.添加完成之后使用vgdisplay 查看是否扩容成功"></a>6.添加完成之后使用vgdisplay 查看是否扩容成功</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@localhost ~]<span class="comment"># vgdisplay</span></span><br><span class="line">  --- Volume group ---</span><br><span class="line">  VG Name               centos</span><br><span class="line">  System ID</span><br><span class="line">  Format                lvm2</span><br><span class="line">  Metadata Areas        2</span><br><span class="line">  Metadata Sequence No  4</span><br><span class="line">  VG Access             <span class="built_in">read</span>/write</span><br><span class="line">  VG Status             resizable</span><br><span class="line">  MAX LV                0</span><br><span class="line">  Cur LV                2</span><br><span class="line">  Open LV               2</span><br><span class="line">  Max PV                0</span><br><span class="line">  Cur PV                2</span><br><span class="line">  Act PV                2</span><br><span class="line">  VG Size               38.99 GiB</span><br><span class="line">  PE Size               4.00 MiB</span><br><span class="line">  Total PE              9982</span><br><span class="line">  Alloc PE / Size       4863 / &lt;19.00 GiB</span><br><span class="line">  Free  PE / Size       5119 / &lt;20.00 GiB   <span class="comment">#看这个</span></span><br><span class="line">  VG UUID               uIB4kO-ywhz-ee5U-DzS7-Kja6-sPvZ-rbi3Bl</span><br></pre></td></tr></table></figure>
-
-<h3 id="7-使用lvdisplay确定根分区路径"><a href="#7-使用lvdisplay确定根分区路径" class="headerlink" title="7.使用lvdisplay确定根分区路径"></a>7.使用lvdisplay确定根分区路径</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@localhost ~]<span class="comment"># lvdisplay</span></span><br><span class="line">  --- Logical volume ---</span><br><span class="line">  LV Path                /dev/centos/root  <span class="comment">#这里</span></span><br><span class="line">  LV Name                root</span><br><span class="line">  VG Name                centos</span><br><span class="line">  LV UUID                VrUURF-GOCQ-TvkL-Yd4O-OYJk-ZMBo-gqMEaI</span><br><span class="line">  LV Write Access        <span class="built_in">read</span>/write</span><br><span class="line">  LV Creation host, time localhost, 2023-09-14 13:18:10 +0800</span><br><span class="line">  LV Status              available</span><br><span class="line">  <span class="comment"># open                 1</span></span><br><span class="line">  LV Size                &lt;17.00 GiB</span><br><span class="line">  Current LE             4351</span><br><span class="line">  Segments               1</span><br><span class="line">  Allocation             inherit</span><br><span class="line">  Read ahead sectors     auto</span><br><span class="line">  - currently <span class="built_in">set</span> to     8192</span><br><span class="line">  Block device           253:0</span><br></pre></td></tr></table></figure>
-
-<h3 id="8-使用lvresize-给根分区扩展空间"><a href="#8-使用lvresize-给根分区扩展空间" class="headerlink" title="8.使用lvresize 给根分区扩展空间"></a>8.使用lvresize 给根分区扩展空间</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@localhost ~]<span class="comment"># lvresize  -L +20G  /dev/centos/root</span></span><br><span class="line"><span class="comment">#分区增加必须得加-L +20G,如果不写+号会改变原磁盘空间</span></span><br><span class="line">  Size of logical volume centos/root changed from &lt;17.00 GiB (4351 extents) to &lt;36.00 GiB (9215 extents).</span><br><span class="line">  Logical volume centos/root successfully resized.</span><br></pre></td></tr></table></figure>
-
-<h3 id="9-根分区磁盘增加成功之后使用xfs-growfs-dev-centos-root-格式化磁盘空间"><a href="#9-根分区磁盘增加成功之后使用xfs-growfs-dev-centos-root-格式化磁盘空间" class="headerlink" title="9.根分区磁盘增加成功之后使用xfs_growfs &#x2F;dev&#x2F;centos&#x2F;root 格式化磁盘空间"></a>9.根分区磁盘增加成功之后使用xfs_growfs &#x2F;dev&#x2F;centos&#x2F;root 格式化磁盘空间</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@localhost ~]<span class="comment"># xfs_growfs /dev/centos/root</span></span><br><span class="line">meta-data=/dev/mapper/centos-root isize=512    agcount=4, agsize=1113856 blks</span><br><span class="line">         =                       sectsz=512   attr=2, projid32bit=1</span><br><span class="line">         =                       crc=1        finobt=0 spinodes=0</span><br><span class="line">data     =                       bsize=4096   blocks=4455424, imaxpct=25</span><br><span class="line">         =                       sunit=0      swidth=0 blks</span><br><span class="line">naming   =version 2              bsize=4096   ascii-ci=0 ftype=1</span><br><span class="line"><span class="built_in">log</span>      =internal               bsize=4096   blocks=2560, version=2</span><br><span class="line">         =                       sectsz=512   sunit=0 blks, lazy-count=1</span><br><span class="line">realtime =bash                   extsz=4096   blocks=0, rtextents=0</span><br><span class="line">data blocks changed from 4455424 to 9436160</span><br></pre></td></tr></table></figure>
-
-<h3 id="10-确认一下"><a href="#10-确认一下" class="headerlink" title="10.确认一下"></a>10.确认一下</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@localhost ~]<span class="comment"># df -h</span></span><br><span class="line">文件系统                 容量  已用  可用 已用% 挂载点</span><br><span class="line">devtmpfs                 898M     0  898M    0% /dev</span><br><span class="line">tmpfs                    910M     0  910M    0% /dev/shm</span><br><span class="line">tmpfs                    910M  9.6M  901M    2% /run</span><br><span class="line">tmpfs                    910M     0  910M    0% /sys/fs/cgroup</span><br><span class="line">/dev/mapper/centos-root   36G  1.3G   35G    4% /  <span class="comment">#增加了</span></span><br><span class="line">/dev/sda1               1014M  151M  864M   15% /boot</span><br><span class="line">tmpfs                    182M     0  182M    0% /run/user/0</span><br></pre></td></tr></table></figure>
-<h2 id="在原有空间上修改磁盘大小的情况"><a href="#在原有空间上修改磁盘大小的情况" class="headerlink" title="在原有空间上修改磁盘大小的情况"></a>在原有空间上修改磁盘大小的情况</h2><p><img data-src="https://img-130165.oss-cn-shanghai.aliyuncs.com/img/xunihua.png"></p>
-<ul>
-<li>比如从50G,直接修改成100G，新增加的磁盘是不识别的</li>
-</ul>
-<h3 id="1-新建分区"><a href="#1-新建分区" class="headerlink" title="1.新建分区"></a>1.新建分区</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">fdisk /dev/sda</span><br><span class="line">n</span><br><span class="line">p</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">w</span><br><span class="line"><span class="comment">#使用lvm方式的话，是下面的操作，上面是基于传统的分区</span></span><br><span class="line">fdisk /dev/sda</span><br><span class="line">n</span><br><span class="line">p</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">t</span><br><span class="line"></span><br><span class="line">L</span><br><span class="line">8e</span><br><span class="line">w</span><br></pre></td></tr></table></figure>
-
-<h3 id="2-对新增的磁盘处理"><a href="#2-对新增的磁盘处理" class="headerlink" title="2.对新增的磁盘处理"></a>2.对新增的磁盘处理</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">partprobe <span class="comment">#识别新增分区</span></span><br><span class="line"></span><br><span class="line">pvcreate /dev/sda3  <span class="comment">#使用 pvcreate 创建物理卷</span></span><br><span class="line"></span><br><span class="line">pvdisplay <span class="comment">#显示物理卷的属性 查看卷组信息</span></span><br><span class="line"></span><br><span class="line">vgextend centos /dev/sda3  <span class="comment">#使用vgextend命令动态扩展</span></span><br><span class="line"></span><br><span class="line">lvresize -L +100%FREE /dev/mapper/centos-root  <span class="comment">#扩招到/目录</span></span><br><span class="line"></span><br><span class="line">xfs_growfs /dev/mapper/centos-root <span class="comment">#重新识别/分区</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">df</span> -h</span><br></pre></td></tr></table></figure>
-
-
-
-
-
-]]></content>
-      <categories>
-        <category>Linux</category>
-        <category>运维</category>
-      </categories>
-      <tags>
-        <tag>Linux</tag>
-        <tag>LVM</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>mount镜像挂载</title>
     <url>/2024/01/12/mount%E5%B0%8F%E7%9F%A5%E8%AF%86%E6%8C%82%E8%BD%BD%E9%95%9C%E5%83%8F/</url>
     <content><![CDATA[<h1 id="mount小知识：挂载镜像"><a href="#mount小知识：挂载镜像" class="headerlink" title="mount小知识：挂载镜像"></a>mount小知识：挂载镜像</h1><h2 id="简单挂载"><a href="#简单挂载" class="headerlink" title="简单挂载"></a>简单挂载</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#查看一下镜像有没有连接，这里是sr0</span></span><br><span class="line">[root@server2 ~]<span class="comment"># lsblk -l</span></span><br><span class="line">NAME        MAJ:MIN RM  SIZE RO TYPE MOUNTPOINT</span><br><span class="line">sda           8:0    0   20G  0 disk </span><br><span class="line">sda1          8:1    0    1G  0 part /boot</span><br><span class="line">sda2          8:2    0   19G  0 part </span><br><span class="line">centos-root 253:0    0   17G  0 lvm  /</span><br><span class="line">centos-swap 253:1    0    2G  0 lvm  [SWAP]</span><br><span class="line">sr0          11:0    1  988M  0 rom  </span><br><span class="line"></span><br><span class="line"><span class="comment">#创建一个挂载目录</span></span><br><span class="line">[root@server2 ~]<span class="comment"># mkdir /mnt/centos7.9</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#将镜像文件挂载到目录里，-t指定一下文件系统</span></span><br><span class="line">[root@server2 ~]<span class="comment"># mount -t iso9660 /dev/sr0 /mnt/centos7.9</span></span><br><span class="line">mount: /dev/sr0 写保护，将以只读方式挂载</span><br><span class="line"></span><br><span class="line"><span class="comment">#可以将配置写进配置文件，开机自动挂载</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;/dev/sr0  /mnt/centos7.9  iso9660 defaults 0 0&quot;</span> &gt;&gt; /etc/fstab</span><br><span class="line"></span><br><span class="line"><span class="comment">#如果开机有错误，将配置文件里自己添加的删除了就行</span></span><br></pre></td></tr></table></figure>
@@ -397,6 +397,83 @@
       <tags>
         <tag>Linux</tag>
         <tag>环境依赖</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>安装Tomcat</title>
+    <url>/2024/01/25/%E5%AE%89%E8%A3%85Tomcat/</url>
+    <content><![CDATA[<h2 id="安装Tomcat"><a href="#安装Tomcat" class="headerlink" title="安装Tomcat"></a>安装Tomcat</h2><h3 id="jdk环境"><a href="#jdk环境" class="headerlink" title="jdk环境"></a>jdk环境</h3><p>这里以jdk8环境为例，但是需要账号登陆，wget无法直接使用，需要自行上传安装包到机器中</p>
+<p>下载地址：<code>https://www.oracle.com/java/technologies/downloads/archive/</code></p>
+<ul>
+<li>创建存放目录</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">mkdir</span> -p /opt/src</span><br><span class="line"><span class="built_in">mkdir</span> -p /opt/app/java</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>解压压缩包文件到软件目录</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span> /opt/src</span><br><span class="line">tar -zxvf jdk-8u391-linux-x64.tar.gz -C /opt/app/java</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>查看一下是否解压成功</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@server1 ~]<span class="comment"># ls /opt/app/java</span></span><br><span class="line">jdk1.8.0_391</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>添加环境变量</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@server1 ~]<span class="comment"># vim /etc/profile</span></span><br><span class="line"><span class="built_in">export</span> JAVA_HOME=/opt/app/java/jdk1.8.0_391</span><br><span class="line"><span class="built_in">export</span> JRE_HOME=<span class="variable">$&#123;JAVA_HOME&#125;</span>/jre</span><br><span class="line"><span class="built_in">export</span> CLASSPATH=.:<span class="variable">$&#123;JAVA_HOME&#125;</span>/lib:<span class="variable">$&#123;JRE_HOME&#125;</span>/lib</span><br><span class="line"><span class="built_in">export</span> PATH=<span class="variable">$PATH</span>:<span class="variable">$JAVA_HOME</span>/bin</span><br><span class="line"></span><br><span class="line">[root@server1 ~]<span class="comment"># source /etc/profile</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>验证一下版本信息</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@server1 ~]<span class="comment"># java -version</span></span><br><span class="line">java version <span class="string">&quot;1.8.0_391&quot;</span></span><br><span class="line">Java(TM) SE Runtime Environment (build 1.8.0_391-b13)</span><br><span class="line">Java HotSpot(TM) 64-Bit Server VM (build 25.391-b13, mixed mode)</span><br></pre></td></tr></table></figure>
+
+<h3 id="tomcat的安装"><a href="#tomcat的安装" class="headerlink" title="tomcat的安装"></a>tomcat的安装</h3><ul>
+<li>下载解压tomcat</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span> /opt/app</span><br><span class="line">wget https://dlcdn.apache.org/tomcat/tomcat-9/v9.0.86/bin/apache-tomcat-9.0.86.tar.gz</span><br><span class="line">tar -zxvf apache-tomcat-9.0.86.tar.gz</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>进入bin目录下</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span> /opt/app/apache-tomcat-9.0.86/bin</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>启动</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">./startup.sh</span><br><span class="line"><span class="comment">#输出如下：</span></span><br><span class="line">Using CATALINA_BASE:   /opt/app/apache-tomcat-9.0.86</span><br><span class="line">Using CATALINA_HOME:   /opt/app/apache-tomcat-9.0.86</span><br><span class="line">Using CATALINA_TMPDIR: /opt/app/apache-tomcat-9.0.86/temp</span><br><span class="line">Using JRE_HOME:        /opt/app/java/jdk1.8.0_391</span><br><span class="line">Using CLASSPATH:       /opt/app/apache-tomcat-9.0.86/bin/bootstrap.jar:/opt/app/apache-tomcat-9.0.86/bin/tomcat-juli.jar</span><br><span class="line">Using CATALINA_OPTS:</span><br><span class="line">Tomcat started.</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>查看tomcat进程</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@server1 ~]<span class="comment"># ps aux |grep tomcat</span></span><br><span class="line">root       4285  0.4 12.1 2999672 226480 pts/0  Sl   21:06   0:11 /opt/app/java/jdk1.8.0_391/bin/java -Djava.util.logging.config.file=/root/apache-tomcat-9.0.86/conf/logging.properties -Djava.util.logging.manager=org.apache.juli.ClassLoaderLogManager -Djdk.tls.ephemeralDHKeySize=2048 -Djava.protocol.handler.pkgs=org.apache.catalina.webresources -Dorg.apache.catalina.security.SecurityListener.UMASK=0027 -Dignore.endorsed.dirs= -classpath /root/apache-tomcat-9.0.86/bin/bootstrap.jar:/root/apache-tomcat-9.0.86/bin/tomcat-juli.jar -Dcatalina.base=/root/apache-tomcat-9.0.86 -Dcatalina.home=/root/apache-tomcat-9.0.86 -Djava.io.tmpdir=/root/apache-tomcat-9.0.86/temp org.apache.catalina.startup.Bootstrap start</span><br><span class="line">root       4396  0.0  0.0 112812   976 pts/0    S+   21:48   0:00 grep --color=auto tomcat</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>访问</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">通过 ip:8080访问网页</span><br></pre></td></tr></table></figure>
+
+<h3 id="tomcat配置"><a href="#tomcat配置" class="headerlink" title="tomcat配置"></a>tomcat配置</h3><p>Tomcat的主要目录结构大致如下：</p>
+<ol>
+<li><code>bin/</code>：此目录包含了用于启动和停止Tomcat的脚本。例如，<code>startup.sh</code>用于在Unix&#x2F;Linux系统上启动Tomcat，而<code>shutdown.sh</code>则用于停止Tomcat。</li>
+<li><code>conf/</code>：此目录包含了Tomcat的配置文件，如<code>server.xml</code>，在这些文件中可以对Tomcat的行为做出具体的配置。</li>
+<li><code>lib/</code>：此目录存储了Tomcat运行所需的Java库文件。</li>
+<li><code>logs/</code>：此目录包含了Tomcat运行时产生的日志文件。</li>
+<li><code>temp/</code>：此目录用于存储Tomcat运行时产生的临时文件。</li>
+<li><code>webapps/</code>：这是Tomcat默认的应用部署目录，把你的应用（一般是WAR文件）放在这里，Tomcat就会自动部署并启动这个应用。</li>
+<li><code>work/</code>：这个目录用于存储Tomcat的工作文件，比如JSP文件编译后产生的Servlet等。</li>
+<li><code>LICENSE</code>, <code>RUNNING.txt</code>, <code>README.md</code>等：这些文件包含了关于Tomcat的版权、运行指南、读我等信息。</li>
+</ol>
+<h4 id="修改端口号"><a href="#修改端口号" class="headerlink" title="修改端口号"></a>修改端口号</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">vim /opt/app/apache-tomcat-9.0.86/conf/server.xml</span><br><span class="line"><span class="comment">#修改如下段，修改成没被占用的端口：</span></span><br><span class="line">  &lt;Connector port=<span class="string">&quot;8088&quot;</span> protocol=<span class="string">&quot;HTTP/1.1&quot;</span></span><br><span class="line">               connectionTimeout=<span class="string">&quot;20000&quot;</span></span><br><span class="line">               redirectPort=<span class="string">&quot;8443&quot;</span></span><br><span class="line">               maxParameterCount=<span class="string">&quot;1000&quot;</span></span><br><span class="line">               /&gt;</span><br><span class="line">               </span><br><span class="line"><span class="comment">#修改完重启tomcat</span></span><br><span class="line"><span class="built_in">cd</span> /opt/app/apache-tomcat-9.0.86/bin</span><br><span class="line">./shutdown.sh</span><br><span class="line">./startup.sh</span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>Linux</category>
+      </categories>
+      <tags>
+        <tag>Linux</tag>
+        <tag>Tomcat</tag>
       </tags>
   </entry>
   <entry>
@@ -479,83 +556,6 @@
       </tags>
   </entry>
   <entry>
-    <title>安装Tomcat</title>
-    <url>/2024/01/25/%E5%AE%89%E8%A3%85Tomcat/</url>
-    <content><![CDATA[<h2 id="安装Tomcat"><a href="#安装Tomcat" class="headerlink" title="安装Tomcat"></a>安装Tomcat</h2><h3 id="jdk环境"><a href="#jdk环境" class="headerlink" title="jdk环境"></a>jdk环境</h3><p>这里以jdk8环境为例，但是需要账号登陆，wget无法直接使用，需要自行上传安装包到机器中</p>
-<p>下载地址：<code>https://www.oracle.com/java/technologies/downloads/archive/</code></p>
-<ul>
-<li>创建存放目录</li>
-</ul>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">mkdir</span> -p /opt/src</span><br><span class="line"><span class="built_in">mkdir</span> -p /opt/app/java</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>解压压缩包文件到软件目录</li>
-</ul>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span> /opt/src</span><br><span class="line">tar -zxvf jdk-8u391-linux-x64.tar.gz -C /opt/app/java</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>查看一下是否解压成功</li>
-</ul>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@server1 ~]<span class="comment"># ls /opt/app/java</span></span><br><span class="line">jdk1.8.0_391</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>添加环境变量</li>
-</ul>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@server1 ~]<span class="comment"># vim /etc/profile</span></span><br><span class="line"><span class="built_in">export</span> JAVA_HOME=/opt/app/java/jdk1.8.0_391</span><br><span class="line"><span class="built_in">export</span> JRE_HOME=<span class="variable">$&#123;JAVA_HOME&#125;</span>/jre</span><br><span class="line"><span class="built_in">export</span> CLASSPATH=.:<span class="variable">$&#123;JAVA_HOME&#125;</span>/lib:<span class="variable">$&#123;JRE_HOME&#125;</span>/lib</span><br><span class="line"><span class="built_in">export</span> PATH=<span class="variable">$PATH</span>:<span class="variable">$JAVA_HOME</span>/bin</span><br><span class="line"></span><br><span class="line">[root@server1 ~]<span class="comment"># source /etc/profile</span></span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>验证一下版本信息</li>
-</ul>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@server1 ~]<span class="comment"># java -version</span></span><br><span class="line">java version <span class="string">&quot;1.8.0_391&quot;</span></span><br><span class="line">Java(TM) SE Runtime Environment (build 1.8.0_391-b13)</span><br><span class="line">Java HotSpot(TM) 64-Bit Server VM (build 25.391-b13, mixed mode)</span><br></pre></td></tr></table></figure>
-
-<h3 id="tomcat的安装"><a href="#tomcat的安装" class="headerlink" title="tomcat的安装"></a>tomcat的安装</h3><ul>
-<li>下载解压tomcat</li>
-</ul>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span> /opt/app</span><br><span class="line">wget https://dlcdn.apache.org/tomcat/tomcat-9/v9.0.86/bin/apache-tomcat-9.0.86.tar.gz</span><br><span class="line">tar -zxvf apache-tomcat-9.0.86.tar.gz</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>进入bin目录下</li>
-</ul>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span> /opt/app/apache-tomcat-9.0.86/bin</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>启动</li>
-</ul>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">./startup.sh</span><br><span class="line"><span class="comment">#输出如下：</span></span><br><span class="line">Using CATALINA_BASE:   /opt/app/apache-tomcat-9.0.86</span><br><span class="line">Using CATALINA_HOME:   /opt/app/apache-tomcat-9.0.86</span><br><span class="line">Using CATALINA_TMPDIR: /opt/app/apache-tomcat-9.0.86/temp</span><br><span class="line">Using JRE_HOME:        /opt/app/java/jdk1.8.0_391</span><br><span class="line">Using CLASSPATH:       /opt/app/apache-tomcat-9.0.86/bin/bootstrap.jar:/opt/app/apache-tomcat-9.0.86/bin/tomcat-juli.jar</span><br><span class="line">Using CATALINA_OPTS:</span><br><span class="line">Tomcat started.</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>查看tomcat进程</li>
-</ul>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@server1 ~]<span class="comment"># ps aux |grep tomcat</span></span><br><span class="line">root       4285  0.4 12.1 2999672 226480 pts/0  Sl   21:06   0:11 /opt/app/java/jdk1.8.0_391/bin/java -Djava.util.logging.config.file=/root/apache-tomcat-9.0.86/conf/logging.properties -Djava.util.logging.manager=org.apache.juli.ClassLoaderLogManager -Djdk.tls.ephemeralDHKeySize=2048 -Djava.protocol.handler.pkgs=org.apache.catalina.webresources -Dorg.apache.catalina.security.SecurityListener.UMASK=0027 -Dignore.endorsed.dirs= -classpath /root/apache-tomcat-9.0.86/bin/bootstrap.jar:/root/apache-tomcat-9.0.86/bin/tomcat-juli.jar -Dcatalina.base=/root/apache-tomcat-9.0.86 -Dcatalina.home=/root/apache-tomcat-9.0.86 -Djava.io.tmpdir=/root/apache-tomcat-9.0.86/temp org.apache.catalina.startup.Bootstrap start</span><br><span class="line">root       4396  0.0  0.0 112812   976 pts/0    S+   21:48   0:00 grep --color=auto tomcat</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>访问</li>
-</ul>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">通过 ip:8080访问网页</span><br></pre></td></tr></table></figure>
-
-<h3 id="tomcat配置"><a href="#tomcat配置" class="headerlink" title="tomcat配置"></a>tomcat配置</h3><p>Tomcat的主要目录结构大致如下：</p>
-<ol>
-<li><code>bin/</code>：此目录包含了用于启动和停止Tomcat的脚本。例如，<code>startup.sh</code>用于在Unix&#x2F;Linux系统上启动Tomcat，而<code>shutdown.sh</code>则用于停止Tomcat。</li>
-<li><code>conf/</code>：此目录包含了Tomcat的配置文件，如<code>server.xml</code>，在这些文件中可以对Tomcat的行为做出具体的配置。</li>
-<li><code>lib/</code>：此目录存储了Tomcat运行所需的Java库文件。</li>
-<li><code>logs/</code>：此目录包含了Tomcat运行时产生的日志文件。</li>
-<li><code>temp/</code>：此目录用于存储Tomcat运行时产生的临时文件。</li>
-<li><code>webapps/</code>：这是Tomcat默认的应用部署目录，把你的应用（一般是WAR文件）放在这里，Tomcat就会自动部署并启动这个应用。</li>
-<li><code>work/</code>：这个目录用于存储Tomcat的工作文件，比如JSP文件编译后产生的Servlet等。</li>
-<li><code>LICENSE</code>, <code>RUNNING.txt</code>, <code>README.md</code>等：这些文件包含了关于Tomcat的版权、运行指南、读我等信息。</li>
-</ol>
-<h4 id="修改端口号"><a href="#修改端口号" class="headerlink" title="修改端口号"></a>修改端口号</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">vim /opt/app/apache-tomcat-9.0.86/conf/server.xml</span><br><span class="line"><span class="comment">#修改如下段，修改成没被占用的端口：</span></span><br><span class="line">  &lt;Connector port=<span class="string">&quot;8088&quot;</span> protocol=<span class="string">&quot;HTTP/1.1&quot;</span></span><br><span class="line">               connectionTimeout=<span class="string">&quot;20000&quot;</span></span><br><span class="line">               redirectPort=<span class="string">&quot;8443&quot;</span></span><br><span class="line">               maxParameterCount=<span class="string">&quot;1000&quot;</span></span><br><span class="line">               /&gt;</span><br><span class="line">               </span><br><span class="line"><span class="comment">#修改完重启tomcat</span></span><br><span class="line"><span class="built_in">cd</span> /opt/app/apache-tomcat-9.0.86/bin</span><br><span class="line">./shutdown.sh</span><br><span class="line">./startup.sh</span><br></pre></td></tr></table></figure>
-
-]]></content>
-      <categories>
-        <category>Linux</category>
-      </categories>
-      <tags>
-        <tag>Linux</tag>
-        <tag>Tomcat</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>无网设置multipath多路径</title>
     <url>/2023/12/16/%E6%97%A0%E7%BD%91%E8%AE%BE%E7%BD%AEmultipath%E5%B0%8F%E7%9F%A5%E8%AF%86/</url>
     <content><![CDATA[<h1 id="无网设置multipath小知识"><a href="#无网设置multipath小知识" class="headerlink" title="无网设置multipath小知识"></a>无网设置multipath小知识</h1><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#查看一下镜像有没有连接，这里是sr0</span></span><br><span class="line">lsblk -l</span><br><span class="line"></span><br><span class="line"><span class="built_in">mkdir</span> /mnt/redhat</span><br><span class="line">mount -t iso9660 /dev/sr0 /mnt/redhat</span><br><span class="line"></span><br><span class="line">vim /etc/yum.repos.d/local.repo</span><br><span class="line">[<span class="built_in">local</span>]</span><br><span class="line">name=Local Repository </span><br><span class="line">baseurl=file:///mnt/redhat</span><br><span class="line">enabled=1 </span><br><span class="line">gpgcheck=0</span><br></pre></td></tr></table></figure>
@@ -566,21 +566,6 @@
       <tags>
         <tag>教程</tag>
         <tag>运维</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>监控Mysql脚本</title>
-    <url>/2024/01/15/%E7%9B%91%E6%8E%A7mysql%E8%84%9A%E6%9C%AC/</url>
-    <content><![CDATA[<h1 id="监控Mysql脚本"><a href="#监控Mysql脚本" class="headerlink" title="监控Mysql脚本"></a>监控Mysql脚本</h1><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 定义MySQL用户名、密码和主机</span></span><br><span class="line">MYSQL_USER=<span class="string">&quot;root&quot;</span></span><br><span class="line">MYSQL_PASSWORD=<span class="string">&quot;123456&quot;</span></span><br><span class="line">MYSQL_HOST=<span class="string">&quot;localhost&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 检测MySQL服务是否运行</span></span><br><span class="line"><span class="keyword">if</span> ! pgrep mysqld &gt;/dev/null 2&gt;&amp;1 ; <span class="keyword">then</span></span><br><span class="line">    <span class="comment"># 如果MySQL服务未运行，则尝试启动服务</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">&quot;MySQL is not running, attempting to start...&quot;</span></span><br><span class="line">    systemctl start mysqld</span><br><span class="line">    <span class="built_in">sleep</span> 5</span><br><span class="line">    <span class="comment"># 再次检查MySQL服务是否已经运行</span></span><br><span class="line">    <span class="keyword">if</span> ! pgrep mysqld &gt;/dev/null 2&gt;&amp;1 ; <span class="keyword">then</span></span><br><span class="line">        <span class="built_in">echo</span> <span class="string">&quot;Failed to start MySQL.&quot;</span></span><br><span class="line">        <span class="built_in">exit</span> 1</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        <span class="built_in">echo</span> <span class="string">&quot;MySQL started successfully.&quot;</span></span><br><span class="line">    <span class="keyword">fi</span></span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 检查能否连接到MySQL服务器</span></span><br><span class="line"><span class="keyword">if</span> ! mysqladmin ping -h <span class="string">&quot;<span class="variable">$MYSQL_HOST</span>&quot;</span> -u <span class="string">&quot;<span class="variable">$MYSQL_USER</span>&quot;</span> -p<span class="string">&quot;<span class="variable">$MYSQL_PASSWORD</span>&quot;</span> &gt;/dev/null 2&gt;&amp;1; <span class="keyword">then</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">&quot;Could not connect to MySQL server. Attempting to restart MySQL.&quot;</span></span><br><span class="line">    /etc/init.d/mysql restart</span><br><span class="line">    <span class="built_in">sleep</span> 5</span><br><span class="line">    <span class="keyword">if</span> ! mysqladmin ping -h <span class="string">&quot;<span class="variable">$MYSQL_HOST</span>&quot;</span> -u <span class="string">&quot;<span class="variable">$MYSQL_USER</span>&quot;</span> -p<span class="string">&quot;<span class="variable">$MYSQL_PASSWORD</span>&quot;</span> &gt;/dev/null 2&gt;&amp;1; <span class="keyword">then</span></span><br><span class="line">        <span class="built_in">echo</span> <span class="string">&quot;Failed to restart MySQL.&quot;</span></span><br><span class="line">        <span class="built_in">exit</span> 1</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        <span class="built_in">echo</span> <span class="string">&quot;MySQL restarted successfully.&quot;</span></span><br><span class="line">    <span class="keyword">fi</span></span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">&quot;MySQL is running.&quot;</span></span><br><span class="line"><span class="keyword">fi</span></span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>Linux</category>
-        <category>Mysql</category>
-      </categories>
-      <tags>
-        <tag>监控</tag>
-        <tag>Mysql</tag>
-        <tag>shell</tag>
       </tags>
   </entry>
   <entry>
@@ -675,6 +660,70 @@
       </tags>
   </entry>
   <entry>
+    <title>监控Mysql脚本</title>
+    <url>/2024/01/15/%E7%9B%91%E6%8E%A7mysql%E8%84%9A%E6%9C%AC/</url>
+    <content><![CDATA[<h1 id="监控Mysql脚本"><a href="#监控Mysql脚本" class="headerlink" title="监控Mysql脚本"></a>监控Mysql脚本</h1><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 定义MySQL用户名、密码和主机</span></span><br><span class="line">MYSQL_USER=<span class="string">&quot;root&quot;</span></span><br><span class="line">MYSQL_PASSWORD=<span class="string">&quot;123456&quot;</span></span><br><span class="line">MYSQL_HOST=<span class="string">&quot;localhost&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 检测MySQL服务是否运行</span></span><br><span class="line"><span class="keyword">if</span> ! pgrep mysqld &gt;/dev/null 2&gt;&amp;1 ; <span class="keyword">then</span></span><br><span class="line">    <span class="comment"># 如果MySQL服务未运行，则尝试启动服务</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">&quot;MySQL is not running, attempting to start...&quot;</span></span><br><span class="line">    systemctl start mysqld</span><br><span class="line">    <span class="built_in">sleep</span> 5</span><br><span class="line">    <span class="comment"># 再次检查MySQL服务是否已经运行</span></span><br><span class="line">    <span class="keyword">if</span> ! pgrep mysqld &gt;/dev/null 2&gt;&amp;1 ; <span class="keyword">then</span></span><br><span class="line">        <span class="built_in">echo</span> <span class="string">&quot;Failed to start MySQL.&quot;</span></span><br><span class="line">        <span class="built_in">exit</span> 1</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        <span class="built_in">echo</span> <span class="string">&quot;MySQL started successfully.&quot;</span></span><br><span class="line">    <span class="keyword">fi</span></span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 检查能否连接到MySQL服务器</span></span><br><span class="line"><span class="keyword">if</span> ! mysqladmin ping -h <span class="string">&quot;<span class="variable">$MYSQL_HOST</span>&quot;</span> -u <span class="string">&quot;<span class="variable">$MYSQL_USER</span>&quot;</span> -p<span class="string">&quot;<span class="variable">$MYSQL_PASSWORD</span>&quot;</span> &gt;/dev/null 2&gt;&amp;1; <span class="keyword">then</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">&quot;Could not connect to MySQL server. Attempting to restart MySQL.&quot;</span></span><br><span class="line">    /etc/init.d/mysql restart</span><br><span class="line">    <span class="built_in">sleep</span> 5</span><br><span class="line">    <span class="keyword">if</span> ! mysqladmin ping -h <span class="string">&quot;<span class="variable">$MYSQL_HOST</span>&quot;</span> -u <span class="string">&quot;<span class="variable">$MYSQL_USER</span>&quot;</span> -p<span class="string">&quot;<span class="variable">$MYSQL_PASSWORD</span>&quot;</span> &gt;/dev/null 2&gt;&amp;1; <span class="keyword">then</span></span><br><span class="line">        <span class="built_in">echo</span> <span class="string">&quot;Failed to restart MySQL.&quot;</span></span><br><span class="line">        <span class="built_in">exit</span> 1</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        <span class="built_in">echo</span> <span class="string">&quot;MySQL restarted successfully.&quot;</span></span><br><span class="line">    <span class="keyword">fi</span></span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">&quot;MySQL is running.&quot;</span></span><br><span class="line"><span class="keyword">fi</span></span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>Linux</category>
+        <category>Mysql</category>
+      </categories>
+      <tags>
+        <tag>监控</tag>
+        <tag>Mysql</tag>
+        <tag>shell</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>编译安装Postgresql13.7</title>
+    <url>/2024/01/20/%E7%BC%96%E8%AF%91%E5%AE%89%E8%A3%85postgresql13.7/</url>
+    <content><![CDATA[<h1 id="编译安装Postgresql13-7"><a href="#编译安装Postgresql13-7" class="headerlink" title="编译安装Postgresql13.7"></a>编译安装Postgresql13.7</h1><h3 id="创建postgres用户及安装目录"><a href="#创建postgres用户及安装目录" class="headerlink" title="创建postgres用户及安装目录"></a>创建postgres用户及安装目录</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># useradd postgres</span></span><br><span class="line"><span class="comment"># mkdir -p /apps/postgresql</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="安装PostgreSQL依赖包"><a href="#安装PostgreSQL依赖包" class="headerlink" title="安装PostgreSQL依赖包"></a>安装PostgreSQL依赖包</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">yum install perl-ExtUtils-Embed -y</span><br><span class="line">yum install readline-devel -y</span><br><span class="line">yum install python-devel -y</span><br><span class="line">yum install python3 -y</span><br><span class="line">yum install python3-devel -y&amp;nbsp;</span><br><span class="line">yum install gcc-c++ -y</span><br><span class="line">yum install cmake -y</span><br><span class="line">yum install libarchive -y</span><br><span class="line">yum install openssl-devel -y</span><br></pre></td></tr></table></figure>
+
+<h3 id="部署PostgreSQL"><a href="#部署PostgreSQL" class="headerlink" title="部署PostgreSQL"></a>部署PostgreSQL</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">##下载安装包</span></span><br><span class="line">wget https://ftp.postgresql.org/pub/source/v13.7/postgresql-13.7.tar.gz  </span><br><span class="line">tar -zxvf postgresql-13.7.tar.gz  <span class="comment">##解压安装包</span></span><br><span class="line"><span class="built_in">cd</span> postgresql-13.7/</span><br><span class="line">./configure --prefix=/apps/postgresql --with-python --with-perl --with-openssl</span><br><span class="line">make &amp;&amp; make install</span><br><span class="line"></span><br><span class="line"><span class="comment">##查看已经安装成功</span></span><br><span class="line">[root@rocky1 postgresql-13.7]<span class="comment"># /apps/postgresql/bin/pg_ctl --version</span></span><br><span class="line">pg_ctl (PostgreSQL) 13.7</span><br></pre></td></tr></table></figure>
+
+<h3 id="配置环境变量"><a href="#配置环境变量" class="headerlink" title="配置环境变量"></a>配置环境变量</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">mkdir</span> -p /apps/postgresql/pgdata <span class="comment">##创建数据库的数据目录</span></span><br><span class="line"><span class="built_in">cat</span> &gt;&gt; /etc/profile &lt;&lt; <span class="string">EOF</span></span><br><span class="line"><span class="string">### postgres ###</span></span><br><span class="line"><span class="string">export PATH=/apps/postgresql/bin:$PATH</span></span><br><span class="line"><span class="string">export LD_LIBRARY_PATH=/apps/postgresql/lib</span></span><br><span class="line"><span class="string">export PGDATA=/apps/postgresql/pgdata</span></span><br><span class="line"><span class="string">EOF</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">source</span> /etc/profile</span><br><span class="line"></span><br><span class="line">pg_ctl --version  <span class="comment">##环境变量配置成功</span></span><br></pre></td></tr></table></figure>
+
+<p>给用户目录赋权并创建数据库簇</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">chown</span> -R postgres.postgres /apps/postgresql  <span class="comment">##修改postgresql所属组和所属用户</span></span><br><span class="line">su - postgres</span><br><span class="line">initdb  <span class="comment">##初始化数据库</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="后续配置"><a href="#后续配置" class="headerlink" title="后续配置"></a>后续配置</h3><h4 id="自定义开放访问的IP-修改data目录下的pg-hba-conf文件"><a href="#自定义开放访问的IP-修改data目录下的pg-hba-conf文件" class="headerlink" title="自定义开放访问的IP ,修改data目录下的pg_hba.conf文件"></a>自定义开放访问的IP ,修改data目录下的pg_hba.conf文件</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span> /apps/postgresql/pgdata</span><br><span class="line">[root@rocky1 pgdata]<span class="comment"># vim pg_hba.conf</span></span><br><span class="line"><span class="comment"># IPv4 out connections:</span></span><br><span class="line">host    all             all             0.0.0.0/0                md5</span><br></pre></td></tr></table></figure>
+
+<h4 id="添加主机ip和主机名"><a href="#添加主机ip和主机名" class="headerlink" title="添加主机ip和主机名"></a>添加主机ip和主机名</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@rocky1 pgdata]<span class="comment"># vim postgresql.conf</span></span><br><span class="line">listen_addresses = <span class="string">&#x27;*&#x27;</span>          <span class="comment"># what IP address(es) to listen on;</span></span><br><span class="line">port = 5432 </span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>切换到root用户，并到postgresql源码包的解压目录下(&#x2F;root&#x2F;postgresql-13.7&#x2F;)</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">mkdir</span> -p /apps/postgresql/log</span><br><span class="line"><span class="built_in">cd</span> /apps/postgresql/log</span><br><span class="line"><span class="built_in">touch</span> server.log</span><br><span class="line"><span class="built_in">chown</span> -R postgres.postgres <span class="built_in">log</span></span><br><span class="line"><span class="comment">#在/root/postgresql-13.7/contrib/start-scripts里面</span></span><br><span class="line"><span class="string">&#x27;&#x27;</span><span class="string">&#x27;</span></span><br><span class="line"><span class="string">将 PostgreSQL 的启动脚本从源码包的 contrib/start-scripts/linux 目录复制到 /etc/init.d 目录中。这个脚本是用于启动、停止和管理 PostgreSQL 服务器的脚本。</span></span><br><span class="line"><span class="string">&#x27;</span><span class="string">&#x27;&#x27;</span></span><br><span class="line">[root@rocky1 start-scripts]<span class="comment"># cp linux /etc/init.d/postgresql</span></span><br><span class="line">vim /etc/init.d/postgresql</span><br><span class="line">prefix=/apps/postgresql</span><br><span class="line">PGDATA=<span class="string">&quot;/apps/postgresql/pgdata&quot;</span></span><br><span class="line">PGLOG=<span class="string">&quot;/apps/postgresql/log/server.log&quot;</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>赋予该文件执行权限</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">chmod</span> +x /etc/init.d/postgresql</span><br><span class="line"><span class="comment">#设置服务开机自启</span></span><br><span class="line">chkconfig --add postgresql</span><br><span class="line"></span><br><span class="line"><span class="built_in">mkdir</span> -p /home/postgres</span><br><span class="line"><span class="built_in">chown</span> -R postgres.postgres /home/postgres</span><br><span class="line"></span><br><span class="line"><span class="comment">#启动数据库</span></span><br><span class="line">service postgresql restart</span><br></pre></td></tr></table></figure>
+
+<h3 id="源码安装timesacledb"><a href="#源码安装timesacledb" class="headerlink" title="源码安装timesacledb"></a>源码安装timesacledb</h3><h5 id="cmake需要3-0以上版本"><a href="#cmake需要3-0以上版本" class="headerlink" title="cmake需要3.0以上版本"></a>cmake需要3.0以上版本</h5><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">wget&amp;nbsp;https://github.com/Kitware/CMake/releases/download/v3.27.4/cmake-3.27.4.tar.gz</span><br><span class="line"></span><br><span class="line">tar zxvf cmake-3.27.4.tar.gz</span><br><span class="line"><span class="built_in">cd</span> cmake-3.27.4</span><br><span class="line">./bootstrap --prefix=/usr/local</span><br><span class="line">make &amp;&amp; make install</span><br><span class="line">vi ~/.bash_profile</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>下载源码，或者直接下载包，传上去</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">wget https://github.com/timescale/timescaledb/archive/refs/tags/2.11.2.tar.gz</span><br><span class="line">tar zxvf timescaledb-2.11.1.tar.gz</span><br><span class="line"><span class="built_in">cd</span> timescaledb-2.11.1</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>安装和编译</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">./bootstrap <span class="comment">#如果有需要openssl就安装重新构建pgsql</span></span><br><span class="line"><span class="built_in">cd</span> ./build &amp;&amp; make</span><br><span class="line">make install</span><br><span class="line"></span><br><span class="line"><span class="comment">#加在最后一行</span></span><br><span class="line"><span class="built_in">cd</span> /apps/postgresql/pgdata</span><br><span class="line">[root@rocky1 pgdata]<span class="comment"># vim postgresql.conf</span></span><br><span class="line">shared_preload_libraries = <span class="string">&#x27;timescaledb&#x27;</span></span><br><span class="line"></span><br><span class="line">service postgresql restart</span><br><span class="line"></span><br><span class="line">CREATE DATABASE example;</span><br><span class="line">\c example</span><br><span class="line">CREATE EXTENSION IF NOT EXISTS timescaledb;</span><br><span class="line">SELECT * FROM pg_extension WHERE extname=<span class="string">&#x27;timescaledb&#x27;</span>;</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>Linux</category>
+        <category>Postgresql</category>
+      </categories>
+      <tags>
+        <tag>Linux</tag>
+        <tag>Postgresql</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>编译安装PHP7.4</title>
     <url>/2024/01/16/%E7%BC%96%E8%AF%91%E5%AE%89%E8%A3%85php7.4/</url>
     <content><![CDATA[<h1 id="编译安装PHP7-4"><a href="#编译安装PHP7-4" class="headerlink" title="编译安装PHP7.4"></a>编译安装PHP7.4</h1><h2 id="依赖环境准备"><a href="#依赖环境准备" class="headerlink" title="依赖环境准备"></a>依赖环境准备</h2><ul>
@@ -744,55 +793,6 @@
       <tags>
         <tag>Linux</tag>
         <tag>PHP</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>编译安装Postgresql13.7</title>
-    <url>/2024/01/20/%E7%BC%96%E8%AF%91%E5%AE%89%E8%A3%85postgresql13.7/</url>
-    <content><![CDATA[<h1 id="编译安装Postgresql13-7"><a href="#编译安装Postgresql13-7" class="headerlink" title="编译安装Postgresql13.7"></a>编译安装Postgresql13.7</h1><h3 id="创建postgres用户及安装目录"><a href="#创建postgres用户及安装目录" class="headerlink" title="创建postgres用户及安装目录"></a>创建postgres用户及安装目录</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># useradd postgres</span></span><br><span class="line"><span class="comment"># mkdir -p /apps/postgresql</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="安装PostgreSQL依赖包"><a href="#安装PostgreSQL依赖包" class="headerlink" title="安装PostgreSQL依赖包"></a>安装PostgreSQL依赖包</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">yum install perl-ExtUtils-Embed -y</span><br><span class="line">yum install readline-devel -y</span><br><span class="line">yum install python-devel -y</span><br><span class="line">yum install python3 -y</span><br><span class="line">yum install python3-devel -y&amp;nbsp;</span><br><span class="line">yum install gcc-c++ -y</span><br><span class="line">yum install cmake -y</span><br><span class="line">yum install libarchive -y</span><br><span class="line">yum install openssl-devel -y</span><br></pre></td></tr></table></figure>
-
-<h3 id="部署PostgreSQL"><a href="#部署PostgreSQL" class="headerlink" title="部署PostgreSQL"></a>部署PostgreSQL</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">##下载安装包</span></span><br><span class="line">wget https://ftp.postgresql.org/pub/source/v13.7/postgresql-13.7.tar.gz  </span><br><span class="line">tar -zxvf postgresql-13.7.tar.gz  <span class="comment">##解压安装包</span></span><br><span class="line"><span class="built_in">cd</span> postgresql-13.7/</span><br><span class="line">./configure --prefix=/apps/postgresql --with-python --with-perl --with-openssl</span><br><span class="line">make &amp;&amp; make install</span><br><span class="line"></span><br><span class="line"><span class="comment">##查看已经安装成功</span></span><br><span class="line">[root@rocky1 postgresql-13.7]<span class="comment"># /apps/postgresql/bin/pg_ctl --version</span></span><br><span class="line">pg_ctl (PostgreSQL) 13.7</span><br></pre></td></tr></table></figure>
-
-<h3 id="配置环境变量"><a href="#配置环境变量" class="headerlink" title="配置环境变量"></a>配置环境变量</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">mkdir</span> -p /apps/postgresql/pgdata <span class="comment">##创建数据库的数据目录</span></span><br><span class="line"><span class="built_in">cat</span> &gt;&gt; /etc/profile &lt;&lt; <span class="string">EOF</span></span><br><span class="line"><span class="string">### postgres ###</span></span><br><span class="line"><span class="string">export PATH=/apps/postgresql/bin:$PATH</span></span><br><span class="line"><span class="string">export LD_LIBRARY_PATH=/apps/postgresql/lib</span></span><br><span class="line"><span class="string">export PGDATA=/apps/postgresql/pgdata</span></span><br><span class="line"><span class="string">EOF</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">source</span> /etc/profile</span><br><span class="line"></span><br><span class="line">pg_ctl --version  <span class="comment">##环境变量配置成功</span></span><br></pre></td></tr></table></figure>
-
-<p>给用户目录赋权并创建数据库簇</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">chown</span> -R postgres.postgres /apps/postgresql  <span class="comment">##修改postgresql所属组和所属用户</span></span><br><span class="line">su - postgres</span><br><span class="line">initdb  <span class="comment">##初始化数据库</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="后续配置"><a href="#后续配置" class="headerlink" title="后续配置"></a>后续配置</h3><h4 id="自定义开放访问的IP-修改data目录下的pg-hba-conf文件"><a href="#自定义开放访问的IP-修改data目录下的pg-hba-conf文件" class="headerlink" title="自定义开放访问的IP ,修改data目录下的pg_hba.conf文件"></a>自定义开放访问的IP ,修改data目录下的pg_hba.conf文件</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span> /apps/postgresql/pgdata</span><br><span class="line">[root@rocky1 pgdata]<span class="comment"># vim pg_hba.conf</span></span><br><span class="line"><span class="comment"># IPv4 out connections:</span></span><br><span class="line">host    all             all             0.0.0.0/0                md5</span><br></pre></td></tr></table></figure>
-
-<h4 id="添加主机ip和主机名"><a href="#添加主机ip和主机名" class="headerlink" title="添加主机ip和主机名"></a>添加主机ip和主机名</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@rocky1 pgdata]<span class="comment"># vim postgresql.conf</span></span><br><span class="line">listen_addresses = <span class="string">&#x27;*&#x27;</span>          <span class="comment"># what IP address(es) to listen on;</span></span><br><span class="line">port = 5432 </span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>切换到root用户，并到postgresql源码包的解压目录下(&#x2F;root&#x2F;postgresql-13.7&#x2F;)</li>
-</ul>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">mkdir</span> -p /apps/postgresql/log</span><br><span class="line"><span class="built_in">cd</span> /apps/postgresql/log</span><br><span class="line"><span class="built_in">touch</span> server.log</span><br><span class="line"><span class="built_in">chown</span> -R postgres.postgres <span class="built_in">log</span></span><br><span class="line"><span class="comment">#在/root/postgresql-13.7/contrib/start-scripts里面</span></span><br><span class="line"><span class="string">&#x27;&#x27;</span><span class="string">&#x27;</span></span><br><span class="line"><span class="string">将 PostgreSQL 的启动脚本从源码包的 contrib/start-scripts/linux 目录复制到 /etc/init.d 目录中。这个脚本是用于启动、停止和管理 PostgreSQL 服务器的脚本。</span></span><br><span class="line"><span class="string">&#x27;</span><span class="string">&#x27;&#x27;</span></span><br><span class="line">[root@rocky1 start-scripts]<span class="comment"># cp linux /etc/init.d/postgresql</span></span><br><span class="line">vim /etc/init.d/postgresql</span><br><span class="line">prefix=/apps/postgresql</span><br><span class="line">PGDATA=<span class="string">&quot;/apps/postgresql/pgdata&quot;</span></span><br><span class="line">PGLOG=<span class="string">&quot;/apps/postgresql/log/server.log&quot;</span></span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>赋予该文件执行权限</li>
-</ul>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">chmod</span> +x /etc/init.d/postgresql</span><br><span class="line"><span class="comment">#设置服务开机自启</span></span><br><span class="line">chkconfig --add postgresql</span><br><span class="line"></span><br><span class="line"><span class="built_in">mkdir</span> -p /home/postgres</span><br><span class="line"><span class="built_in">chown</span> -R postgres.postgres /home/postgres</span><br><span class="line"></span><br><span class="line"><span class="comment">#启动数据库</span></span><br><span class="line">service postgresql restart</span><br></pre></td></tr></table></figure>
-
-<h3 id="源码安装timesacledb"><a href="#源码安装timesacledb" class="headerlink" title="源码安装timesacledb"></a>源码安装timesacledb</h3><h5 id="cmake需要3-0以上版本"><a href="#cmake需要3-0以上版本" class="headerlink" title="cmake需要3.0以上版本"></a>cmake需要3.0以上版本</h5><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">wget&amp;nbsp;https://github.com/Kitware/CMake/releases/download/v3.27.4/cmake-3.27.4.tar.gz</span><br><span class="line"></span><br><span class="line">tar zxvf cmake-3.27.4.tar.gz</span><br><span class="line"><span class="built_in">cd</span> cmake-3.27.4</span><br><span class="line">./bootstrap --prefix=/usr/local</span><br><span class="line">make &amp;&amp; make install</span><br><span class="line">vi ~/.bash_profile</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>下载源码，或者直接下载包，传上去</li>
-</ul>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">wget https://github.com/timescale/timescaledb/archive/refs/tags/2.11.2.tar.gz</span><br><span class="line">tar zxvf timescaledb-2.11.1.tar.gz</span><br><span class="line"><span class="built_in">cd</span> timescaledb-2.11.1</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>安装和编译</li>
-</ul>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">./bootstrap <span class="comment">#如果有需要openssl就安装重新构建pgsql</span></span><br><span class="line"><span class="built_in">cd</span> ./build &amp;&amp; make</span><br><span class="line">make install</span><br><span class="line"></span><br><span class="line"><span class="comment">#加在最后一行</span></span><br><span class="line"><span class="built_in">cd</span> /apps/postgresql/pgdata</span><br><span class="line">[root@rocky1 pgdata]<span class="comment"># vim postgresql.conf</span></span><br><span class="line">shared_preload_libraries = <span class="string">&#x27;timescaledb&#x27;</span></span><br><span class="line"></span><br><span class="line">service postgresql restart</span><br><span class="line"></span><br><span class="line">CREATE DATABASE example;</span><br><span class="line">\c example</span><br><span class="line">CREATE EXTENSION IF NOT EXISTS timescaledb;</span><br><span class="line">SELECT * FROM pg_extension WHERE extname=<span class="string">&#x27;timescaledb&#x27;</span>;</span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>Linux</category>
-        <category>Postgresql</category>
-      </categories>
-      <tags>
-        <tag>Linux</tag>
-        <tag>Postgresql</tag>
       </tags>
   </entry>
 </search>
