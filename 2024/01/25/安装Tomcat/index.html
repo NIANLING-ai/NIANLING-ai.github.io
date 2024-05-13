@@ -23,29 +23,29 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.20.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"copycode":{"enable":true,"style":"flat"},"fold":{"enable":false,"height":500},"bookmark":{"enable":true,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
 
-    <meta name="description" content="机房服务器无网的情况下，设置多路径">
+    <meta name="description" content="Linux上配置Tomcat服务器">
 <meta property="og:type" content="blog">
-<meta property="og:title" content="无网设置multipath多路径">
-<meta property="og:url" content="http://example.com/2023/12/16/%E6%97%A0%E7%BD%91%E8%AE%BE%E7%BD%AEmultipath%E5%B0%8F%E7%9F%A5%E8%AF%86/index.html">
+<meta property="og:title" content="安装Tomcat">
+<meta property="og:url" content="http://example.com/2024/01/25/%E5%AE%89%E8%A3%85Tomcat/index.html">
 <meta property="og:site_name" content="清风">
-<meta property="og:description" content="机房服务器无网的情况下，设置多路径">
+<meta property="og:description" content="Linux上配置Tomcat服务器">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2023-12-16T01:25:00.000Z">
-<meta property="article:modified_time" content="2023-12-16T01:25:00.000Z">
+<meta property="article:published_time" content="2024-01-25T01:25:00.000Z">
+<meta property="article:modified_time" content="2024-01-25T01:25:00.000Z">
 <meta property="article:author" content="ZHANG">
-<meta property="article:tag" content="教程">
-<meta property="article:tag" content="运维">
+<meta property="article:tag" content="Linux">
+<meta property="article:tag" content="Tomcat">
 <meta name="twitter:card" content="summary">
 
 
-<link rel="canonical" href="http://example.com/2023/12/16/%E6%97%A0%E7%BD%91%E8%AE%BE%E7%BD%AEmultipath%E5%B0%8F%E7%9F%A5%E8%AF%86/">
+<link rel="canonical" href="http://example.com/2024/01/25/%E5%AE%89%E8%A3%85Tomcat/">
 
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2023/12/16/%E6%97%A0%E7%BD%91%E8%AE%BE%E7%BD%AEmultipath%E5%B0%8F%E7%9F%A5%E8%AF%86/","path":"2023/12/16/无网设置multipath小知识/","title":"无网设置multipath多路径"}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2024/01/25/%E5%AE%89%E8%A3%85Tomcat/","path":"2024/01/25/安装Tomcat/","title":"安装Tomcat"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
-<title>无网设置multipath多路径 | 清风</title>
+<title>安装Tomcat | 清风</title>
   
 
 
@@ -146,7 +146,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%97%A0%E7%BD%91%E8%AE%BE%E7%BD%AEmultipath%E5%B0%8F%E7%9F%A5%E8%AF%86"><span class="nav-number">1.</span> <span class="nav-text">无网设置multipath小知识</span></a></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85Tomcat"><span class="nav-number">1.</span> <span class="nav-text">安装Tomcat</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#jdk%E7%8E%AF%E5%A2%83"><span class="nav-number">1.1.</span> <span class="nav-text">jdk环境</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#tomcat%E7%9A%84%E5%AE%89%E8%A3%85"><span class="nav-number">1.2.</span> <span class="nav-text">tomcat的安装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#tomcat%E9%85%8D%E7%BD%AE"><span class="nav-number">1.3.</span> <span class="nav-text">tomcat配置</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BF%AE%E6%94%B9%E7%AB%AF%E5%8F%A3%E5%8F%B7"><span class="nav-number">1.3.1.</span> <span class="nav-text">修改端口号</span></a></li></ol></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -231,7 +231,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2023/12/16/%E6%97%A0%E7%BD%91%E8%AE%BE%E7%BD%AEmultipath%E5%B0%8F%E7%9F%A5%E8%AF%86/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2024/01/25/%E5%AE%89%E8%A3%85Tomcat/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.png">
@@ -244,12 +244,12 @@
     </span>
 
     <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="无网设置multipath多路径 | 清风">
+      <meta itemprop="name" content="安装Tomcat | 清风">
       <meta itemprop="description" content="">
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          无网设置multipath多路径
+          安装Tomcat
         </h1>
 
         <div class="post-meta-container">
@@ -260,7 +260,7 @@
       </span>
       <span class="post-meta-item-text">发表于</span>
 
-      <time title="创建时间：2023-12-16 09:25:00" itemprop="dateCreated datePublished" datetime="2023-12-16T09:25:00+08:00">2023-12-16</time>
+      <time title="创建时间：2024-01-25 09:25:00" itemprop="dateCreated datePublished" datetime="2024-01-25T09:25:00+08:00">2024-01-25</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -268,7 +268,7 @@
       </span>
       <span class="post-meta-item-text">分类于</span>
         <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E6%95%99%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">教程</span></a>
+          <a href="/categories/Linux/" itemprop="url" rel="index"><span itemprop="name">Linux</span></a>
         </span>
     </span>
 
@@ -279,14 +279,14 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>244</span>
+      <span>2.9k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>1 分钟</span>
+      <span>3 分钟</span>
     </span>
 </div>
 
@@ -296,8 +296,72 @@
     
     
     
-    <div class="post-body" itemprop="articleBody"><h1 id="无网设置multipath小知识"><a href="#无网设置multipath小知识" class="headerlink" title="无网设置multipath小知识"></a>无网设置multipath小知识</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#查看一下镜像有没有连接，这里是sr0</span></span><br><span class="line">lsblk -l</span><br><span class="line"></span><br><span class="line"><span class="built_in">mkdir</span> /mnt/redhat</span><br><span class="line">mount -t iso9660 /dev/sr0 /mnt/redhat</span><br><span class="line"></span><br><span class="line">vim /etc/yum.repos.d/local.repo</span><br><span class="line">[<span class="built_in">local</span>]</span><br><span class="line">name=Local Repository </span><br><span class="line">baseurl=file:///mnt/redhat</span><br><span class="line">enabled=1 </span><br><span class="line">gpgcheck=0</span><br></pre></td></tr></table></figure>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install device-mapper-multipath -y</span><br></pre></td></tr></table></figure>
+    <div class="post-body" itemprop="articleBody"><h2 id="安装Tomcat"><a href="#安装Tomcat" class="headerlink" title="安装Tomcat"></a>安装Tomcat</h2><h3 id="jdk环境"><a href="#jdk环境" class="headerlink" title="jdk环境"></a>jdk环境</h3><p>这里以jdk8环境为例，但是需要账号登陆，wget无法直接使用，需要自行上传安装包到机器中</p>
+<p>下载地址：<code>https://www.oracle.com/java/technologies/downloads/archive/</code></p>
+<ul>
+<li>创建存放目录</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">mkdir</span> -p /opt/src</span><br><span class="line"><span class="built_in">mkdir</span> -p /opt/app/java</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>解压压缩包文件到软件目录</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> /opt/src</span><br><span class="line">tar -zxvf jdk-8u391-linux-x64.tar.gz -C /opt/app/java</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>查看一下是否解压成功</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@server1 ~]<span class="comment"># ls /opt/app/java</span></span><br><span class="line">jdk1.8.0_391</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>添加环境变量</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[root@server1 ~]<span class="comment"># vim /etc/profile</span></span><br><span class="line"><span class="built_in">export</span> JAVA_HOME=/opt/app/java/jdk1.8.0_391</span><br><span class="line"><span class="built_in">export</span> JRE_HOME=<span class="variable">$&#123;JAVA_HOME&#125;</span>/jre</span><br><span class="line"><span class="built_in">export</span> CLASSPATH=.:<span class="variable">$&#123;JAVA_HOME&#125;</span>/lib:<span class="variable">$&#123;JRE_HOME&#125;</span>/lib</span><br><span class="line"><span class="built_in">export</span> PATH=<span class="variable">$PATH</span>:<span class="variable">$JAVA_HOME</span>/bin</span><br><span class="line"></span><br><span class="line">[root@server1 ~]<span class="comment"># source /etc/profile</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>验证一下版本信息</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@server1 ~]<span class="comment"># java -version</span></span><br><span class="line">java version <span class="string">&quot;1.8.0_391&quot;</span></span><br><span class="line">Java(TM) SE Runtime Environment (build 1.8.0_391-b13)</span><br><span class="line">Java HotSpot(TM) 64-Bit Server VM (build 25.391-b13, mixed mode)</span><br></pre></td></tr></table></figure>
+
+<h3 id="tomcat的安装"><a href="#tomcat的安装" class="headerlink" title="tomcat的安装"></a>tomcat的安装</h3><ul>
+<li>下载解压tomcat</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> /opt/app</span><br><span class="line">wget https://dlcdn.apache.org/tomcat/tomcat-9/v9.0.86/bin/apache-tomcat-9.0.86.tar.gz</span><br><span class="line">tar -zxvf apache-tomcat-9.0.86.tar.gz</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>进入bin目录下</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> /opt/app/apache-tomcat-9.0.86/bin</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>启动</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">./startup.sh</span><br><span class="line"><span class="comment">#输出如下：</span></span><br><span class="line">Using CATALINA_BASE:   /opt/app/apache-tomcat-9.0.86</span><br><span class="line">Using CATALINA_HOME:   /opt/app/apache-tomcat-9.0.86</span><br><span class="line">Using CATALINA_TMPDIR: /opt/app/apache-tomcat-9.0.86/temp</span><br><span class="line">Using JRE_HOME:        /opt/app/java/jdk1.8.0_391</span><br><span class="line">Using CLASSPATH:       /opt/app/apache-tomcat-9.0.86/bin/bootstrap.jar:/opt/app/apache-tomcat-9.0.86/bin/tomcat-juli.jar</span><br><span class="line">Using CATALINA_OPTS:</span><br><span class="line">Tomcat started.</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>查看tomcat进程</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@server1 ~]<span class="comment"># ps aux |grep tomcat</span></span><br><span class="line">root       4285  0.4 12.1 2999672 226480 pts/0  Sl   21:06   0:11 /opt/app/java/jdk1.8.0_391/bin/java -Djava.util.logging.config.file=/root/apache-tomcat-9.0.86/conf/logging.properties -Djava.util.logging.manager=org.apache.juli.ClassLoaderLogManager -Djdk.tls.ephemeralDHKeySize=2048 -Djava.protocol.handler.pkgs=org.apache.catalina.webresources -Dorg.apache.catalina.security.SecurityListener.UMASK=0027 -Dignore.endorsed.dirs= -classpath /root/apache-tomcat-9.0.86/bin/bootstrap.jar:/root/apache-tomcat-9.0.86/bin/tomcat-juli.jar -Dcatalina.base=/root/apache-tomcat-9.0.86 -Dcatalina.home=/root/apache-tomcat-9.0.86 -Djava.io.tmpdir=/root/apache-tomcat-9.0.86/temp org.apache.catalina.startup.Bootstrap start</span><br><span class="line">root       4396  0.0  0.0 112812   976 pts/0    S+   21:48   0:00 grep --color=auto tomcat</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>访问</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">通过 ip:8080访问网页</span><br></pre></td></tr></table></figure>
+
+<h3 id="tomcat配置"><a href="#tomcat配置" class="headerlink" title="tomcat配置"></a>tomcat配置</h3><p>Tomcat的主要目录结构大致如下：</p>
+<ol>
+<li><code>bin/</code>：此目录包含了用于启动和停止Tomcat的脚本。例如，<code>startup.sh</code>用于在Unix&#x2F;Linux系统上启动Tomcat，而<code>shutdown.sh</code>则用于停止Tomcat。</li>
+<li><code>conf/</code>：此目录包含了Tomcat的配置文件，如<code>server.xml</code>，在这些文件中可以对Tomcat的行为做出具体的配置。</li>
+<li><code>lib/</code>：此目录存储了Tomcat运行所需的Java库文件。</li>
+<li><code>logs/</code>：此目录包含了Tomcat运行时产生的日志文件。</li>
+<li><code>temp/</code>：此目录用于存储Tomcat运行时产生的临时文件。</li>
+<li><code>webapps/</code>：这是Tomcat默认的应用部署目录，把你的应用（一般是WAR文件）放在这里，Tomcat就会自动部署并启动这个应用。</li>
+<li><code>work/</code>：这个目录用于存储Tomcat的工作文件，比如JSP文件编译后产生的Servlet等。</li>
+<li><code>LICENSE</code>, <code>RUNNING.txt</code>, <code>README.md</code>等：这些文件包含了关于Tomcat的版权、运行指南、读我等信息。</li>
+</ol>
+<h4 id="修改端口号"><a href="#修改端口号" class="headerlink" title="修改端口号"></a>修改端口号</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">vim /opt/app/apache-tomcat-9.0.86/conf/server.xml</span><br><span class="line"><span class="comment">#修改如下段，修改成没被占用的端口：</span></span><br><span class="line">  &lt;Connector port=<span class="string">&quot;8088&quot;</span> protocol=<span class="string">&quot;HTTP/1.1&quot;</span></span><br><span class="line">               connectionTimeout=<span class="string">&quot;20000&quot;</span></span><br><span class="line">               redirectPort=<span class="string">&quot;8443&quot;</span></span><br><span class="line">               maxParameterCount=<span class="string">&quot;1000&quot;</span></span><br><span class="line">               /&gt;</span><br><span class="line">               </span><br><span class="line"><span class="comment">#修改完重启tomcat</span></span><br><span class="line"><span class="built_in">cd</span> /opt/app/apache-tomcat-9.0.86/bin</span><br><span class="line">./shutdown.sh</span><br><span class="line">./startup.sh</span><br></pre></td></tr></table></figure>
+
+
     </div>
 
 
@@ -330,8 +394,8 @@
 </div>
 
           <div class="post-tags">
-              <a href="/tags/%E6%95%99%E7%A8%8B/" rel="tag"><i class="fa fa-tag"></i> 教程</a>
-              <a href="/tags/%E8%BF%90%E7%BB%B4/" rel="tag"><i class="fa fa-tag"></i> 运维</a>
+              <a href="/tags/Linux/" rel="tag"><i class="fa fa-tag"></i> Linux</a>
+              <a href="/tags/Tomcat/" rel="tag"><i class="fa fa-tag"></i> Tomcat</a>
           </div>
 
 
@@ -340,10 +404,13 @@
 
           <div class="post-nav">
             <div class="post-nav-item">
+                <a href="/2024/01/24/linux%E9%9B%86%E7%BE%A4%E7%B3%BB%E7%BB%9F%E6%97%B6%E9%97%B4%E5%90%8C%E6%AD%A5/" rel="prev" title="Linux集群系统时间同步">
+                  <i class="fa fa-angle-left"></i> Linux集群系统时间同步
+                </a>
             </div>
             <div class="post-nav-item">
-                <a href="/2024/01/11/iops%E6%9F%A5%E7%9C%8B/" rel="next" title="iops查看">
-                  iops查看 <i class="fa fa-angle-right"></i>
+                <a href="/2024/05/01/%E5%9F%9F%E6%8E%A7%E7%AE%A1%E7%90%86/" rel="next" title="域控管理常用脚本">
+                  域控管理常用脚本 <i class="fa fa-angle-right"></i>
                 </a>
             </div>
           </div>
@@ -434,7 +501,7 @@
 
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/quicklink/2.3.0/quicklink.umd.js" integrity="sha256-yvJQOINiH9fWemHn0vCA5lsHWJaHs6/ZmO+1Ft04SvM=" crossorigin="anonymous"></script>
-  <script class="next-config" data-name="quicklink" type="application/json">{"enable":true,"home":true,"archive":true,"delay":true,"timeout":3000,"priority":true,"url":"http://example.com/2023/12/16/%E6%97%A0%E7%BD%91%E8%AE%BE%E7%BD%AEmultipath%E5%B0%8F%E7%9F%A5%E8%AF%86/"}</script>
+  <script class="next-config" data-name="quicklink" type="application/json">{"enable":true,"home":true,"archive":true,"delay":true,"timeout":3000,"priority":true,"url":"http://example.com/2024/01/25/%E5%AE%89%E8%A3%85Tomcat/"}</script>
   <script src="/js/third-party/quicklink.js"></script>
 
 </body>
