@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 7.2.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=ZCOOL+XiaoWei:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha256-XOqroi11tY4EFQMR9ZYwZWKj5ZXiftSx36RRuC3anlA=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancyapps-ui/5.0.31/fancybox/fancybox.css" integrity="sha256-gkQVf8UKZgQ0HyuxL/VnacadJ+D2Kox2TCEBuNQg5+w=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/black/pace-theme-material.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.20.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"copycode":{"enable":true,"style":"mac"},"fold":{"enable":false,"height":500},"bookmark":{"enable":true,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="Linux中find命令的应用详解">
+<meta property="og:type" content="blog">
+<meta property="og:title" content="find命令">
+<meta property="og:url" content="http://example.com/2023/12/23/9.find%E5%91%BD%E4%BB%A4%E8%AF%A6%E8%A7%A3/index.html">
+<meta property="og:site_name" content="清风">
+<meta property="og:description" content="Linux中find命令的应用详解">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-12-23T01:25:00.000Z">
+<meta property="article:modified_time" content="2023-12-23T01:25:00.000Z">
+<meta property="article:author" content="ZHANG">
+<meta property="article:tag" content="Linux">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://example.com/2023/12/23/9.find%E5%91%BD%E4%BB%A4%E8%AF%A6%E8%A7%A3/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2023/12/23/9.find%E5%91%BD%E4%BB%A4%E8%AF%A6%E8%A7%A3/","path":"2023/12/23/9.find命令详解/","title":"find命令"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>find命令 | 清风</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/atom.xml" title="清风" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">清风</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">虽不能至，心向往之</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li><li class="menu-item menu-item-rss"><a href="/atom.xml" rel="section"><i class="fa fa-rss fa-fw"></i>RSS</a></li><li class="menu-item menu-item-资源"><a href="/resources/" rel="section"><i class="fa fa-download fa-fw"></i>资源</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="搜索..." spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#find%E8%AF%A6%E8%A7%A3"><span class="nav-number">1.</span> <span class="nav-text">find详解</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%91%BD%E4%BB%A4%E5%9F%BA%E7%A1%80%E6%A0%BC%E5%BC%8F"><span class="nav-number">1.1.</span> <span class="nav-text">命令基础格式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9F%A5%E6%89%BE%E6%9D%A1%E4%BB%B6"><span class="nav-number">1.2.</span> <span class="nav-text">查找条件</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9D%A1%E4%BB%B6%E7%BB%84%E5%90%88"><span class="nav-number">1.2.1.</span> <span class="nav-text">条件组合</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-%E6%8C%89%E7%85%A7%E6%97%B6%E9%97%B4%E6%9F%A5%E6%89%BE"><span class="nav-number">1.2.2.</span> <span class="nav-text">1.按照时间查找</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-%E6%A0%B9%E6%8D%AE%E6%96%87%E4%BB%B6%E5%90%8D%E6%9F%A5%E6%89%BE"><span class="nav-number">1.2.3.</span> <span class="nav-text">2.根据文件名查找</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-%E6%8C%89%E6%96%87%E4%BB%B6%E5%A4%A7%E5%B0%8F%E6%9F%A5%E6%89%BE"><span class="nav-number">1.2.4.</span> <span class="nav-text">3.按文件大小查找</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-%E6%8C%89%E6%96%87%E4%BB%B6%E7%B1%BB%E5%9E%8B%E6%9F%A5%E6%89%BE"><span class="nav-number">1.2.5.</span> <span class="nav-text">4.按文件类型查找</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-%E6%8C%89%E6%96%87%E4%BB%B6%E6%9D%83%E9%99%90%E6%9F%A5%E6%89%BE"><span class="nav-number">1.2.6.</span> <span class="nav-text">5.按文件权限查找</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-%E6%8C%89%E6%9F%A5%E6%89%BE%E7%9A%84%E7%9B%AE%E5%BD%95%E6%B7%B1%E5%BA%A6"><span class="nav-number">1.2.7.</span> <span class="nav-text">6.按查找的目录深度</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#7-%E6%8C%89%E6%96%87%E4%BB%B6%E5%B1%9E%E4%B8%BB%E3%80%81%E5%B1%9E%E7%BB%84"><span class="nav-number">1.2.8.</span> <span class="nav-text">7.按文件属主、属组</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#8-%E6%8C%89%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F"><span class="nav-number">1.2.9.</span> <span class="nav-text">8.按正则表达式</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9F%A5%E5%90%8E%E5%A4%84%E7%90%86%E5%8A%A8%E4%BD%9C"><span class="nav-number">1.3.</span> <span class="nav-text">查后处理动作</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9E%E4%BE%8B"><span class="nav-number">1.4.</span> <span class="nav-text">实例</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="ZHANG"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">ZHANG</p>
+  <div class="site-description" itemprop="description">不闻不若闻之，闻之不若见之，见之不若知之，知之不若行之</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">25</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">28</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://nianling-ai.github.io/" title="GitHub → https:&#x2F;&#x2F;nianling-ai.github.io" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:zyxjga@foxmail.com" title="E-Mail → mailto:zyxjga@foxmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+    <div class="sidebar-inner sidebar-blogroll">
+      <div class="links-of-blogroll animated">
+        <div class="links-of-blogroll-title"><i class="fa fa-globe fa-fw"></i>
+          链接
+        </div>
+        <ul class="links-of-blogroll-list">
+            <li class="links-of-blogroll-item">
+              <a href="https://www.runoob.com/" title="https:&#x2F;&#x2F;www.runoob.com&#x2F;" rel="noopener" target="_blank">菜鸟教程</a>
+            </li>
+            <li class="links-of-blogroll-item">
+              <a href="http://c.biancheng.net/sitemap/" title="http:&#x2F;&#x2F;c.biancheng.net&#x2F;sitemap&#x2F;" rel="noopener" target="_blank">C语言中文网</a>
+            </li>
+            <li class="links-of-blogroll-item">
+              <a href="https://csdiy.wiki/" title="https:&#x2F;&#x2F;csdiy.wiki&#x2F;" rel="noopener" target="_blank">CS自学指南</a>
+            </li>
+            <li class="links-of-blogroll-item">
+              <a href="https://www.r2coding.com/#/" title="https:&#x2F;&#x2F;www.r2coding.com&#x2F;#&#x2F;" rel="noopener" target="_blank">Road To Coding</a>
+            </li>
+            <li class="links-of-blogroll-item">
+              <a href="https://hackway.org/docs/cs/intro" title="https:&#x2F;&#x2F;hackway.org&#x2F;docs&#x2F;cs&#x2F;intro" rel="noopener" target="_blank">计算机专业学习路线</a>
+            </li>
+        </ul>
+      </div>
+    </div>
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/12/23/9.find%E5%91%BD%E4%BB%A4%E8%AF%A6%E8%A7%A3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="ZHANG">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="清风">
+      <meta itemprop="description" content="不闻不若闻之，闻之不若见之，见之不若知之，知之不若行之">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="find命令 | 清风">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          find命令
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2023-12-23 09:25:00" itemprop="dateCreated datePublished" datetime="2023-12-23T09:25:00+08:00">2023-12-23</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Linux/" itemprop="url" rel="index"><span itemprop="name">Linux</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>2.3k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>2 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h2 id="find详解"><a href="#find详解" class="headerlink" title="find详解"></a>find详解</h2><h3 id="命令基础格式"><a href="#命令基础格式" class="headerlink" title="命令基础格式"></a>命令基础格式</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">find /etc -name <span class="string">&quot;passwd&quot;</span></span><br><span class="line">第一段find命令。第二段，要搜索的路径，可以写多个。第三段，表达式。</span><br></pre></td></tr></table></figure>
+<h3 id="查找条件"><a href="#查找条件" class="headerlink" title="查找条件"></a>查找条件</h3><h4 id="条件组合"><a href="#条件组合" class="headerlink" title="条件组合"></a>条件组合</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">-a：多个条件and并列</span><br><span class="line">-o：多个条件or并列</span><br><span class="line">-not：条件取反</span><br></pre></td></tr></table></figure>
+<h4 id="1-按照时间查找"><a href="#1-按照时间查找" class="headerlink" title="1.按照时间查找"></a>1.按照时间查找</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#-mtime n：查找文件修改时间，单位是天，就是n*24小时</span></span><br><span class="line">[root@server1 ~]<span class="comment"># find / -mtime 7 -ls</span></span><br><span class="line"></span><br><span class="line">**总结：数字n的写法有三种**</span><br><span class="line">+n：表示大于n。</span><br><span class="line">-n：表示小于n。</span><br><span class="line">n：表示等于n。</span><br></pre></td></tr></table></figure>
+<h4 id="2-根据文件名查找"><a href="#2-根据文件名查找" class="headerlink" title="2.根据文件名查找"></a>2.根据文件名查找</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">[root@server1 ~]<span class="comment"># find / -name 1.txt</span></span><br><span class="line">/root/test/1.txt</span><br><span class="line"></span><br><span class="line"><span class="comment">#加i可以忽略大小写</span></span><br><span class="line">[root@server1 ~]<span class="comment"># find /etc -iname &quot;ifcfg-ens33&quot;</span></span><br><span class="line">/etc/sysconfig/network-scripts/ifcfg-ens33</span><br><span class="line"></span><br><span class="line"><span class="comment">#记不得名字也可以用通配符模糊匹配</span></span><br><span class="line">[root@server1 ~]<span class="comment"># find /etc -iname &quot;ifcfg-ens*&quot;</span></span><br><span class="line">/etc/sysconfig/network-scripts/ifcfg-ens33</span><br></pre></td></tr></table></figure>
+<h4 id="3-按文件大小查找"><a href="#3-按文件大小查找" class="headerlink" title="3.按文件大小查找"></a>3.按文件大小查找</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash">查找大小大于5M的普通文件</span></span><br><span class="line">[root@server1 ~]# find /etc/ -type f -size +5M -ls</span><br><span class="line">17274742 7760 -r--r--r--   1 root     root      7942570 1月  1 19:42 /etc/udev/hwdb.bin</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">等于5M</span></span><br><span class="line">[root@server1 ~]# find /etc/ -type f -size 5M -ls </span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">小于5M</span></span><br><span class="line">[root@server1 ~]# find /etc/ -type f -size -5M -ls</span><br></pre></td></tr></table></figure>
+<h4 id="4-按文件类型查找"><a href="#4-按文件类型查找" class="headerlink" title="4.按文件类型查找"></a>4.按文件类型查找</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">[root@server1 ~]# find /etc -type d</span><br><span class="line">/etc</span><br><span class="line">/etc/grub.d</span><br><span class="line">/etc/terminfo</span><br><span class="line">/etc/skel</span><br><span class="line">/etc/alternatives</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">更多类型上面已经总结p,b,c,s等</span></span><br></pre></td></tr></table></figure>
+<h4 id="5-按文件权限查找"><a href="#5-按文件权限查找" class="headerlink" title="5.按文件权限查找"></a>5.按文件权限查找</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">r 读权限   4</span><br><span class="line">w 写权限   2</span><br><span class="line">x 执行权限 1</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">查找根目录下权限为444的文件（r--r--r--）</span></span><br><span class="line">[root@server1 ~]# find / -perm 444</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">查找权限至少为444的文件</span></span><br><span class="line">[root@server1 ~]# find / -perm -444</span><br></pre></td></tr></table></figure>
+<p><strong>重要TIP：-444表示至少为444（大于等于），不是小于</strong></p>
+<h4 id="6-按查找的目录深度"><a href="#6-按查找的目录深度" class="headerlink" title="6.按查找的目录深度"></a>6.按查找的目录深度</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@server1 ~]<span class="comment"># find / -maxdepth 3 -a -name &quot;ifcfg-ens33&quot;  #最大深度为3</span></span><br><span class="line">[root@server1 ~]<span class="comment"># find / -mindepth 3 -a -name &quot;ifcfg-ens33&quot;  #最小深度为3</span></span><br><span class="line">/etc/sysconfig/network-scripts/ifcfg-ens33</span><br></pre></td></tr></table></figure>
+<h4 id="7-按文件属主、属组"><a href="#7-按文件属主、属组" class="headerlink" title="7.按文件属主、属组"></a>7.按文件属主、属组</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">find /home -user root -a -group root  #属主和属组都是root的</span><br><span class="line">find /home -user root -o -group root  #属主或属组是root的</span><br><span class="line">find /home -nouser -a -nogroup   #没有属主和属组</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h4 id="8-按正则表达式"><a href="#8-按正则表达式" class="headerlink" title="8.按正则表达式"></a>8.按正则表达式</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">find /etc -regex &#x27;.*ifcfg-ens[0-9][0-9]&#x27;</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">.*  任意多个字符</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">[0-9]  任意一个数字</span></span><br></pre></td></tr></table></figure>
+<h3 id="查后处理动作"><a href="#查后处理动作" class="headerlink" title="查后处理动作"></a>查后处理动作</h3><p>‐ls：类型于对查找到的文件执行 ls -l 命令<br>‐delete：删除查找到的文件<br>‐fls &#x2F;path&#x2F;to&#x2F;somefile：查找到的所有文件的长格式信息保存至指定文件中<br><strong>下面两个重要的常用的：</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">‐ok COMMAND &#123;&#125; \;：对查找到的每个文件执行由COMMAND指定的命令，需要确认</span><br><span class="line"></span><br><span class="line">‐exec COMMAND &#123;&#125; \;：对查找到的每个文件执行由COMMAND指定的命令，不需要确认</span><br><span class="line">find /etc -type f -name &quot;*.c&quot; -exec cat &#123;&#125; \; &gt; file.txt  #将所有c程序拼接起来写入单个文件file.txt中</span><br><span class="line"></span><br><span class="line">注：&#123;&#125;表示匹配到的文件。</span><br></pre></td></tr></table></figure>
+
+<h3 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h3><blockquote>
+<p>1.查找&#x2F;var目录下属主为root，且属组为mail的所有文件或目录</p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">find /var -user root -a -group mail</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>2.查找&#x2F;usr目录下不属于root，bin或Hadoop的所有文件或目录</p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">find /user -not -user root -a -not -user bin -o -not user Hadoop</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>3.查找&#x2F;etc目录下最近一周内容曾被修改过的文件或目录</p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">find /etc -mtime -7</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>4.查找当前系统上没有属主或属组，且最近一周内曾被访问过的文件或目录</p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">find / -nouser -o -nogroup -a -atime -7</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>5.查找&#x2F;etc目录下大于1M且类型为普通文件的所有文件或目录</p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">find /etc -size +1M -a -type f</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>6.查找&#x2F;etc目录下所有用户都没有写权限的文件</p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">find /etc -not -perm /222  #严格匹配权限222</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>7.查找&#x2F;etc目录下至少一类用户没有执行权限的文件</p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">find /etc -not -perm -111</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>8.查找&#x2F;etc&#x2F;init.d目录下，所有用户都执行权限，且其它用户有写权限的文件</p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">find /etc/init.d  -perm -111 -a -perm -003 -ls</span><br></pre></td></tr></table></figure>
+    </div>
+
+
+  <div style="text-align:center;color: #ccc;font-size:18px;">
+    ---------Thanks for your attention---------
+  </div>
+
+
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="followme">
+  <span>欢迎关注我的其它发布渠道</span>
+
+  <div class="social-list">
+
+      <div class="social-item">
+          <a target="_blank" class="social-link" href="/atom.xml">
+            <span class="icon">
+              <i class="fa fa-rss"></i>
+            </span>
+
+            <span class="label">RSS</span>
+          </a>
+      </div>
+  </div>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/Linux/" rel="tag"><i class="fa fa-tag"></i> Linux</a>
+          </div>
+
+
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2023/12/22/8.%E6%96%87%E4%BB%B6%E7%B1%BB%E5%9E%8B%E4%B8%8Elocate%E6%9F%A5%E6%89%BE/" rel="prev" title="文件类型/时间与locate查找">
+                  <i class="fa fa-angle-left"></i> 文件类型/时间与locate查找
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2024/01/05/java8%E7%8E%AF%E5%A2%83%E5%AE%89%E8%A3%85/" rel="next" title="JDK8安装">
+                  JDK8安装 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2024</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">ZHANG</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+      <span>站点总字数：</span>
+    <span title="站点总字数">90k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span>站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">1:22</span>
+  </span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script size="30" alpha="0.6" zIndex="-1" src="https://cdnjs.cloudflare.com/ajax/libs/ribbon.js/1.0.2/ribbon.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fancyapps-ui/5.0.31/fancybox/fancybox.umd.js" integrity="sha256-a+H7FYzJv6oU2hfsfDGM2Ohw/cR9v+hPfxHCLdmCrE8=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lozad.js/1.16.0/lozad.min.js" integrity="sha256-mOFREFhqmHeQbXpK2lp4nA3qooVgACfh88fpJftLBbc=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pangu/4.0.7/pangu.min.js" integrity="sha256-j+yj56cdEY2CwkVtGyz18fNybFGpMGJ8JxG3GSyO2+I=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/sidebar.js"></script><script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+  <script src="/js/third-party/fancybox.js"></script>
+
+  <script src="/js/third-party/pace.js"></script>
+
+
+  
+
+
+
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/quicklink/2.3.0/quicklink.umd.js" integrity="sha256-yvJQOINiH9fWemHn0vCA5lsHWJaHs6/ZmO+1Ft04SvM=" crossorigin="anonymous"></script>
+  <script class="next-config" data-name="quicklink" type="application/json">{"enable":true,"home":true,"archive":true,"delay":true,"timeout":3000,"priority":true,"url":"http://example.com/2023/12/23/9.find%E5%91%BD%E4%BB%A4%E8%AF%A6%E8%A7%A3/"}</script>
+  <script src="/js/third-party/quicklink.js"></script>
+
+</body>
+</html>
