@@ -107,6 +107,27 @@
   </entry>
   
   <entry>
+    <title>用户权限检查脚本</title>
+    <link href="http://example.com/2024/02/03/%E7%94%A8%E6%88%B7%E6%9D%83%E9%99%90%E6%A3%80%E6%9F%A5%E8%84%9A%E6%9C%AC/"/>
+    <id>http://example.com/2024/02/03/%E7%94%A8%E6%88%B7%E6%9D%83%E9%99%90%E6%A3%80%E6%9F%A5%E8%84%9A%E6%9C%AC/</id>
+    <published>2024-02-03T01:25:00.000Z</published>
+    <updated>2024-02-03T01:25:00.000Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="用户权限检查脚本"><a href="#用户权限检查脚本" class="headerlink" title="用户权限检查脚本"></a>用户权限检查脚本</h2><h3 id="字串对比版"><a href="#字串对比版" class="headerlink" title="字串对比版"></a>字串对比版</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> [ <span class="variable">$USER</span> == <span class="string">&quot;root&quot;</span> ]</span><br><span class="line"></span><br><span class="line"><span class="keyword">then</span></span><br><span class="line"></span><br><span class="line">yum ‐y install vsftpd</span><br><span class="line"></span><br><span class="line"><span class="keyword">else</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;您不是管理员,没有权限安装软件&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">fi</span></span><br></pre></td></tr></table></figure><hr><h3 id="UID-数字对比版"><a href="#UID-数字对比版" class="headerlink" title="UID 数字对比版"></a>UID 数字对比版</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> [ <span class="variable">$UID</span> -eq 0 ];<span class="keyword">then</span></span><br><span class="line"></span><br><span class="line">yum ‐y install vsftpd</span><br><span class="line"></span><br><span class="line"><span class="keyword">else</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;您不是管理员,没有权限安装软件&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">fi</span></span><br></pre></td></tr></table></figure>]]></content>
+    
+    
+    <summary type="html">用来检查用户权限的简单的小脚本</summary>
+    
+    
+    
+    <category term="Shell脚本" scheme="http://example.com/categories/Shell%E8%84%9A%E6%9C%AC/"/>
+    
+    
+    <category term="Shell脚本" scheme="http://example.com/tags/Shell%E8%84%9A%E6%9C%AC/"/>
+    
+  </entry>
+  
+  <entry>
     <title>SFTP搭建</title>
     <link href="http://example.com/2024/01/31/%E6%90%AD%E5%BB%BASFTP/"/>
     <id>http://example.com/2024/01/31/%E6%90%AD%E5%BB%BASFTP/</id>
