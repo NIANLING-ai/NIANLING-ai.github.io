@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 7.2.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=ZCOOL+XiaoWei:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha256-XOqroi11tY4EFQMR9ZYwZWKj5ZXiftSx36RRuC3anlA=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancyapps-ui/5.0.31/fancybox/fancybox.css" integrity="sha256-gkQVf8UKZgQ0HyuxL/VnacadJ+D2Kox2TCEBuNQg5+w=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/black/pace-theme-material.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.20.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"copycode":{"enable":true,"style":"mac"},"fold":{"enable":false,"height":500},"bookmark":{"enable":true,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="Linux文件权限管理">
+<meta property="og:type" content="blog">
+<meta property="og:title" content="文件权限管理">
+<meta property="og:url" content="http://example.com/2023/12/26/12.%E6%96%87%E4%BB%B6%E6%9D%83%E9%99%90%E7%AE%A1%E7%90%86/index.html">
+<meta property="og:site_name" content="清风">
+<meta property="og:description" content="Linux文件权限管理">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-12-26T01:25:00.000Z">
+<meta property="article:modified_time" content="2023-12-26T01:25:00.000Z">
+<meta property="article:author" content="ZHANG">
+<meta property="article:tag" content="Linux">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://example.com/2023/12/26/12.%E6%96%87%E4%BB%B6%E6%9D%83%E9%99%90%E7%AE%A1%E7%90%86/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2023/12/26/12.%E6%96%87%E4%BB%B6%E6%9D%83%E9%99%90%E7%AE%A1%E7%90%86/","path":"2023/12/26/12.文件权限管理/","title":"文件权限管理"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>文件权限管理 | 清风</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/atom.xml" title="清风" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">清风</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">虽不能至，心向往之</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li><li class="menu-item menu-item-rss"><a href="/atom.xml" rel="section"><i class="fa fa-rss fa-fw"></i>RSS</a></li><li class="menu-item menu-item-资源"><a href="/resources/" rel="section"><i class="fa fa-download fa-fw"></i>资源</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="搜索..." spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E6%9D%83%E9%99%90-U-G-O"><span class="nav-number">1.</span> <span class="nav-text">基本权限 U G O</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#UGO%E8%AE%BE%E7%BD%AE%E5%9F%BA%E6%9C%AC%E6%9D%83%E9%99%90"><span class="nav-number">1.1.</span> <span class="nav-text">UGO设置基本权限</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%9D%83%E9%99%90%E5%AF%B9%E8%B1%A1"><span class="nav-number">1.1.1.</span> <span class="nav-text">权限对象</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%9D%83%E9%99%90%E7%B1%BB%E5%9E%8B"><span class="nav-number">1.1.2.</span> <span class="nav-text">权限类型</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9D%83%E9%99%90%E7%AE%A1%E7%90%86"><span class="nav-number">2.</span> <span class="nav-text">权限管理</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9B%B4%E6%94%B9%E6%96%87%E4%BB%B6%E7%9A%84%E5%B1%9E%E4%B8%BB%E3%80%81%E5%B1%9E%E7%BB%84-chown-chgrp"><span class="nav-number">2.1.</span> <span class="nav-text">更改文件的属主、属组 chown chgrp</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9B%B4%E6%94%B9%E6%96%87%E4%BB%B6%E6%9D%83%E9%99%90-chmod"><span class="nav-number">2.2.</span> <span class="nav-text">更改文件权限 chmod</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E7%AC%A6%E5%8F%B7%E6%9B%B4%E6%94%B9"><span class="nav-number">2.2.1.</span> <span class="nav-text">使用符号更改</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E6%95%B0%E5%AD%97%E6%9B%B4%E6%94%B9"><span class="nav-number">2.2.2.</span> <span class="nav-text">使用数字更改</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#r%E3%80%81w%E3%80%81x%E6%9D%83%E9%99%90%E5%AF%B9%E6%96%87%E4%BB%B6%E5%92%8C%E7%9B%AE%E5%BD%95%E7%9A%84%E6%84%8F%E4%B9%89"><span class="nav-number">2.3.</span> <span class="nav-text">r、w、x权限对文件和目录的意义</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ACL%E8%AE%BE%E7%BD%AE%E5%9F%BA%E6%9C%AC%E6%9D%83%E9%99%90-r-w-x"><span class="nav-number">3.</span> <span class="nav-text">ACL设置基本权限 (r,w,x)</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#ACL%E5%9F%BA%E6%9C%AC%E7%94%A8%E6%B3%95-setfacl"><span class="nav-number">3.1.</span> <span class="nav-text">ACL基本用法 setfacl</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#mask%E6%9D%83%E9%99%90"><span class="nav-number">3.2.</span> <span class="nav-text">mask权限</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#default"><span class="nav-number">3.3.</span> <span class="nav-text">default</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%88%A0%E9%99%A4%E6%9D%83%E9%99%90"><span class="nav-number">3.4.</span> <span class="nav-text">删除权限</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%89%B9%E6%AE%8A%E6%9D%83%E9%99%90"><span class="nav-number">4.</span> <span class="nav-text">特殊权限</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#SUID-Set-UID"><span class="nav-number">4.1.</span> <span class="nav-text">SUID(Set UID)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#SGID%E6%9D%83%E9%99%90"><span class="nav-number">4.2.</span> <span class="nav-text">SGID权限</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#SBIT%E6%9D%83%E9%99%90"><span class="nav-number">4.3.</span> <span class="nav-text">SBIT权限</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#SUID%EF%BC%8CSGID%EF%BC%8CSticky-Bit-%E6%9D%83%E9%99%90%E8%AE%BE%E7%BD%AE"><span class="nav-number">4.4.</span> <span class="nav-text">SUID，SGID，Sticky Bit 权限设置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#chattr%E6%9D%83%E9%99%90"><span class="nav-number">4.5.</span> <span class="nav-text">chattr权限</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#umask-%E8%BF%9B%E7%A8%8B%E7%9A%84%E6%96%87%E4%BB%B6%E6%9D%83%E9%99%90%E6%8E%A9%E7%A0%81"><span class="nav-number">4.6.</span> <span class="nav-text">umask 进程的文件权限掩码</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="ZHANG"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">ZHANG</p>
+  <div class="site-description" itemprop="description">不闻不若闻之，闻之不若见之，见之不若知之，知之不若行之</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">36</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">18</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">30</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://nianling-ai.github.io/" title="GitHub → https:&#x2F;&#x2F;nianling-ai.github.io" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:zyxjga@foxmail.com" title="E-Mail → mailto:zyxjga@foxmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+    <div class="sidebar-inner sidebar-blogroll">
+      <div class="links-of-blogroll animated">
+        <div class="links-of-blogroll-title"><i class="fa fa-globe fa-fw"></i>
+          链接
+        </div>
+        <ul class="links-of-blogroll-list">
+            <li class="links-of-blogroll-item">
+              <a href="https://www.runoob.com/" title="https:&#x2F;&#x2F;www.runoob.com&#x2F;" rel="noopener" target="_blank">菜鸟教程</a>
+            </li>
+            <li class="links-of-blogroll-item">
+              <a href="http://c.biancheng.net/sitemap/" title="http:&#x2F;&#x2F;c.biancheng.net&#x2F;sitemap&#x2F;" rel="noopener" target="_blank">C语言中文网</a>
+            </li>
+            <li class="links-of-blogroll-item">
+              <a href="https://csdiy.wiki/" title="https:&#x2F;&#x2F;csdiy.wiki&#x2F;" rel="noopener" target="_blank">CS自学指南</a>
+            </li>
+            <li class="links-of-blogroll-item">
+              <a href="https://www.r2coding.com/#/" title="https:&#x2F;&#x2F;www.r2coding.com&#x2F;#&#x2F;" rel="noopener" target="_blank">Road To Coding</a>
+            </li>
+            <li class="links-of-blogroll-item">
+              <a href="https://hackway.org/docs/cs/intro" title="https:&#x2F;&#x2F;hackway.org&#x2F;docs&#x2F;cs&#x2F;intro" rel="noopener" target="_blank">计算机专业学习路线</a>
+            </li>
+        </ul>
+      </div>
+    </div>
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/12/26/12.%E6%96%87%E4%BB%B6%E6%9D%83%E9%99%90%E7%AE%A1%E7%90%86/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="ZHANG">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="清风">
+      <meta itemprop="description" content="不闻不若闻之，闻之不若见之，见之不若知之，知之不若行之">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="文件权限管理 | 清风">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          文件权限管理
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2023-12-26 09:25:00" itemprop="dateCreated datePublished" datetime="2023-12-26T09:25:00+08:00">2023-12-26</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Linux/" itemprop="url" rel="index"><span itemprop="name">Linux</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>8.2k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>7 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h3 id="基本权限-U-G-O"><a href="#基本权限-U-G-O" class="headerlink" title="基本权限 U G O"></a>基本权限 U G O</h3><p>文件权限设置：可以赋予某个用户或组，能够以何种方式，访问某个文件</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">u的权限：r w x</span><br><span class="line">g的权限：r w x</span><br><span class="line">o的权限：r w x</span><br></pre></td></tr></table></figure>
+<h4 id="UGO设置基本权限"><a href="#UGO设置基本权限" class="headerlink" title="UGO设置基本权限"></a>UGO设置基本权限</h4><h5 id="权限对象"><a href="#权限对象" class="headerlink" title="权限对象"></a>权限对象</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">属主：u</span><br><span class="line">属组：g</span><br><span class="line">其他人：o</span><br></pre></td></tr></table></figure>
+<h5 id="权限类型"><a href="#权限类型" class="headerlink" title="权限类型"></a>权限类型</h5><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">读：r 4</span><br><span class="line">写：w 2</span><br><span class="line">执行：x 1</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">rwx 7     rw- 6      r-- 4</span></span><br></pre></td></tr></table></figure>
+<h3 id="权限管理"><a href="#权限管理" class="headerlink" title="权限管理"></a>权限管理</h3><h4 id="更改文件的属主、属组-chown-chgrp"><a href="#更改文件的属主、属组-chown-chgrp" class="headerlink" title="更改文件的属主、属组 chown chgrp"></a>更改文件的属主、属组 chown chgrp</h4><p>chmod是更改文件的权限 chown是改改文件的属主与属组 chgrp只是更改文件的属组。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">语法：chown 【选项】【所属主】【所属组】文件</span><br><span class="line">[root@server1 ~]# chown centos:hr file1 # 改属主、属组</span><br><span class="line">[root@server1 ~]# chown centos file1 # 只改属主</span><br><span class="line">[root@server1 ~]# chown :hr file1 # 只改属组</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">语法：chgrp [OPTION]... GROUP FILE</span><br><span class="line">[root@server1 ~]# chgrp it file1 # 改文件属性组</span><br><span class="line">[root@server1 ~]# chgrp -R it dir1 # 改文件属性组，-R是递归</span><br></pre></td></tr></table></figure>
+<h4 id="更改文件权限-chmod"><a href="#更改文件权限-chmod" class="headerlink" title="更改文件权限 chmod"></a>更改文件权限 chmod</h4><h5 id="使用符号更改"><a href="#使用符号更改" class="headerlink" title="使用符号更改"></a>使用符号更改</h5><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">语法：chmod ［who］ ［+ | – | =］ ［mode］ 文件名</span><br><span class="line">命令中各选项的含义为：</span><br><span class="line">操作对象who可是下述字母中的任一个或者它们的组合：</span><br><span class="line">u 表示“用户（user）”，即文件或目录的所有者。</span><br><span class="line">g 表示“同组（group）用户”，即与文件属主有相同组ID的所有用户。</span><br><span class="line">o 表示“其他（others）用户”。</span><br><span class="line">a 表示“所有（all）用户”。它是系统默认值。</span><br><span class="line">---------------------------------------------</span><br><span class="line">操作符号可以是：</span><br><span class="line">+ 添加某个权限。</span><br><span class="line">– 取消某个权限。</span><br><span class="line">= 赋予给定权限并取消其他所有权限（如果有的话）。</span><br><span class="line">设置mode所表示的权限可用下述字母的任意组合：</span><br><span class="line">r 可读。</span><br><span class="line">w 可写。</span><br><span class="line">x 可执行。</span><br></pre></td></tr></table></figure>
+<p>实例：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[root@server1 ~]# chmod u+x file1 # 属主增加执行</span><br><span class="line">[root@server1 ~]# chmod a=rwx file1 # 所有人等于读写执行</span><br><span class="line">[root@server1 ~]# chmod a=- file1 # 所有人没有权限</span><br><span class="line">[root@server1 ~]# chmod ug=rw,o=r file1 # 属主属组等于读写，其他人只读</span><br><span class="line">[root@server1 ~]# ll file1 # 显示结果</span><br></pre></td></tr></table></figure>
+<h5 id="使用数字更改"><a href="#使用数字更改" class="headerlink" title="使用数字更改"></a>使用数字更改</h5><p>数字表示的属性的含义：0表示没有权限，1表示可执行权限，2表示可写权限，4表示可读权限，然后将其相加。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@server1 ~]# chmod 644 file1</span><br><span class="line">[root@server1 ~]# ll file1</span><br></pre></td></tr></table></figure>
+<h4 id="r、w、x权限对文件和目录的意义"><a href="#r、w、x权限对文件和目录的意义" class="headerlink" title="r、w、x权限对文件和目录的意义"></a>r、w、x权限对文件和目录的意义</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">权限               对文件的影响                      对目录的影响</span><br><span class="line">r(读取)          可以读取文件的内容        可以列出目录的内容(文件名)，可以使用ls命令</span><br><span class="line">w(写入)          可以更改文件的内容        可以创建或删除目录中的任一文件，可以使用touch、rm命令</span><br><span class="line">x(可执行)        可以作为命令执行文件      可以访问目录的内容(取决于目录中文件的权限)，可以使用cd命令</span><br></pre></td></tr></table></figure>
+<p>对目录有w权限,可以在目录中创建新文件，可以删除文件夹中的文件(跟文件权限无关)，对文件x权限小心给予。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">[root@server1 ~]# chmod 777 /dir10/</span><br><span class="line">[root@server1 ~]# chmod 000 /dir10/file1</span><br><span class="line">[root@server1 ~]# ll -d /dir10/</span><br><span class="line">drwxrwxrwx. 2 root root 19 9月  4 11:44 /dir10/</span><br><span class="line">[root@server1 ~]# ll /dir10/file1</span><br><span class="line">----------. 1 root root 0 9月  4 11:44 /dir10/file1</span><br><span class="line">[root@server1 ~]# su centos</span><br><span class="line">[centos@server1 root]$ cat /dir10/file1</span><br><span class="line">cat: /dir10/file1: 权限不够</span><br><span class="line">[centos@server1 root]$ rm -rf /dir10/file1</span><br></pre></td></tr></table></figure>
+<h3 id="ACL设置基本权限-r-w-x"><a href="#ACL设置基本权限-r-w-x" class="headerlink" title="ACL设置基本权限 (r,w,x)"></a>ACL设置基本权限 (r,w,x)</h3><p>ACL主要是针对单一用户、单一文件或目录来进行r、w、x的特殊权限，实现灵活的权限管理，除了文件的所有者，所有组和其他人，可以对更多用户设置权限。centos7默认创建的xfs和ext4文件系统具有ACL功能。</p>
+<h4 id="ACL基本用法-setfacl"><a href="#ACL基本用法-setfacl" class="headerlink" title="ACL基本用法 setfacl"></a>ACL基本用法 setfacl</h4><p>setfacl命令可以用来细分linux下的文件权限。chmod命令可以把文件权限分为u,g,o三个组，而setfacl可以对每一个文件或目录设置更精确的文件权限。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">setfacl</span><br><span class="line">常用选项：</span><br><span class="line">-m ：添加acl设定参数</span><br><span class="line">-x ：删除acl设定参数</span><br><span class="line">-b ：移除所有的ACL设定参数</span><br><span class="line">-R ：递归添加acl设定参数</span><br><span class="line">-d ：添加默认acl设定参数（目录）</span><br><span class="line">删除用户权限：setacl -x u:username filename</span><br><span class="line">删除组权限：setacl -x g:groupname filename</span><br><span class="line">删除整个acl权限：setacl -b filename</span><br></pre></td></tr></table></figure>
+<p>看一个实例：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">[root@server1 ~]# getfacl test   #查看一个test文件的acl</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">file: <span class="built_in">test</span></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">owner: root</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">group: root</span></span><br><span class="line">user::r-x</span><br><span class="line">user:tank:rwx #effective:---</span><br><span class="line">group::r-x #effective:---</span><br><span class="line">mask::---</span><br><span class="line">other::---</span><br></pre></td></tr></table></figure>
+<p>修改之后再查看：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">[root@server1 ~]# setfacl -m u:zhangy:rw- test #修改文件的acl权限，添加一个用户权限</span><br><span class="line">[root@server1 ~]# getfacl test</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">file: <span class="built_in">test</span></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">owner: root</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">group: root</span></span><br><span class="line">user::r-x</span><br><span class="line">user:zhangy:rw- #多出来一个用户</span><br><span class="line">user:tank:rwx</span><br><span class="line">group::r-x</span><br><span class="line">mask::rwx</span><br><span class="line">other::---</span><br><span class="line">[root@server1 ~]# setfacl -m g:zhangying:r-w test #添加一个组</span><br><span class="line">[root@server1 ~]# getfacl test</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">file: <span class="built_in">test</span></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">owner: root</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">group: root</span></span><br><span class="line">user::r-x</span><br><span class="line">user:zhangy:rw-</span><br><span class="line">user:tank:rwx</span><br><span class="line">group::r-x</span><br><span class="line">group:zhangying:rw-</span><br><span class="line">mask::rwx</span><br><span class="line">other::---</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">[root@server1 ~]# setfacl -m u:centos:rw file1 # 增加用户权限</span><br><span class="line">[root@server1 ~]# setfacl -m u:user05:- file1 # 增加用户权限</span><br><span class="line">[root@server1 ~]# setfacl -m o::rw file1 # 修改其他人权限</span><br><span class="line"></span><br><span class="line">[root@server1 ~]# setfacl -m g:hr:r file1 # 增加组权限</span><br><span class="line">[root@server1 ~]# setfacl -x g:hr file1 # 删除组权限</span><br><span class="line">[root@server1 ~]# setfacl -b file1 # 删除所有acl权限</span><br><span class="line"></span><br><span class="line">[root@server1 ~]# man setfacl</span><br><span class="line">[root@server1 ~]# getfacl file1 |setfacl --set-file=- file2 # 复制file1的acl给file2</span><br></pre></td></tr></table></figure>
+<h4 id="mask权限"><a href="#mask权限" class="headerlink" title="mask权限"></a>mask权限</h4><p>ACL权限一般与<strong>最大有效权限</strong>mask结合使用，ACL权限与mask权限相与的值相与后的权限，为设定的真实权限。mask用于临时降低用户或组(除属主和其他人)的权限。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">如果设定ACL权限为 r-- ,mask的权限为r-x，那么真实权限为r--。</span><br><span class="line">如果设定ACL权限为 rwx ,mask的权限为r-x，那么真实权限为r-x。</span><br><span class="line">意思就是ACL与mask两者同时具有某一权限时，真实权限才具备该权限，若有一方不具备该权限，则真实权限不具备此权限。</span><br><span class="line">mask权限默认为rwx，相当于没有意义，因为相当于我们设定的acl权限为acl权限本身。我们可以通过调整mask权限来完成指定权限的更改。</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">[root@server1 ~]# setfacl -m o::- file1</span><br><span class="line">[root@server1 ~]# setfacl -m m::--- file1</span><br><span class="line">[root@server1 ~]# getfacl file1</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">file: file1</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">owner: centos</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">group: it</span></span><br><span class="line">user::rw-</span><br><span class="line">group::r-- #effective:---</span><br><span class="line">mask::---</span><br><span class="line">other::---</span><br></pre></td></tr></table></figure>
+<h4 id="default"><a href="#default" class="headerlink" title="default"></a>default</h4><p>一般针对目录，默认权限独立于该目录本身的权限，规定了在该目录中创建的文件的默认ACL权限。<br>要求：希望centos能够对 &#x2F;home 以及以后在 &#x2F;home 下新建的文件有读、写、执行权限</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">[root@server1 ~]# setfacl -m u:centos:rwx /home</span><br><span class="line">[root@server1 ~]# setfacl -m d:u:centos:rwx /home</span><br><span class="line">[root@server1 ~]# getfacl /home</span><br><span class="line">getfacl: Removing leading &#x27;/&#x27; from absolute path names</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">file: home</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">owner: root</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">group: root</span></span><br><span class="line">user::rwx</span><br><span class="line">user:centos:rwx</span><br><span class="line">group::r-x</span><br><span class="line">mask::rwx</span><br><span class="line">other::r-x</span><br><span class="line">default:user::rwx</span><br><span class="line">default:user:centos:rwx</span><br><span class="line">default:group::r-x</span><br><span class="line">default:mask::rwx</span><br><span class="line">default:other::r-x</span><br></pre></td></tr></table></figure>
+<p>设置后，该目录下的所有文件创建时都会拥有其规定的ACL权限</p>
+<h4 id="删除权限"><a href="#删除权限" class="headerlink" title="删除权限"></a>删除权限</h4><p>删除特定用户，将选项-m改为-x，参数最后一段舍去即可，例如</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">setfacl -x u:test a</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">删除了赋予<span class="built_in">test</span>用户的ACL权限</span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">删除所有ACL权限，选项改为-d ，参数不加</span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">删除默认ACL权限，选项改为-k ，参数不加</span></span><br></pre></td></tr></table></figure>
+<h3 id="特殊权限"><a href="#特殊权限" class="headerlink" title="特殊权限"></a>特殊权限</h3><p>文件的特殊权限包括：SUID 4、SGID 2、SBIT 1</p>
+<h4 id="SUID-Set-UID"><a href="#SUID-Set-UID" class="headerlink" title="SUID(Set UID)"></a>SUID(Set UID)</h4><p>suid：借出程序所有者的权限<br>s：程序所属主有x权限<br>S：程序所属主没有x权限<br>SUID权限仅对二进制程序有效<br>仅在本程序中拥有改权限<br>属主拥有s权限，即可将自己的权限暂时借给其他人使用</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">[root@server1 ~]# ll /root/file2</span><br><span class="line">-rw-r--rw-. 1 root root 0 9月  4 13:48 /root/file2</span><br><span class="line">[root@server1 ~]# su - centos</span><br><span class="line">上一次登录：日 9月  8 18:31:49 CST 2019pts/1 上</span><br><span class="line">[centos@server1 ~]$ cat /root/file2</span><br><span class="line">cat: /root/file2: 权限不够</span><br><span class="line">[centos@server1 ~]$ ll /root/file2</span><br><span class="line">ls: 无法访问/root/file2: 权限不够</span><br></pre></td></tr></table></figure>
+<p>系统会检查进程的所有者，根据所有者设置的权限来确定是否对文件有权限</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[root@server1 ~]# ll /etc/shadow</span><br><span class="line">----------. 1 root root 1760 9月  5 11:12 /etc/shadow</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">普通用户依旧是可以修改密码</span></span><br><span class="line">[root@server1 ~]# ll /usr/bin/passwd</span><br><span class="line">-rwsr-xr-x. 1 root root 27832 6月  10 2014 /usr/bin/passwd</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">密码文件/etc/shadow只有root用户拥有修改权限，那其他用户是如何修改自身密码的呢，那就是由于命令passwd拥有SUID权限</span><br><span class="line">  a、vbird 对於 /usr/bin/passwd 这个程序来说是具有 x 权限的，表示 vbird 能运行 passwd；</span><br><span class="line">  b、passwd 的拥有者是 root 这个帐号；</span><br><span class="line">  c、vbird 运行 passwd 的过程中，会『暂时』获得 root 的权限；</span><br><span class="line">  d、/etc/shadow 就可以被 vbird 所运行的 passwd 所修改。</span><br><span class="line">但如果vbird使用cat去读取/etc/shadow时，他能够读取吗？因为cat不具有SUID的权限，所以vbird运行『cat/etc/shadow』时，是不能读取/etc/shadow的。</span><br></pre></td></tr></table></figure>
+<h4 id="SGID权限"><a href="#SGID权限" class="headerlink" title="SGID权限"></a>SGID权限</h4><p>1.针对用户组权限位修改，用户创建的目录或文件所属组和该目录的所属组一致。（比如给一个文件路径设置了特殊权限为 ，假设这个路径数组为hr，那么user1在此目录下创建的文件数组将不是user1组，而是hr组）<br>二进制程序有效<br>执行者拥有x权限<br>执行过程中暂时拥有用户组权限<br>高级权限的类型<br>s：程序所属主有x权限<br>S：程序所属主没有x权限</p>
+<h4 id="SBIT权限"><a href="#SBIT权限" class="headerlink" title="SBIT权限"></a>SBIT权限</h4><p><strong>用来做共享目录</strong><br><strong>当属主拥有x权限时，用小写的字母t表示，当属主没有x权限时，用大写字母T权限表示1</strong><br>只针对目录有效<br><strong>用户在此目录中创建文件时，只有root用户和自己可以删除该文件，其他用户是不可以修改此文件</strong><br>典型例子&#x2F;tmp这个目录</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[zhangsan@server1 tmp]$ ll -d /tmp/</span><br><span class="line">drwxrwxrwt. 9 root root 4096 9月 13 16:08 /tmp/</span><br><span class="line">suid 4 # 使用文件所有者身份执行文件&lt;针对文件&gt;</span><br><span class="line">sgid 2 # 新建文件继承目录属组&lt;针对目录&gt;</span><br><span class="line">sticky 1 # 文件只能由文件拥有者，root,文件夹拥有者删除&lt;针对目录&gt;</span><br></pre></td></tr></table></figure>
+<h4 id="SUID，SGID，Sticky-Bit-权限设置"><a href="#SUID，SGID，Sticky-Bit-权限设置" class="headerlink" title="SUID，SGID，Sticky Bit 权限设置"></a>SUID，SGID，Sticky Bit 权限设置</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash">1.以符号进行赋权</span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">SUID赋权</span></span><br><span class="line">chmod u+s filename</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">SGID赋权</span></span><br><span class="line">chmod g+s filename/dirname</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">SBIT赋权</span></span><br><span class="line">chmod o+t filename</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">2.以数字进行赋权</span></span><br><span class="line">SUID SGID SBIT</span><br><span class="line"> 4    2    1</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">举例</span></span><br><span class="line">chmod 1777 filename 等效与chmod o+t filename</span><br><span class="line">chmod 7777 filename 等效于同时为赋权SUID、SGID、SBIT权限</span><br></pre></td></tr></table></figure>
+<p>&#x2F;tmp 文件夹是1777权限，否则会导致程序不能正常运行</p>
+<h4 id="chattr权限"><a href="#chattr权限" class="headerlink" title="chattr权限"></a>chattr权限</h4><p>可以改变文件的属性，对root有限制</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">语法：chattr 【+-=】【选项】 +文件名或目录名</span><br><span class="line">+：增加权限</span><br><span class="line">-：删除权限</span><br><span class="line">=：等于某权限</span><br><span class="line">选项：</span><br><span class="line">i：对于文件，不允许对文件进行删除，改名，添加和修改数据，但可以看。</span><br><span class="line">对于目录，只能修改目录下的文件数据，但不允许建立和删除文件。（相当于把文件或目录锁起来）</span><br><span class="line">a：对于文件，只能在文件中增加数据，但是不能删除也不能修改数据。（不能用vim来添加或删除数据，只能用echo，如：echo 内</span><br><span class="line">容&gt;&gt;文件名）</span><br><span class="line">对于目录，只允许在目录中建立和修改文件，但是不允许删除。（相当于把已经有的数据锁起来）</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">[root@server1 ~]# lsattr file2</span><br><span class="line">---------------- file2</span><br><span class="line">[root@server1 ~]# chattr +a file2</span><br><span class="line">[root@server1 ~]# lsattr file2</span><br><span class="line">-----a---------- file2</span><br><span class="line">[root@server1 ~]# man chattr</span><br><span class="line">----------</span><br><span class="line">ATTRIBUTES(属性)</span><br><span class="line">当修改设置了&#x27;A&#x27;属性的文件时,它的atime记录不会改变.</span><br><span class="line">这可以在笔记本电脑系统中避免某些磁盘I/O处理.</span><br><span class="line">设置了`a&#x27;属性的文件只能在添加模式下打开用于写入. 只有超级用户可以设置或清除该属性.</span><br><span class="line">设置了`c&#x27;属性的文件在磁盘上由内核自动进行压缩处理.</span><br><span class="line">从该文件读取时返回的是未压缩的数据.</span><br><span class="line">对该文件的一次写入会在保存它们到磁盘之前进行数据压缩.</span><br><span class="line">设置了`d&#x27;属性的文件不能对其运行 dump(8) 程序进行备份.</span><br><span class="line">设置了`i&#x27;属性的文件不能进行修改:你既不能删除它,也不能给它重新命名,你不能对该文件创建链接, 而且也不能对该文件写入任何数据.</span><br><span class="line">只有超级用户可以设置或清除该属性.</span><br><span class="line">当删除设置了`s&#x27;属性的文件时,将对其数据块清零 并写回到磁盘上.</span><br><span class="line">当修改设置了`S&#x27;属性的文件时,修改会同步写入到磁盘上;</span><br><span class="line">这与应用到文件子系统上的`sync&#x27;挂载选项有相同的效果.</span><br><span class="line">当删除设置了`u&#x27;属性的文件时, 将会保存其内容. 这使得用户可以请求恢复被删除的文件.</span><br></pre></td></tr></table></figure>
+<h4 id="umask-进程的文件权限掩码"><a href="#umask-进程的文件权限掩码" class="headerlink" title="umask 进程的文件权限掩码"></a>umask 进程的文件权限掩码</h4><p>umask概述：登录系统之后在当前登录shell进程l中，创建一个文件总是有一个默认权限的，默认权限的由来就是umask干的事情，umask设置了用户创建文件的默认权限，它与chmod的效果刚好相反，umask设置的是权限“补码”，而chmod设置的是文件权限码。umask表示要减掉得到权限。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">shell (vim,touch) 新文件或目录权限</span><br><span class="line">vsftpd 新文件或目录权限</span><br><span class="line">samba 新文件或目录权限</span><br><span class="line">useradd 用户HOME</span><br><span class="line"></span><br><span class="line">[root@server1 ~]# type -a umask</span><br><span class="line">umask 是 shell 内嵌</span><br><span class="line">umask 是 /usr/bin/umask</span><br><span class="line">[root@server1 ~]# help umask</span><br><span class="line">umask: umask [-p] [-S] [模式]</span><br><span class="line"> 显示或设定文件模式掩码。</span><br><span class="line"> </span><br><span class="line"> 设定用户文件创建掩码为 MODE 模式。如果省略了 MODE，则打印当前掩码的值。</span><br><span class="line"> </span><br><span class="line"> 如果MODE 模式以数字开头，则被当作八进制数解析；否则是一个chmod(1) 可接收的符号模式串。</span><br><span class="line"> 选项：</span><br><span class="line">   -p 如果省略 MDOE 模式，以可重用为输入的格式输入</span><br><span class="line">   -S 以符号形式输出，否则以八进制数格式输出</span><br><span class="line">   </span><br><span class="line"> 退出状态：</span><br><span class="line"> 返回成功，除非使用了无效的 MODE 模式或者选项。</span><br></pre></td></tr></table></figure>
+<p>实例1：在shell进程中创建文件</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">[root@server1 ~]# umask # 查看当前用户的umask权限</span><br><span class="line">0022</span><br><span class="line">[root@server1 ~]# umask -S # 查看最终有的权限</span><br><span class="line">u=rwx,g=rx,o=rx</span><br><span class="line">[root@server1 ~]# touch file1</span><br><span class="line">[root@server1 ~]# mkdir dir1</span><br><span class="line">[root@server1 ~]# ll -d dir1/ file1</span><br><span class="line">drwxr-xr-x. 2 root root 6 9月  9 09:29 dir1/</span><br><span class="line">-rw-r--r--. 1 root root 0 9月  9 09:29 file1</span><br></pre></td></tr></table></figure>
+<p>实例2：修改shell umask值(临时)</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[root@server1 ~]# umask 0000</span><br><span class="line">[root@server1 ~]# mkdir dir2</span><br><span class="line">[root@server1 ~]# touch file2</span><br><span class="line">[root@server1 ~]# ll -d file2 dir2</span><br><span class="line">drwxrwxrwx. 2 root root 6 9月  9 09:31 dir2</span><br><span class="line">-rw-rw-rw-. 1 root root 0 9月  9 09:31 file2</span><br></pre></td></tr></table></figure>
+<p>示例3:修改shell umask值(永久 建议别改)</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">[root@server1 ~]# vim /etc/profile</span><br><span class="line">--------------</span><br><span class="line">59 if [ $UID -gt 199 ] &amp;&amp; [ &quot;`/usr/bin/id -gn`&quot; = &quot;`/usr/bin/id -un`&quot; ];</span><br><span class="line">then</span><br><span class="line">60   umask 002</span><br><span class="line">61 else</span><br><span class="line">62   umask 022</span><br><span class="line">63 fi</span><br><span class="line">---------------</span><br><span class="line">[root@server1 ~]# source /etc/profile # 立即在当前shell中生效</span><br></pre></td></tr></table></figure>
+<p>示例4:通过umask决定新建用户 HOME 目录的权限</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[root@server1 ~]# vim /etc/login.defs</span><br><span class="line">-----------------</span><br><span class="line">61 # The permission mask is initialized to this value. If not specified,</span><br><span class="line">62 # the permission mask will be initialized to 022.</span><br><span class="line">63 UMASK      077</span><br></pre></td></tr></table></figure>
+
+
+    </div>
+
+
+  <div style="text-align:center;color: #ccc;font-size:18px;">
+    ---------Thanks for your attention---------
+  </div>
+
+
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="followme">
+  <span>欢迎关注我的其它发布渠道</span>
+
+  <div class="social-list">
+
+      <div class="social-item">
+          <a target="_blank" class="social-link" href="/atom.xml">
+            <span class="icon">
+              <i class="fa fa-rss"></i>
+            </span>
+
+            <span class="label">RSS</span>
+          </a>
+      </div>
+  </div>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/Linux/" rel="tag"><i class="fa fa-tag"></i> Linux</a>
+          </div>
+
+
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2023/12/25/11.%E7%94%A8%E6%88%B7%E7%AE%A1%E7%90%86/" rel="prev" title="用户管理">
+                  <i class="fa fa-angle-left"></i> 用户管理
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2024/01/05/java8%E7%8E%AF%E5%A2%83%E5%AE%89%E8%A3%85/" rel="next" title="JDK8安装">
+                  JDK8安装 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2024</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">ZHANG</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+      <span>站点总字数：</span>
+    <span title="站点总字数">284k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span>站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">4:19</span>
+  </span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script size="30" alpha="0.6" zIndex="-1" src="https://cdnjs.cloudflare.com/ajax/libs/ribbon.js/1.0.2/ribbon.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fancyapps-ui/5.0.31/fancybox/fancybox.umd.js" integrity="sha256-a+H7FYzJv6oU2hfsfDGM2Ohw/cR9v+hPfxHCLdmCrE8=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lozad.js/1.16.0/lozad.min.js" integrity="sha256-mOFREFhqmHeQbXpK2lp4nA3qooVgACfh88fpJftLBbc=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pangu/4.0.7/pangu.min.js" integrity="sha256-j+yj56cdEY2CwkVtGyz18fNybFGpMGJ8JxG3GSyO2+I=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/sidebar.js"></script><script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+  <script src="/js/third-party/fancybox.js"></script>
+
+  <script src="/js/third-party/pace.js"></script>
+
+
+  
+
+
+
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/quicklink/2.3.0/quicklink.umd.js" integrity="sha256-yvJQOINiH9fWemHn0vCA5lsHWJaHs6/ZmO+1Ft04SvM=" crossorigin="anonymous"></script>
+  <script class="next-config" data-name="quicklink" type="application/json">{"enable":true,"home":true,"archive":true,"delay":true,"timeout":3000,"priority":true,"url":"http://example.com/2023/12/26/12.%E6%96%87%E4%BB%B6%E6%9D%83%E9%99%90%E7%AE%A1%E7%90%86/"}</script>
+  <script src="/js/third-party/quicklink.js"></script>
+
+</body>
+</html>
