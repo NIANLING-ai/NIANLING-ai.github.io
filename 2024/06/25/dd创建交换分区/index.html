@@ -23,28 +23,28 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.20.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"copycode":{"enable":true,"style":"mac"},"fold":{"enable":false,"height":500},"bookmark":{"enable":true,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
 
-    <meta name="description" content="可以提取选定目录子目录里面的图片到当前目录">
+    <meta name="description" content="创建扩展或者缩减swap分区">
 <meta property="og:type" content="blog">
-<meta property="og:title" content="图片提取器">
-<meta property="og:url" content="http://example.com/2024/05/31/%E6%8F%90%E5%8F%96%E5%9B%BE%E7%89%87%E5%99%A8/index.html">
+<meta property="og:title" content="使用dd命令管理swap">
+<meta property="og:url" content="http://example.com/2024/06/25/dd%E5%88%9B%E5%BB%BA%E4%BA%A4%E6%8D%A2%E5%88%86%E5%8C%BA/index.html">
 <meta property="og:site_name" content="清风">
-<meta property="og:description" content="可以提取选定目录子目录里面的图片到当前目录">
+<meta property="og:description" content="创建扩展或者缩减swap分区">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2024-05-31T01:25:00.000Z">
-<meta property="article:modified_time" content="2024-05-31T01:25:00.000Z">
+<meta property="article:published_time" content="2024-06-25T01:25:00.000Z">
+<meta property="article:modified_time" content="2024-06-25T01:25:00.000Z">
 <meta property="article:author" content="ZHANG">
-<meta property="article:tag" content="Python软件">
+<meta property="article:tag" content="Linux">
 <meta name="twitter:card" content="summary">
 
 
-<link rel="canonical" href="http://example.com/2024/05/31/%E6%8F%90%E5%8F%96%E5%9B%BE%E7%89%87%E5%99%A8/">
+<link rel="canonical" href="http://example.com/2024/06/25/dd%E5%88%9B%E5%BB%BA%E4%BA%A4%E6%8D%A2%E5%88%86%E5%8C%BA/">
 
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2024/05/31/%E6%8F%90%E5%8F%96%E5%9B%BE%E7%89%87%E5%99%A8/","path":"2024/05/31/提取图片器/","title":"图片提取器"}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2024/06/25/dd%E5%88%9B%E5%BB%BA%E4%BA%A4%E6%8D%A2%E5%88%86%E5%8C%BA/","path":"2024/06/25/dd创建交换分区/","title":"使用dd命令管理swap"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
-<title>图片提取器 | 清风</title>
+<title>使用dd命令管理swap | 清风</title>
   
 
 
@@ -145,7 +145,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9B%BE%E7%89%87%E6%8F%90%E5%8F%96%E5%99%A8"><span class="nav-number">1.</span> <span class="nav-text">图片提取器</span></a></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8dd%E5%91%BD%E4%BB%A4%E5%88%9B%E5%BB%BAswap"><span class="nav-number">1.</span> <span class="nav-text">使用dd命令创建swap</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%BB%98%E8%AE%A4%E5%BC%80%E5%A7%8B%E6%B2%A1%E6%9C%89%E4%BA%A4%E6%8D%A2%E5%88%86%E5%8C%BA"><span class="nav-number">1.1.</span> <span class="nav-text">默认开始没有交换分区</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%89%A9%E5%B1%95%E4%BA%A4%E6%8D%A2%E5%88%86%E5%8C%BA"><span class="nav-number">1.2.</span> <span class="nav-text">扩展交换分区</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%B6%89%E5%8F%8A%E5%8E%9F%E6%9C%89%E5%88%86%E5%8C%BA"><span class="nav-number">1.2.1.</span> <span class="nav-text">涉及原有分区</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%B8%8D%E6%B6%89%E5%8F%8A%E5%8E%9F%E6%9C%89%E5%88%86%E5%8C%BA"><span class="nav-number">1.2.2.</span> <span class="nav-text">不涉及原有分区</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BC%A9%E5%87%8Fswap%E5%88%86%E5%8C%BA-%E6%96%87%E4%BB%B6%E5%BD%A2%E5%BC%8F%E7%9A%84"><span class="nav-number">1.3.</span> <span class="nav-text">缩减swap分区(文件形式的)</span></a></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -230,7 +230,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2024/05/31/%E6%8F%90%E5%8F%96%E5%9B%BE%E7%89%87%E5%99%A8/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2024/06/25/dd%E5%88%9B%E5%BB%BA%E4%BA%A4%E6%8D%A2%E5%88%86%E5%8C%BA/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.png">
@@ -243,12 +243,12 @@
     </span>
 
     <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="图片提取器 | 清风">
+      <meta itemprop="name" content="使用dd命令管理swap | 清风">
       <meta itemprop="description" content="">
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          图片提取器
+          使用dd命令管理swap
         </h1>
 
         <div class="post-meta-container">
@@ -259,7 +259,7 @@
       </span>
       <span class="post-meta-item-text">发表于</span>
 
-      <time title="创建时间：2024-05-31 09:25:00" itemprop="dateCreated datePublished" datetime="2024-05-31T09:25:00+08:00">2024-05-31</time>
+      <time title="创建时间：2024-06-25 09:25:00" itemprop="dateCreated datePublished" datetime="2024-06-25T09:25:00+08:00">2024-06-25</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -267,7 +267,7 @@
       </span>
       <span class="post-meta-item-text">分类于</span>
         <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Python%E8%BD%AF%E4%BB%B6/" itemprop="url" rel="index"><span itemprop="name">Python软件</span></a>
+          <a href="/categories/Linux/" itemprop="url" rel="index"><span itemprop="name">Linux</span></a>
         </span>
     </span>
 
@@ -278,14 +278,14 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>1.8k</span>
+      <span>1.2k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>2 分钟</span>
+      <span>1 分钟</span>
     </span>
 </div>
 
@@ -295,7 +295,118 @@
     
     
     
-    <div class="post-body" itemprop="articleBody"><h2 id="图片提取器"><a href="#图片提取器" class="headerlink" title="图片提取器"></a>图片提取器</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> shutil</span><br><span class="line"><span class="keyword">import</span> tkinter <span class="keyword">as</span> tk</span><br><span class="line"><span class="keyword">from</span> tkinter <span class="keyword">import</span> filedialog, messagebox</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">extract_images_to_current_dir</span>(<span class="params">current_dir</span>):</span><br><span class="line">    <span class="comment"># 遍历当前目录及其子目录</span></span><br><span class="line">    <span class="keyword">for</span> root, dirs, files <span class="keyword">in</span> os.walk(current_dir):</span><br><span class="line">        <span class="keyword">for</span> file <span class="keyword">in</span> files:</span><br><span class="line">            <span class="comment"># 检查文件扩展名，确保是图片文件（如jpg, jpeg, png, gif等）</span></span><br><span class="line">            <span class="keyword">if</span> file.lower().endswith((<span class="string">&#x27;.png&#x27;</span>, <span class="string">&#x27;.jpg&#x27;</span>, <span class="string">&#x27;.jpeg&#x27;</span>, <span class="string">&#x27;.gif&#x27;</span>, <span class="string">&#x27;.bmp&#x27;</span>, <span class="string">&#x27;.tiff&#x27;</span>)):</span><br><span class="line">                full_file_path = os.path.join(root, file)</span><br><span class="line">                <span class="comment"># 目标路径是在当前目录</span></span><br><span class="line">                target_path = os.path.join(current_dir, file)</span><br><span class="line"></span><br><span class="line">                <span class="comment"># 如果目标文件已经存在，在文件名后面加一个计数来避免覆盖</span></span><br><span class="line">                <span class="keyword">if</span> os.path.exists(target_path):</span><br><span class="line">                    name, ext = os.path.splitext(file)</span><br><span class="line">                    count = <span class="number">1</span></span><br><span class="line">                    target_path = os.path.join(current_dir, <span class="string">f&quot;<span class="subst">&#123;name&#125;</span>_<span class="subst">&#123;count&#125;</span><span class="subst">&#123;ext&#125;</span>&quot;</span>)</span><br><span class="line">                    <span class="keyword">while</span> os.path.exists(target_path):</span><br><span class="line">                        count += <span class="number">1</span></span><br><span class="line">                        target_path = os.path.join(current_dir, <span class="string">f&quot;<span class="subst">&#123;name&#125;</span>_<span class="subst">&#123;count&#125;</span><span class="subst">&#123;ext&#125;</span>&quot;</span>)</span><br><span class="line"></span><br><span class="line">                <span class="comment"># 将文件复制到目标路径</span></span><br><span class="line">                shutil.copy2(full_file_path, target_path)</span><br><span class="line"></span><br><span class="line">    messagebox.showinfo(<span class="string">&quot;完成&quot;</span>, <span class="string">&quot;图片文件提取完成。&quot;</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">select_directory</span>():</span><br><span class="line">    <span class="comment"># 选择目录</span></span><br><span class="line">    current_dir = filedialog.askdirectory()</span><br><span class="line">    <span class="keyword">if</span> current_dir:</span><br><span class="line">        extract_images_to_current_dir(current_dir)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">center_window_on_screen</span>(<span class="params">window</span>):</span><br><span class="line">    window_width = window.winfo_screenwidth() // <span class="number">2</span></span><br><span class="line">    window_height = window.winfo_screenheight() // <span class="number">2</span></span><br><span class="line">    window_x = window.winfo_screenwidth() // <span class="number">4</span></span><br><span class="line">    window_y = window.winfo_screenheight() // <span class="number">4</span></span><br><span class="line">    window.geometry(<span class="string">f&quot;<span class="subst">&#123;window_width&#125;</span>x<span class="subst">&#123;window_height&#125;</span>+<span class="subst">&#123;window_x&#125;</span>+<span class="subst">&#123;window_y&#125;</span>&quot;</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建主窗口</span></span><br><span class="line">root = tk.Tk()</span><br><span class="line">root.title(<span class="string">&quot;图片提取器&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置窗口大小并居中</span></span><br><span class="line">center_window_on_screen(root)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建按钮来选择目录，并居中显示</span></span><br><span class="line">btn_select_directory = tk.Button(root, text=<span class="string">&quot;选择目录&quot;</span>, command=select_directory)</span><br><span class="line">btn_select_directory.pack(pady=<span class="number">20</span>)</span><br><span class="line">btn_select_directory.place(relx=<span class="number">0.5</span>, rely=<span class="number">0.5</span>, anchor=tk.CENTER)  <span class="comment"># 居中显示按钮</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 运行Tkinter主循环</span></span><br><span class="line">root.mainloop()</span><br></pre></td></tr></table></figure>
+    <div class="post-body" itemprop="articleBody"><h2 id="使用dd命令创建swap"><a href="#使用dd命令创建swap" class="headerlink" title="使用dd命令创建swap"></a>使用dd命令创建swap</h2><h3 id="默认开始没有交换分区"><a href="#默认开始没有交换分区" class="headerlink" title="默认开始没有交换分区"></a>默认开始没有交换分区</h3><ul>
+<li>生成一个8GB大小的交换文件</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo <span class="built_in">dd</span> <span class="keyword">if</span>=/dev/zero of=/swapfile bs=1G count=8</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>限制交换文件的访问权限，仅允许文件所有者读写</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo <span class="built_in">chmod</span> 600 /swapfile</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>将文件设置为交换空间</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo mkswap /swapfile</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>启用交换文件作为虚拟内存</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo swapon /swapfile</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>加入开机启动配置文件</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo <span class="built_in">echo</span> <span class="string">&quot;/swapfile swap swap defaults 0 0&quot;</span> &gt;&gt; /etc/fstab</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>检验一下是否成功</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo swapon -s</span><br></pre></td></tr></table></figure>
+
+<h3 id="扩展交换分区"><a href="#扩展交换分区" class="headerlink" title="扩展交换分区"></a>扩展交换分区</h3><h4 id="涉及原有分区"><a href="#涉及原有分区" class="headerlink" title="涉及原有分区"></a>涉及原有分区</h4><p>使用 dd 命令创建的 swap 分区无法直接扩展。需要先关闭现有的 swap 分区，删除 swap 文件，再创建一个更大的 swap 文件，最后再启用它。</p>
+<p><strong>小例子：如何将 8G 的 swap 分区扩展到 12G ?</strong></p>
+<ul>
+<li>停用现有 swap 分区：</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo swapoff /swapfile</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>删除旧的 swap 文件：</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo <span class="built_in">rm</span> /swapfile</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>创建新的 12G swap 文件：</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo <span class="built_in">dd</span> <span class="keyword">if</span>=/dev/zero of=/swapfile bs=1G count=12</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>设置文件权限和属性：</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo <span class="built_in">chmod</span> 600 /swapfile</span><br><span class="line">sudo mkswap /swapfile</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>启用新的 swap 分区：</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo swapon /swapfile</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>更新 &#x2F;etc&#x2F;fstab 文件：</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo sed -i <span class="string">&#x27;s/^\/swapfile.*/\/swapfile swap swap defaults 0 0/&#x27;</span> /etc/fstab</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>验证 swap 分区是否已启用：</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo swapon -s</span><br></pre></td></tr></table></figure>
+
+<h4 id="不涉及原有分区"><a href="#不涉及原有分区" class="headerlink" title="不涉及原有分区"></a>不涉及原有分区</h4><ul>
+<li>查看所有交换分区</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">swapon --show</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>直接创建一个新的交换文件</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo <span class="built_in">dd</span> <span class="keyword">if</span>=/dev/zero of=/mnt/newswapfile bs=1M count=2048</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>开启交换分区</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo mkswap /mnt/newswapfile</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>激活</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo swapon /mnt/newswapfile</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>确认</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">swapon --show</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>持久化</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> <span class="string">&#x27;/mnt/newswapfile none swap sw 0 0&#x27;</span> &gt;&gt; /etc/fstab</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>看下实际可用有多少</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">free -h</span><br></pre></td></tr></table></figure>
+
+<h3 id="缩减swap分区-文件形式的"><a href="#缩减swap分区-文件形式的" class="headerlink" title="缩减swap分区(文件形式的)"></a>缩减swap分区(文件形式的)</h3><ul>
+<li><p>首先，关闭正在使用的 Swap 分区：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo swapoff -v /swapfile <span class="comment">#（将 `/swapfile` 替换为您实际的 Swap 分区路径）</span></span><br></pre></td></tr></table></figure></li>
+<li><p>然后，删除或调整 Swap 文件的大小。如果是文件形式的 Swap，您可以使用 <code>truncate</code> 命令来调整大小</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo <span class="built_in">truncate</span> -s &lt;new_size&gt; /swapfile <span class="comment">#（`&lt;new_size&gt;` 为您期望的新大小）</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>重新格式化并启用调整后的 Swap 分区：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo mkswap /swapfile</span><br><span class="line">sudo swapon /swapfile</span><br></pre></td></tr></table></figure></li>
+</ul>
+
     </div>
 
 
@@ -328,7 +439,7 @@
 </div>
 
           <div class="post-tags">
-              <a href="/tags/Python%E8%BD%AF%E4%BB%B6/" rel="tag"><i class="fa fa-tag"></i> Python软件</a>
+              <a href="/tags/Linux/" rel="tag"><i class="fa fa-tag"></i> Linux</a>
           </div>
 
 
@@ -337,14 +448,11 @@
 
           <div class="post-nav">
             <div class="post-nav-item">
-                <a href="/2024/05/30/Redhat%E5%88%A0%E9%99%A4home%E6%8C%82%E8%BD%BD%E7%82%B9&%E6%89%A9%E5%B1%95%E5%88%B0%E6%A0%B9/" rel="prev" title="Redhat删除/home挂载点&扩展到根">
-                  <i class="fa fa-angle-left"></i> Redhat删除/home挂载点&扩展到根
+                <a href="/2024/06/15/%E6%89%B9%E9%87%8F%E5%91%BD%E5%90%8D/" rel="prev" title="批量命名器">
+                  <i class="fa fa-angle-left"></i> 批量命名器
                 </a>
             </div>
             <div class="post-nav-item">
-                <a href="/2024/06/01/%E5%AF%86%E7%A0%81%E7%94%9F%E6%88%90%E5%99%A8/" rel="next" title="密码生成器">
-                  密码生成器 <i class="fa fa-angle-right"></i>
-                </a>
             </div>
           </div>
     </footer>
@@ -434,7 +542,7 @@
 
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/quicklink/2.3.0/quicklink.umd.js" integrity="sha256-yvJQOINiH9fWemHn0vCA5lsHWJaHs6/ZmO+1Ft04SvM=" crossorigin="anonymous"></script>
-  <script class="next-config" data-name="quicklink" type="application/json">{"enable":true,"home":true,"archive":true,"delay":true,"timeout":3000,"priority":true,"url":"http://example.com/2024/05/31/%E6%8F%90%E5%8F%96%E5%9B%BE%E7%89%87%E5%99%A8/"}</script>
+  <script class="next-config" data-name="quicklink" type="application/json">{"enable":true,"home":true,"archive":true,"delay":true,"timeout":3000,"priority":true,"url":"http://example.com/2024/06/25/dd%E5%88%9B%E5%BB%BA%E4%BA%A4%E6%8D%A2%E5%88%86%E5%8C%BA/"}</script>
   <script src="/js/third-party/quicklink.js"></script>
 
 </body>
