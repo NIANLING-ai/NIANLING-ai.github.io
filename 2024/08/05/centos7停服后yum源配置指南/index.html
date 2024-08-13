@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 7.2.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=ZCOOL+XiaoWei:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha256-XOqroi11tY4EFQMR9ZYwZWKj5ZXiftSx36RRuC3anlA=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancyapps-ui/5.0.31/fancybox/fancybox.css" integrity="sha256-gkQVf8UKZgQ0HyuxL/VnacadJ+D2Kox2TCEBuNQg5+w=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/black/pace-theme-material.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.20.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"copycode":{"enable":true,"style":"mac"},"fold":{"enable":false,"height":500},"bookmark":{"enable":true,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="CentOS7停服后yum源配置指南">
+<meta property="og:type" content="blog">
+<meta property="og:title" content="CentOS7停服后yum源配置指南">
+<meta property="og:url" content="http://example.com/2024/08/05/centos7%E5%81%9C%E6%9C%8D%E5%90%8Eyum%E6%BA%90%E9%85%8D%E7%BD%AE%E6%8C%87%E5%8D%97/index.html">
+<meta property="og:site_name" content="清风">
+<meta property="og:description" content="CentOS7停服后yum源配置指南">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2024-08-05T01:25:00.000Z">
+<meta property="article:modified_time" content="2024-08-05T01:25:00.000Z">
+<meta property="article:author" content="ZHANG">
+<meta property="article:tag" content="Linux">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://example.com/2024/08/05/centos7%E5%81%9C%E6%9C%8D%E5%90%8Eyum%E6%BA%90%E9%85%8D%E7%BD%AE%E6%8C%87%E5%8D%97/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2024/08/05/centos7%E5%81%9C%E6%9C%8D%E5%90%8Eyum%E6%BA%90%E9%85%8D%E7%BD%AE%E6%8C%87%E5%8D%97/","path":"2024/08/05/centos7停服后yum源配置指南/","title":"CentOS7停服后yum源配置指南"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>CentOS7停服后yum源配置指南 | 清风</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/atom.xml" title="清风" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">清风</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">虽不能至，心向往之</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li><li class="menu-item menu-item-rss"><a href="/atom.xml" rel="section"><i class="fa fa-rss fa-fw"></i>RSS</a></li><li class="menu-item menu-item-资源"><a href="/resources/" rel="section"><i class="fa fa-download fa-fw"></i>资源</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="搜索..." spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#CentOS7%E5%81%9C%E6%9C%8D%E5%90%8Eyum%E6%BA%90%E9%85%8D%E7%BD%AE%E6%8C%87%E5%8D%97"><span class="nav-number">1.</span> <span class="nav-text">CentOS7停服后yum源配置指南</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1%E3%80%81%E5%A4%87%E4%BB%BD%E6%97%A7%E7%9A%84yum%E6%BA%90"><span class="nav-number">1.0.1.</span> <span class="nav-text">1、备份旧的yum源</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2%E3%80%81%E9%85%8D%E7%BD%AECentos7%E6%BA%90%EF%BC%88x86-64%E6%9E%B6%E6%9E%84%EF%BC%89"><span class="nav-number">1.0.2.</span> <span class="nav-text">2、配置Centos7源（x86_64架构）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3%E3%80%81%E9%85%8D%E7%BD%AECentos7%E6%BA%90%EF%BC%88%E5%8F%AA%E8%A6%81%E5%BD%93%E5%89%8D%E4%B8%8D%E6%98%AFx86-64%E6%9E%B6%E6%9E%84%E7%9A%84%EF%BC%8C%E9%83%BD%E4%BD%BF%E7%94%A8%E4%BB%A5%E4%B8%8B%E9%85%8D%E7%BD%AE%EF%BC%8C%E9%80%82%E7%94%A8%E4%BA%8Eaarch64%E3%80%81i386%E3%80%81ppc64%E7%AD%89%EF%BC%89"><span class="nav-number">1.0.3.</span> <span class="nav-text">3、配置Centos7源（只要当前不是x86_64架构的，都使用以下配置，适用于aarch64、i386、ppc64等）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4%E3%80%81%E6%B8%85%E7%90%86%E7%BC%93%E5%AD%98%E9%87%8D%E5%BB%BA%E7%BC%93%E5%AD%98"><span class="nav-number">1.0.4.</span> <span class="nav-text">4、清理缓存重建缓存</span></a></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="ZHANG"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">ZHANG</p>
+  <div class="site-description" itemprop="description">不闻不若闻之，闻之不若见之，见之不若知之，知之不若行之</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">66</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">23</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">36</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://nianling-ai.github.io/" title="GitHub → https:&#x2F;&#x2F;nianling-ai.github.io" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:zyxjga@foxmail.com" title="E-Mail → mailto:zyxjga@foxmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+    <div class="sidebar-inner sidebar-blogroll">
+      <div class="links-of-blogroll animated">
+        <div class="links-of-blogroll-title"><i class="fa fa-globe fa-fw"></i>
+          链接
+        </div>
+        <ul class="links-of-blogroll-list">
+            <li class="links-of-blogroll-item">
+              <a href="https://www.runoob.com/" title="https:&#x2F;&#x2F;www.runoob.com&#x2F;" rel="noopener" target="_blank">菜鸟教程</a>
+            </li>
+            <li class="links-of-blogroll-item">
+              <a href="http://c.biancheng.net/sitemap/" title="http:&#x2F;&#x2F;c.biancheng.net&#x2F;sitemap&#x2F;" rel="noopener" target="_blank">C语言中文网</a>
+            </li>
+            <li class="links-of-blogroll-item">
+              <a href="https://csdiy.wiki/" title="https:&#x2F;&#x2F;csdiy.wiki&#x2F;" rel="noopener" target="_blank">CS自学指南</a>
+            </li>
+            <li class="links-of-blogroll-item">
+              <a href="https://www.r2coding.com/#/" title="https:&#x2F;&#x2F;www.r2coding.com&#x2F;#&#x2F;" rel="noopener" target="_blank">Road To Coding</a>
+            </li>
+            <li class="links-of-blogroll-item">
+              <a href="https://hackway.org/docs/cs/intro" title="https:&#x2F;&#x2F;hackway.org&#x2F;docs&#x2F;cs&#x2F;intro" rel="noopener" target="_blank">计算机专业学习路线</a>
+            </li>
+        </ul>
+      </div>
+    </div>
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2024/08/05/centos7%E5%81%9C%E6%9C%8D%E5%90%8Eyum%E6%BA%90%E9%85%8D%E7%BD%AE%E6%8C%87%E5%8D%97/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="ZHANG">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="清风">
+      <meta itemprop="description" content="不闻不若闻之，闻之不若见之，见之不若知之，知之不若行之">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="CentOS7停服后yum源配置指南 | 清风">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          CentOS7停服后yum源配置指南
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2024-08-05 09:25:00" itemprop="dateCreated datePublished" datetime="2024-08-05T09:25:00+08:00">2024-08-05</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Linux/" itemprop="url" rel="index"><span itemprop="name">Linux</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>8.5k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>8 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h1 id="CentOS7停服后yum源配置指南"><a href="#CentOS7停服后yum源配置指南" class="headerlink" title="CentOS7停服后yum源配置指南"></a>CentOS7停服后yum源配置指南</h1><p><code>CentOS7</code>已于2024年6月30日正式停服，停服后默认的yum源已全部404无法使用。<br>通过下载本文配置整理好的<code>CentOS7</code>系统源，可以有效解决默认源404异常问题，注意：本文仅适用于Centos7系统，请勿将本文用于其它版本系统。</p>
+<h3 id="1、备份旧的yum源"><a href="#1、备份旧的yum源" class="headerlink" title="1、备份旧的yum源"></a>1、备份旧的yum源</h3><p>在<code>/etc/yum.repos.d/</code>目录下创建一个<code>bak</code>目录，再将<code>/etc/yum.repos.d/</code>中的<code>repo</code>源配置文件移动至<code>bak</code>目录中，当然如果您确定<code>/etc/yum.repos.d/</code>目录中的源配置没用，也可以将<code>/etc/yum.repos.d/</code>目录清空（<code>rm -f /etc/yum.repos.d/\*</code>）。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">mkdir</span> -p /etc/yum.repos.d/bakmv /etc/yum.repos.d/*.repo /etc/yum.repos.d/bak/</span><br></pre></td></tr></table></figure>
+
+<h3 id="2、配置Centos7源（x86-64架构）"><a href="#2、配置Centos7源（x86-64架构）" class="headerlink" title="2、配置Centos7源（x86_64架构）"></a>2、配置Centos7源（x86_64架构）</h3><p>这里整理了多个Centos7国内镜像的源，任选其一即可，在Centos7停服后，默认的源已从centos改成了centos-vault，这里所有的源都是二次配置修改过的。</p>
+<p>提供curl命令下载方式，以及wget命令下载方式，任选其一。</p>
+<p>阿里云源（curl方式）</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -o /etc/yum.repos.d/Centos7-aliyun.repo https://mirrors.wlnmp.com/centos/Centos7-aliyun-x86_64.repo</span><br></pre></td></tr></table></figure>
+
+<p>阿里云源（wget方式）</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wget https://mirrors.wlnmp.com/centos/Centos7-aliyun-x86_64.repo -P /etc/yum.repos.d/</span><br></pre></td></tr></table></figure>
+
+<p>网易源（curl方式）</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -o /etc/yum.repos.d/Centos7-163.repo https://mirrors.wlnmp.com/centos/Centos7-163-x86_64.repo</span><br></pre></td></tr></table></figure>
+
+<p>网易源（wget方式）</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wget https://mirrors.wlnmp.com/centos/Centos7-163-x86_64.repo -P /etc/yum.repos.d/</span><br></pre></td></tr></table></figure>
+
+<p>腾讯源（curl方式）</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -o /etc/yum.repos.d/Centos7-tencent.repo https://mirrors.wlnmp.com/centos/Centos7-tencent-x86_64.repo</span><br></pre></td></tr></table></figure>
+
+<p>腾讯源（wget方式）</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wget https://mirrors.wlnmp.com/centos/Centos7-tencent-x86_64.repo -P /etc/yum.repos.d/</span><br></pre></td></tr></table></figure>
+
+<p>中国科学技术大学源（curl方式）</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -o /etc/yum.repos.d/Centos7-ustc.repo https://mirrors.wlnmp.com/centos/Centos7-ustc-x86_64.repo</span><br></pre></td></tr></table></figure>
+
+<p>中国科学技术大学源（wget方式）</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wget https://mirrors.wlnmp.com/centos/Centos7-ustc-x86_64.repo -P /etc/yum.repos.d/</span><br></pre></td></tr></table></figure>
+
+<p>荆楚理工学院源（curl方式）</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -o /etc/yum.repos.d/Centos7-jcut.repo https://mirrors.wlnmp.com/centos/Centos7-jcut-x86_64.repo</span><br></pre></td></tr></table></figure>
+
+<p>荆楚理工学院源（wget方式）</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wget https://mirrors.wlnmp.com/centos/Centos7-jcut-x86_64.repo -P /etc/yum.repos.d/</span><br></pre></td></tr></table></figure>
+
+<p>清华源（curl方式）</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -o /etc/yum.repos.d/Centos7-tuna.repo https://mirrors.wlnmp.com/centos/Centos7-tuna-x86_64.repo</span><br></pre></td></tr></table></figure>
+
+<p>清华源（wget方式）</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wget https://mirrors.wlnmp.com/centos/Centos7-tuna-x86_64.repo -P /etc/yum.repos.d/</span><br></pre></td></tr></table></figure>
+
+<p>南阳理工学院源（curl方式）</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -o /etc/yum.repos.d/Centos7-nyist.repo https://mirrors.wlnmp.com/centos/Centos7-nyist-x86_64.repo</span><br></pre></td></tr></table></figure>
+
+<p>南阳理工学院源（wget方式）</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wget https://mirrors.wlnmp.com/centos/Centos7-nyist-x86_64.repo -P /etc/yum.repos.d/</span><br></pre></td></tr></table></figure>
+
+<p>附：x86_64架构系统，Centos7-aliyun.repo配置文件内容</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br></pre></td><td class="code"><pre><span class="line">[base]</span><br><span class="line">name=CentOS-<span class="variable">$releasever</span> - base - mirrors.aliyun.com</span><br><span class="line">baseurl=http://mirrors.aliyun.com/centos-vault/centos/<span class="variable">$releasever</span>/os/<span class="variable">$basearch</span>/</span><br><span class="line">enabled=1</span><br><span class="line">gpgcheck=1</span><br><span class="line">gpgkey=http://mirrors.aliyun.com/centos-vault/RPM-GPG-KEY-CentOS-7</span><br><span class="line"> </span><br><span class="line">[updates]</span><br><span class="line">name=CentOS-<span class="variable">$releasever</span> - updates - mirrors.aliyun.com</span><br><span class="line">baseurl=http://mirrors.aliyun.com/centos-vault/centos/<span class="variable">$releasever</span>/updates/<span class="variable">$basearch</span>/</span><br><span class="line">enabled=1</span><br><span class="line">gpgcheck=1</span><br><span class="line">gpgkey=http://mirrors.aliyun.com/centos-vault/RPM-GPG-KEY-CentOS-7</span><br><span class="line"> </span><br><span class="line">[extras]</span><br><span class="line">name=CentOS-<span class="variable">$releasever</span> - extras - mirrors.aliyun.com</span><br><span class="line">baseurl=http://mirrors.aliyun.com/centos-vault/centos/<span class="variable">$releasever</span>/extras/<span class="variable">$basearch</span>/</span><br><span class="line">enabled=1</span><br><span class="line">gpgcheck=1</span><br><span class="line">gpgkey=http://mirrors.aliyun.com/centos-vault/RPM-GPG-KEY-CentOS-7</span><br><span class="line"> </span><br><span class="line">[centosplus]</span><br><span class="line">name=CentOS-<span class="variable">$releasever</span> - centosplus - mirrors.aliyun.com</span><br><span class="line">baseurl=http://mirrors.aliyun.com/centos-vault/centos/<span class="variable">$releasever</span>/centosplus/<span class="variable">$basearch</span>/</span><br><span class="line">enabled=0</span><br><span class="line">gpgcheck=1</span><br><span class="line">gpgkey=http://mirrors.aliyun.com/centos-vault/RPM-GPG-KEY-CentOS-7</span><br><span class="line"> </span><br><span class="line">[fasttrack]</span><br><span class="line">name=CentOS-<span class="variable">$releasever</span> - fasttrack - mirrors.aliyun.com</span><br><span class="line">baseurl=http://mirrors.aliyun.com/centos-vault/centos/<span class="variable">$releasever</span>/fasttrack/<span class="variable">$basearch</span>/</span><br><span class="line">enabled=0</span><br><span class="line">gpgcheck=1</span><br><span class="line">gpgkey=http://mirrors.aliyun.com/centos-vault/RPM-GPG-KEY-CentOS-7</span><br><span class="line"></span><br><span class="line">[atomic]</span><br><span class="line">name=CentOS-<span class="variable">$releasever</span> - atomic - mirrors.aliyun.com</span><br><span class="line">baseurl=http://mirrors.aliyun.com/centos-vault/centos/<span class="variable">$releasever</span>/atomic/<span class="variable">$basearch</span>/</span><br><span class="line">enabled=0</span><br><span class="line">gpgcheck=1</span><br><span class="line">gpgkey=http://mirrors.aliyun.com/centos-vault/RPM-GPG-KEY-CentOS-7</span><br><span class="line"></span><br><span class="line">[dotnet]</span><br><span class="line">name=CentOS-<span class="variable">$releasever</span> - dotnet - mirrors.aliyun.com</span><br><span class="line">baseurl=http://mirrors.aliyun.com/centos-vault/centos/<span class="variable">$releasever</span>/dotnet/<span class="variable">$basearch</span>/</span><br><span class="line">enabled=0</span><br><span class="line">gpgcheck=1</span><br><span class="line">gpgkey=http://mirrors.aliyun.com/centos-vault/RPM-GPG-KEY-CentOS-7</span><br><span class="line"></span><br><span class="line">[rt]</span><br><span class="line">name=CentOS-<span class="variable">$releasever</span> - rt - mirrors.aliyun.com</span><br><span class="line">baseurl=http://mirrors.aliyun.com/centos-vault/centos/<span class="variable">$releasever</span>/rt/<span class="variable">$basearch</span>/</span><br><span class="line">enabled=0</span><br><span class="line">gpgcheck=1</span><br><span class="line">gpgkey=http://mirrors.aliyun.com/centos-vault/RPM-GPG-KEY-CentOS-7</span><br><span class="line"></span><br><span class="line">[sclo-rh]</span><br><span class="line">name=CentOS-<span class="variable">$releasever</span> - sclo-rh - mirrors.aliyun.com</span><br><span class="line">baseurl=http://mirrors.aliyun.com/centos-vault/centos/<span class="variable">$releasever</span>/sclo/<span class="variable">$basearch</span>/rh/</span><br><span class="line">enabled=0</span><br><span class="line">gpgcheck=1</span><br><span class="line">gpgkey=http://mirrors.aliyun.com/centos-vault/RPM-GPG-KEY-CentOS-7</span><br><span class="line"></span><br><span class="line">[sclo-sclo]</span><br><span class="line">name=CentOS-<span class="variable">$releasever</span> - sclo-sclo - mirrors.aliyun.com</span><br><span class="line">baseurl=http://mirrors.aliyun.com/centos-vault/centos/<span class="variable">$releasever</span>/sclo/<span class="variable">$basearch</span>/sclo/</span><br><span class="line">enabled=0</span><br><span class="line">gpgcheck=1</span><br><span class="line">gpgkey=http://mirrors.aliyun.com/centos-vault/RPM-GPG-KEY-CentOS-7</span><br></pre></td></tr></table></figure>
+
+<h3 id="3、配置Centos7源（只要当前不是x86-64架构的，都使用以下配置，适用于aarch64、i386、ppc64等）"><a href="#3、配置Centos7源（只要当前不是x86-64架构的，都使用以下配置，适用于aarch64、i386、ppc64等）" class="headerlink" title="3、配置Centos7源（只要当前不是x86_64架构的，都使用以下配置，适用于aarch64、i386、ppc64等）"></a>3、配置Centos7源（只要当前不是x86_64架构的，都使用以下配置，适用于aarch64、i386、ppc64等）</h3><p>阿里云源（curl方式）</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -o /etc/yum.repos.d/Centos7-aliyun.repo https://mirrors.wlnmp.com/centos/Centos7-aliyun-altarch.repo</span><br></pre></td></tr></table></figure>
+
+<p>阿里云源（wget方式）</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wget https://mirrors.wlnmp.com/centos/Centos7-aliyun-altarch.repo -P /etc/yum.repos.d/</span><br></pre></td></tr></table></figure>
+
+<p>网易源（curl方式）</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -o /etc/yum.repos.d/Centos7-163.repo https://mirrors.wlnmp.com/centos/Centos7-163-altarch.repo</span><br></pre></td></tr></table></figure>
+
+<p>网易源（wget方式）</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wget https://mirrors.wlnmp.com/centos/Centos7-163-altarch.repo -P /etc/yum.repos.d/</span><br></pre></td></tr></table></figure>
+
+<p>腾讯源（curl方式）</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -o /etc/yum.repos.d/Centos7-tencent.repo https://mirrors.wlnmp.com/centos/Centos7-tencent-altarch.repo</span><br></pre></td></tr></table></figure>
+
+<p>腾讯源（wget方式）</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wget https://mirrors.wlnmp.com/centos/Centos7-tencent-altarch.repo -P /etc/yum.repos.d/</span><br></pre></td></tr></table></figure>
+
+<p>中国科学技术大学源（curl方式）</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -o /etc/yum.repos.d/Centos7-ustc.repo https://mirrors.wlnmp.com/centos/Centos7-ustc-altarch.repo</span><br></pre></td></tr></table></figure>
+
+<p>中国科学技术大学源（wget方式）</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wget https://mirrors.wlnmp.com/centos/Centos7-ustc-altarch.repo -P /etc/yum.repos.d/</span><br></pre></td></tr></table></figure>
+
+<p>荆楚理工学院源（curl方式）</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -o /etc/yum.repos.d/Centos7-jcut.repo https://mirrors.wlnmp.com/centos/Centos7-jcut-altarch.repo</span><br></pre></td></tr></table></figure>
+
+<p>荆楚理工学院源（wget方式）</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wget https://mirrors.wlnmp.com/centos/Centos7-jcut-altarch.repo -P /etc/yum.repos.d/</span><br></pre></td></tr></table></figure>
+
+<p>清华源（curl方式）</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -o /etc/yum.repos.d/Centos7-tuna.repo https://mirrors.wlnmp.com/centos/Centos7-tuna-altarch.repo</span><br></pre></td></tr></table></figure>
+
+<p>清华源（wget方式）</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wget https://mirrors.wlnmp.com/centos/Centos7-tuna-altarch.repo -P /etc/yum.repos.d/</span><br></pre></td></tr></table></figure>
+
+<p>南阳理工学院源（curl方式）</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -o /etc/yum.repos.d/Centos7-nyist.repo https://mirrors.wlnmp.com/centos/Centos7-nyist-altarch.repo</span><br></pre></td></tr></table></figure>
+
+<p>南阳理工学院源（wget方式）</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wget https://mirrors.wlnmp.com/centos/Centos7-nyist-altarch.repo -P /etc/yum.repos.d/</span><br></pre></td></tr></table></figure>
+
+<p>附：Centos7-aliyun.repo配置文件内容（非x86_64架构系统），配置文件通过$basearch变量自动识别系统架构。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br></pre></td><td class="code"><pre><span class="line">[base]</span><br><span class="line">name=CentOS-<span class="variable">$releasever</span> - base - mirrors.aliyun.com</span><br><span class="line">baseurl=http://mirrors.aliyun.com/centos-vault/altarch/<span class="variable">$releasever</span>/os/<span class="variable">$basearch</span>/</span><br><span class="line">enabled=1</span><br><span class="line">gpgcheck=1</span><br><span class="line">gpgkey=http://mirrors.aliyun.com/centos-vault/RPM-GPG-KEY-CentOS-7</span><br><span class="line"> </span><br><span class="line">[updates]</span><br><span class="line">name=CentOS-<span class="variable">$releasever</span> - updates - mirrors.aliyun.com</span><br><span class="line">baseurl=http://mirrors.aliyun.com/centos-vault/altarch/<span class="variable">$releasever</span>/updates/<span class="variable">$basearch</span>/</span><br><span class="line">enabled=1</span><br><span class="line">gpgcheck=1</span><br><span class="line">gpgkey=http://mirrors.aliyun.com/centos-vault/RPM-GPG-KEY-CentOS-7</span><br><span class="line"> </span><br><span class="line">[extras]</span><br><span class="line">name=CentOS-<span class="variable">$releasever</span> - extras - mirrors.aliyun.com</span><br><span class="line">baseurl=http://mirrors.aliyun.com/centos-vault/altarch/<span class="variable">$releasever</span>/extras/<span class="variable">$basearch</span>/</span><br><span class="line">enabled=1</span><br><span class="line">gpgcheck=1</span><br><span class="line">gpgkey=http://mirrors.aliyun.com/centos-vault/RPM-GPG-KEY-CentOS-7</span><br><span class="line"> </span><br><span class="line">[centosplus]</span><br><span class="line">name=CentOS-<span class="variable">$releasever</span> - centosplus - mirrors.aliyun.com</span><br><span class="line">baseurl=http://mirrors.aliyun.com/centos-vault/altarch/<span class="variable">$releasever</span>/centosplus/<span class="variable">$basearch</span>/</span><br><span class="line">enabled=0</span><br><span class="line">gpgcheck=1</span><br><span class="line">gpgkey=http://mirrors.aliyun.com/centos-vault/RPM-GPG-KEY-CentOS-7</span><br><span class="line"> </span><br><span class="line">[fasttrack]</span><br><span class="line">name=CentOS-<span class="variable">$releasever</span> - fasttrack - mirrors.aliyun.com</span><br><span class="line">baseurl=http://mirrors.aliyun.com/centos-vault/altarch/<span class="variable">$releasever</span>/fasttrack/<span class="variable">$basearch</span>/</span><br><span class="line">enabled=0</span><br><span class="line">gpgcheck=1</span><br><span class="line">gpgkey=http://mirrors.aliyun.com/centos-vault/RPM-GPG-KEY-CentOS-7</span><br><span class="line"></span><br><span class="line">[atomic]</span><br><span class="line">name=CentOS-<span class="variable">$releasever</span> - atomic - mirrors.aliyun.com</span><br><span class="line">baseurl=http://mirrors.aliyun.com/centos-vault/altarch/<span class="variable">$releasever</span>/atomic/<span class="variable">$basearch</span>/</span><br><span class="line">enabled=0</span><br><span class="line">gpgcheck=1</span><br><span class="line">gpgkey=http://mirrors.aliyun.com/centos-vault/RPM-GPG-KEY-CentOS-7</span><br><span class="line"></span><br><span class="line">[dotnet]</span><br><span class="line">name=CentOS-<span class="variable">$releasever</span> - dotnet - mirrors.aliyun.com</span><br><span class="line">baseurl=http://mirrors.aliyun.com/centos-vault/altarch/<span class="variable">$releasever</span>/dotnet/<span class="variable">$basearch</span>/</span><br><span class="line">enabled=0</span><br><span class="line">gpgcheck=1</span><br><span class="line">gpgkey=http://mirrors.aliyun.com/centos-vault/RPM-GPG-KEY-CentOS-7</span><br><span class="line"></span><br><span class="line">[rt]</span><br><span class="line">name=CentOS-<span class="variable">$releasever</span> - rt - mirrors.aliyun.com</span><br><span class="line">baseurl=http://mirrors.aliyun.com/centos-vault/altarch/<span class="variable">$releasever</span>/rt/<span class="variable">$basearch</span>/</span><br><span class="line">enabled=0</span><br><span class="line">gpgcheck=1</span><br><span class="line">gpgkey=http://mirrors.aliyun.com/centos-vault/RPM-GPG-KEY-CentOS-7</span><br><span class="line"></span><br><span class="line">[sclo-rh]</span><br><span class="line">name=CentOS-<span class="variable">$releasever</span> - sclo-rh - mirrors.aliyun.com</span><br><span class="line">baseurl=http://mirrors.aliyun.com/centos-vault/altarch/<span class="variable">$releasever</span>/sclo/<span class="variable">$basearch</span>/rh/</span><br><span class="line">enabled=0</span><br><span class="line">gpgcheck=1</span><br><span class="line">gpgkey=http://mirrors.aliyun.com/centos-vault/RPM-GPG-KEY-CentOS-7</span><br><span class="line"></span><br><span class="line">[sclo-sclo]</span><br><span class="line">name=CentOS-<span class="variable">$releasever</span> - sclo-sclo - mirrors.aliyun.com</span><br><span class="line">baseurl=http://mirrors.aliyun.com/centos-vault/altarch/<span class="variable">$releasever</span>/sclo/<span class="variable">$basearch</span>/sclo/</span><br><span class="line">enabled=0</span><br><span class="line">gpgcheck=1</span><br><span class="line">gpgkey=http://mirrors.aliyun.com/centos-vault/RPM-GPG-KEY-CentOS-7</span><br></pre></td></tr></table></figure>
+
+<h3 id="4、清理缓存重建缓存"><a href="#4、清理缓存重建缓存" class="headerlink" title="4、清理缓存重建缓存"></a>4、清理缓存重建缓存</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum clean allyum makecache</span><br></pre></td></tr></table></figure>
+
+<p>此时CentOS7的yum源配置完成，可以像原来一样使用了。</p>
+
+    </div>
+
+
+  <div style="text-align:center;color: #ccc;font-size:18px;">
+    ---------Thanks for your attention---------
+  </div>
+
+
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="followme">
+  <span>欢迎关注我的其它发布渠道</span>
+
+  <div class="social-list">
+
+      <div class="social-item">
+          <a target="_blank" class="social-link" href="/atom.xml">
+            <span class="icon">
+              <i class="fa fa-rss"></i>
+            </span>
+
+            <span class="label">RSS</span>
+          </a>
+      </div>
+  </div>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/Linux/" rel="tag"><i class="fa fa-tag"></i> Linux</a>
+          </div>
+
+
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2024/07/25/%E5%B8%B8%E7%94%A8%E7%9A%84%E7%BD%91%E7%BB%9C%E5%91%BD%E4%BB%A4/" rel="prev" title="常用的网络排查命令">
+                  <i class="fa fa-angle-left"></i> 常用的网络排查命令
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2024</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">ZHANG</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+      <span>站点总字数：</span>
+    <span title="站点总字数">690k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span>站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">10:27</span>
+  </span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script size="30" alpha="0.6" zIndex="-1" src="https://cdnjs.cloudflare.com/ajax/libs/ribbon.js/1.0.2/ribbon.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fancyapps-ui/5.0.31/fancybox/fancybox.umd.js" integrity="sha256-a+H7FYzJv6oU2hfsfDGM2Ohw/cR9v+hPfxHCLdmCrE8=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lozad.js/1.16.0/lozad.min.js" integrity="sha256-mOFREFhqmHeQbXpK2lp4nA3qooVgACfh88fpJftLBbc=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pangu/4.0.7/pangu.min.js" integrity="sha256-j+yj56cdEY2CwkVtGyz18fNybFGpMGJ8JxG3GSyO2+I=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/sidebar.js"></script><script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+  <script src="/js/third-party/fancybox.js"></script>
+
+  <script src="/js/third-party/pace.js"></script>
+
+
+  
+
+
+
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/quicklink/2.3.0/quicklink.umd.js" integrity="sha256-yvJQOINiH9fWemHn0vCA5lsHWJaHs6/ZmO+1Ft04SvM=" crossorigin="anonymous"></script>
+  <script class="next-config" data-name="quicklink" type="application/json">{"enable":true,"home":true,"archive":true,"delay":true,"timeout":3000,"priority":true,"url":"http://example.com/2024/08/05/centos7%E5%81%9C%E6%9C%8D%E5%90%8Eyum%E6%BA%90%E9%85%8D%E7%BD%AE%E6%8C%87%E5%8D%97/"}</script>
+  <script src="/js/third-party/quicklink.js"></script>
+
+</body>
+</html>
