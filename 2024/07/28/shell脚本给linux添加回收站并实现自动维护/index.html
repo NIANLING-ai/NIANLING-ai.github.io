@@ -23,30 +23,28 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.20.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"copycode":{"enable":true,"style":"mac"},"fold":{"enable":false,"height":500},"bookmark":{"enable":true,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
 
-    <meta name="description" content="可以配合Zabbix使用的Mysql监控脚本">
+    <meta name="description" content="用Shell脚本给Linux添加回收站并实现自动维护">
 <meta property="og:type" content="blog">
-<meta property="og:title" content="监控Mysql脚本">
-<meta property="og:url" content="http://example.com/2024/01/15/%E7%9B%91%E6%8E%A7mysql%E8%84%9A%E6%9C%AC/index.html">
+<meta property="og:title" content="用Shell脚本给Linux添加回收站并实现自动维护">
+<meta property="og:url" content="http://example.com/2024/07/28/shell%E8%84%9A%E6%9C%AC%E7%BB%99linux%E6%B7%BB%E5%8A%A0%E5%9B%9E%E6%94%B6%E7%AB%99%E5%B9%B6%E5%AE%9E%E7%8E%B0%E8%87%AA%E5%8A%A8%E7%BB%B4%E6%8A%A4/index.html">
 <meta property="og:site_name" content="清风">
-<meta property="og:description" content="可以配合Zabbix使用的Mysql监控脚本">
+<meta property="og:description" content="用Shell脚本给Linux添加回收站并实现自动维护">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2024-01-15T01:25:00.000Z">
-<meta property="article:modified_time" content="2024-01-15T01:25:00.000Z">
+<meta property="article:published_time" content="2024-07-28T01:25:00.000Z">
+<meta property="article:modified_time" content="2024-07-28T01:25:00.000Z">
 <meta property="article:author" content="ZHANG">
-<meta property="article:tag" content="监控">
-<meta property="article:tag" content="Mysql">
-<meta property="article:tag" content="shell">
+<meta property="article:tag" content="Linux">
 <meta name="twitter:card" content="summary">
 
 
-<link rel="canonical" href="http://example.com/2024/01/15/%E7%9B%91%E6%8E%A7mysql%E8%84%9A%E6%9C%AC/">
+<link rel="canonical" href="http://example.com/2024/07/28/shell%E8%84%9A%E6%9C%AC%E7%BB%99linux%E6%B7%BB%E5%8A%A0%E5%9B%9E%E6%94%B6%E7%AB%99%E5%B9%B6%E5%AE%9E%E7%8E%B0%E8%87%AA%E5%8A%A8%E7%BB%B4%E6%8A%A4/">
 
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2024/01/15/%E7%9B%91%E6%8E%A7mysql%E8%84%9A%E6%9C%AC/","path":"2024/01/15/监控mysql脚本/","title":"监控Mysql脚本"}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2024/07/28/shell%E8%84%9A%E6%9C%AC%E7%BB%99linux%E6%B7%BB%E5%8A%A0%E5%9B%9E%E6%94%B6%E7%AB%99%E5%B9%B6%E5%AE%9E%E7%8E%B0%E8%87%AA%E5%8A%A8%E7%BB%B4%E6%8A%A4/","path":"2024/07/28/shell脚本给linux添加回收站并实现自动维护/","title":"用Shell脚本给Linux添加回收站并实现自动维护"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
-<title>监控Mysql脚本 | 清风</title>
+<title>用Shell脚本给Linux添加回收站并实现自动维护 | 清风</title>
   
 
 
@@ -147,7 +145,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%9B%91%E6%8E%A7Mysql%E8%84%9A%E6%9C%AC"><span class="nav-number">1.</span> <span class="nav-text">监控Mysql脚本</span></a></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%94%A8Shell%E8%84%9A%E6%9C%AC%E7%BB%99Linux%E6%B7%BB%E5%8A%A0%E5%9B%9E%E6%94%B6%E7%AB%99%E5%B9%B6%E5%AE%9E%E7%8E%B0%E8%87%AA%E5%8A%A8%E7%BB%B4%E6%8A%A4"><span class="nav-number">1.</span> <span class="nav-text">用Shell脚本给Linux添加回收站并实现自动维护</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9B%9E%E6%94%B6%E7%AB%99%E5%8A%9F%E8%83%BD%E7%9A%84%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86"><span class="nav-number">1.1.</span> <span class="nav-text">回收站功能的基本原理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%9B%E5%BB%BA%E5%9B%9E%E6%94%B6%E7%AB%99%E7%9B%AE%E5%BD%95"><span class="nav-number">1.2.</span> <span class="nav-text">创建回收站目录</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9E%E7%8E%B0trash%E5%91%BD%E4%BB%A4"><span class="nav-number">1.3.</span> <span class="nav-text">实现trash命令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9E%E7%8E%B0%E8%87%AA%E5%8A%A8%E6%B8%85%E7%90%86%E5%9B%9E%E6%94%B6%E7%AB%99"><span class="nav-number">1.4.</span> <span class="nav-text">实现自动清理回收站</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">1.5.</span> <span class="nav-text">总结</span></a></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -232,7 +230,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2024/01/15/%E7%9B%91%E6%8E%A7mysql%E8%84%9A%E6%9C%AC/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2024/07/28/shell%E8%84%9A%E6%9C%AC%E7%BB%99linux%E6%B7%BB%E5%8A%A0%E5%9B%9E%E6%94%B6%E7%AB%99%E5%B9%B6%E5%AE%9E%E7%8E%B0%E8%87%AA%E5%8A%A8%E7%BB%B4%E6%8A%A4/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.png">
@@ -245,12 +243,12 @@
     </span>
 
     <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="监控Mysql脚本 | 清风">
+      <meta itemprop="name" content="用Shell脚本给Linux添加回收站并实现自动维护 | 清风">
       <meta itemprop="description" content="">
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          监控Mysql脚本
+          用Shell脚本给Linux添加回收站并实现自动维护
         </h1>
 
         <div class="post-meta-container">
@@ -261,7 +259,7 @@
       </span>
       <span class="post-meta-item-text">发表于</span>
 
-      <time title="创建时间：2024-01-15 09:25:00" itemprop="dateCreated datePublished" datetime="2024-01-15T09:25:00+08:00">2024-01-15</time>
+      <time title="创建时间：2024-07-28 09:25:00" itemprop="dateCreated datePublished" datetime="2024-07-28T09:25:00+08:00">2024-07-28</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -270,10 +268,6 @@
       <span class="post-meta-item-text">分类于</span>
         <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
           <a href="/categories/Linux/" itemprop="url" rel="index"><span itemprop="name">Linux</span></a>
-        </span>
-          ，
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Linux/Mysql/" itemprop="url" rel="index"><span itemprop="name">Mysql</span></a>
         </span>
     </span>
 
@@ -284,14 +278,14 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>994</span>
+      <span>1.9k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>1 分钟</span>
+      <span>2 分钟</span>
     </span>
 </div>
 
@@ -301,7 +295,35 @@
     
     
     
-    <div class="post-body" itemprop="articleBody"><h1 id="监控Mysql脚本"><a href="#监控Mysql脚本" class="headerlink" title="监控Mysql脚本"></a>监控Mysql脚本</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 定义MySQL用户名、密码和主机</span></span><br><span class="line">MYSQL_USER=<span class="string">&quot;root&quot;</span></span><br><span class="line">MYSQL_PASSWORD=<span class="string">&quot;123456&quot;</span></span><br><span class="line">MYSQL_HOST=<span class="string">&quot;localhost&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 检测MySQL服务是否运行</span></span><br><span class="line"><span class="keyword">if</span> ! pgrep mysqld &gt;/dev/null 2&gt;&amp;1 ; <span class="keyword">then</span></span><br><span class="line">    <span class="comment"># 如果MySQL服务未运行，则尝试启动服务</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">&quot;MySQL is not running, attempting to start...&quot;</span></span><br><span class="line">    systemctl start mysqld</span><br><span class="line">    <span class="built_in">sleep</span> 5</span><br><span class="line">    <span class="comment"># 再次检查MySQL服务是否已经运行</span></span><br><span class="line">    <span class="keyword">if</span> ! pgrep mysqld &gt;/dev/null 2&gt;&amp;1 ; <span class="keyword">then</span></span><br><span class="line">        <span class="built_in">echo</span> <span class="string">&quot;Failed to start MySQL.&quot;</span></span><br><span class="line">        <span class="built_in">exit</span> 1</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        <span class="built_in">echo</span> <span class="string">&quot;MySQL started successfully.&quot;</span></span><br><span class="line">    <span class="keyword">fi</span></span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 检查能否连接到MySQL服务器</span></span><br><span class="line"><span class="keyword">if</span> ! mysqladmin ping -h <span class="string">&quot;<span class="variable">$MYSQL_HOST</span>&quot;</span> -u <span class="string">&quot;<span class="variable">$MYSQL_USER</span>&quot;</span> -p<span class="string">&quot;<span class="variable">$MYSQL_PASSWORD</span>&quot;</span> &gt;/dev/null 2&gt;&amp;1; <span class="keyword">then</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">&quot;Could not connect to MySQL server. Attempting to restart MySQL.&quot;</span></span><br><span class="line">    /etc/init.d/mysql restart</span><br><span class="line">    <span class="built_in">sleep</span> 5</span><br><span class="line">    <span class="keyword">if</span> ! mysqladmin ping -h <span class="string">&quot;<span class="variable">$MYSQL_HOST</span>&quot;</span> -u <span class="string">&quot;<span class="variable">$MYSQL_USER</span>&quot;</span> -p<span class="string">&quot;<span class="variable">$MYSQL_PASSWORD</span>&quot;</span> &gt;/dev/null 2&gt;&amp;1; <span class="keyword">then</span></span><br><span class="line">        <span class="built_in">echo</span> <span class="string">&quot;Failed to restart MySQL.&quot;</span></span><br><span class="line">        <span class="built_in">exit</span> 1</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        <span class="built_in">echo</span> <span class="string">&quot;MySQL restarted successfully.&quot;</span></span><br><span class="line">    <span class="keyword">fi</span></span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">&quot;MySQL is running.&quot;</span></span><br><span class="line"><span class="keyword">fi</span></span><br></pre></td></tr></table></figure>
+    <div class="post-body" itemprop="articleBody"><h1 id="用Shell脚本给Linux添加回收站并实现自动维护"><a href="#用Shell脚本给Linux添加回收站并实现自动维护" class="headerlink" title="用Shell脚本给Linux添加回收站并实现自动维护"></a>用Shell脚本给Linux添加回收站并实现自动维护</h1><p>在<code>Linux</code>系统中，删除文件通常是通过<code>rm</code>命令直接移除文件，这意味着文件一旦被删除，就很难恢复。因此，许多用户在日常操作中可能需要一个类似于<code>Windows</code>系统的回收站功能。本文将介绍如何使用<code>Shell</code>脚本为<code>Linux</code>系统增加回收站功能，并实现定期自动清理回收站的内容。</p>
+<h2 id="回收站功能的基本原理"><a href="#回收站功能的基本原理" class="headerlink" title="回收站功能的基本原理"></a>回收站功能的基本原理</h2><p>在<code>Linux</code>下模拟回收站功能的思路是：将用户删除的文件或目录移动到一个特定的目录（例如<code>~/.trash</code>），而不是直接删除。这样，用户可以在需要时从回收站中恢复文件。此外，为了防止回收站无限制地占用磁盘空间，脚本还需要支持定期清理回收站中过期的文件。</p>
+<h2 id="创建回收站目录"><a href="#创建回收站目录" class="headerlink" title="创建回收站目录"></a>创建回收站目录</h2><p>首先，我们需要为回收站创建一个目录。可以在用户的主目录下创建一个名为<code>.trash</code>的隐藏目录：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">mkdir</span> -p ~/.trash</span><br></pre></td></tr></table></figure>
+
+<h2 id="实现trash命令"><a href="#实现trash命令" class="headerlink" title="实现trash命令"></a>实现<code>trash</code>命令</h2><p>接下来，我们编写一个名为<code>trash</code>的Shell脚本，用于替代<code>rm</code>命令来执行文件的“删除”操作。该脚本将文件移动到回收站目录中，并记录下文件的原始路径以便将来恢复。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 回收站目录</span></span><br><span class="line">TRASH_DIR=<span class="string">&quot;<span class="variable">$HOME</span>/.trash&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 确保回收站目录存在</span></span><br><span class="line"><span class="keyword">if</span> [ ! -d <span class="string">&quot;<span class="variable">$TRASH_DIR</span>&quot;</span> ]; <span class="keyword">then</span></span><br><span class="line">    <span class="built_in">mkdir</span> -p <span class="string">&quot;<span class="variable">$TRASH_DIR</span>&quot;</span></span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 判断是否提供了文件名参数</span></span><br><span class="line"><span class="keyword">if</span> [ <span class="variable">$#</span> -eq 0 ]; <span class="keyword">then</span></span><br><span class="line">    <span class="built_in">echo</span><span class="string">&quot;Usage: <span class="variable">$0</span> file_or_directory&quot;</span></span><br><span class="line">    <span class="built_in">exit</span> 1</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 遍历所有传递的参数</span></span><br><span class="line"><span class="keyword">for</span> FILE <span class="keyword">in</span><span class="string">&quot;<span class="variable">$@</span>&quot;</span>; <span class="keyword">do</span></span><br><span class="line">    <span class="keyword">if</span> [ -e <span class="string">&quot;<span class="variable">$FILE</span>&quot;</span> ]; <span class="keyword">then</span></span><br><span class="line">        <span class="comment"># 获取当前日期时间，用于重命名文件防止冲突</span></span><br><span class="line">        TIMESTAMP=$(<span class="built_in">date</span> +%Y%m%d%H%M%S)</span><br><span class="line">        BASENAME=$(<span class="built_in">basename</span> <span class="string">&quot;<span class="variable">$FILE</span>&quot;</span>)</span><br><span class="line">        NEW_NAME=<span class="string">&quot;<span class="variable">$BASENAME</span>-<span class="variable">$TIMESTAMP</span>&quot;</span></span><br><span class="line">        <span class="built_in">mv</span> <span class="string">&quot;<span class="variable">$FILE</span>&quot;</span><span class="string">&quot;<span class="variable">$TRASH_DIR</span>/<span class="variable">$NEW_NAME</span>&quot;</span></span><br><span class="line">        <span class="built_in">echo</span><span class="string">&quot;Moved &#x27;<span class="variable">$FILE</span>&#x27; to &#x27;<span class="variable">$TRASH_DIR</span>/<span class="variable">$NEW_NAME</span>&#x27;&quot;</span></span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        <span class="built_in">echo</span><span class="string">&quot;&#x27;<span class="variable">$FILE</span>&#x27; does not exist!&quot;</span></span><br><span class="line">    <span class="keyword">fi</span></span><br><span class="line"><span class="keyword">done</span></span><br></pre></td></tr></table></figure>
+
+<p>将该脚本保存为<code>~/bin/trash</code>，并赋予其可执行权限：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">chmod</span> +x /bin/trash.sh</span><br></pre></td></tr></table></figure>
+
+<p>现在把<code>trash</code>这边命令通过别名的方式替换原系统的<code>rm</code>命令，编辑<code>/etc/profile</code>，在文件开头添加如下内容：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">alias</span> <span class="built_in">rm</span>=/bin/trash.sh</span><br></pre></td></tr></table></figure>
+
+<p>现在，用户可以使用rm命令来“删除”文件，例如：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">rm</span> myfile.txt</span><br></pre></td></tr></table></figure>
+
+<p>此操作将文件<code>myfile.txt</code>移动到<code>~/.trash</code>目录，并在文件名后附加一个时间戳以避免重名。</p>
+<h2 id="实现自动清理回收站"><a href="#实现自动清理回收站" class="headerlink" title="实现自动清理回收站"></a>实现自动清理回收站</h2><p>为了避免回收站无限制地占用磁盘空间，我们可以编写一个脚本来定期清理回收站中的旧文件。例如，可以删除超过30天的文件。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 回收站目录</span></span><br><span class="line">TRASH_DIR=<span class="string">&quot;<span class="variable">$HOME</span>/.trash&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 删除30天前的文件</span></span><br><span class="line">find <span class="string">&quot;<span class="variable">$TRASH_DIR</span>&quot;</span> -<span class="built_in">type</span> f -mtime +30 -<span class="built_in">exec</span> <span class="built_in">rm</span> -f &#123;&#125; \;</span><br><span class="line"></span><br><span class="line"><span class="built_in">echo</span><span class="string">&quot;Trash cleaned up.&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>将该脚本保存为<code>/bin/clean_trash.sh</code>，并赋予其可执行权限：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">chmod</span> +x /bin/clean_trash.sh</span><br></pre></td></tr></table></figure>
+
+<p>为了让清理任务自动执行，可以将该脚本添加到crontab中，例如每天运行一次：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(crontab -l ; <span class="built_in">echo</span> <span class="string">&quot;0 2 * * * /bin/clean_trash.sh&quot;</span>) | crontab -</span><br></pre></td></tr></table></figure>
+
+<p>这条crontab指令表示每天凌晨2点运行<code>clean_trash</code>脚本，自动清理回收站。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>通过上述步骤，我们已经成功地在Linux系统中实现了一个简单的回收站功能，并且可以自动清理回收站中过期的文件。这不仅保护了用户在误删文件时的恢复能力，还帮助用户有效管理磁盘空间。此解决方案可根据实际需求进行进一步的扩展和优化，例如增加文件恢复功能、通过参数调整保留时间等。</p>
 
     </div>
 
@@ -335,9 +357,7 @@
 </div>
 
           <div class="post-tags">
-              <a href="/tags/%E7%9B%91%E6%8E%A7/" rel="tag"><i class="fa fa-tag"></i> 监控</a>
-              <a href="/tags/Mysql/" rel="tag"><i class="fa fa-tag"></i> Mysql</a>
-              <a href="/tags/shell/" rel="tag"><i class="fa fa-tag"></i> shell</a>
+              <a href="/tags/Linux/" rel="tag"><i class="fa fa-tag"></i> Linux</a>
           </div>
 
 
@@ -346,13 +366,13 @@
 
           <div class="post-nav">
             <div class="post-nav-item">
-                <a href="/2024/01/13/team%E7%BB%91%E5%AE%9A%E5%8F%8C%E7%BD%91%E5%8D%A1/" rel="prev" title="team绑定双网卡">
-                  <i class="fa fa-angle-left"></i> team绑定双网卡
+                <a href="/2024/07/25/%E5%B8%B8%E7%94%A8%E7%9A%84%E7%BD%91%E7%BB%9C%E5%91%BD%E4%BB%A4/" rel="prev" title="常用的网络排查命令">
+                  <i class="fa fa-angle-left"></i> 常用的网络排查命令
                 </a>
             </div>
             <div class="post-nav-item">
-                <a href="/2024/01/16/%E7%BC%96%E8%AF%91%E5%AE%89%E8%A3%85php7.4/" rel="next" title="编译安装PHP7.4">
-                  编译安装PHP7.4 <i class="fa fa-angle-right"></i>
+                <a href="/2024/07/31/%E5%A6%82%E4%BD%95%E5%9C%A8linux%E7%B3%BB%E7%BB%9F%E4%B8%AD%E6%AD%A3%E7%A1%AE%E7%9A%84%E5%88%A0%E9%99%A4%E6%96%87%E4%BB%B6/" rel="next" title="在Linux系统中正确的删除文件">
+                  在Linux系统中正确的删除文件 <i class="fa fa-angle-right"></i>
                 </a>
             </div>
           </div>
@@ -443,7 +463,7 @@
 
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/quicklink/2.3.0/quicklink.umd.js" integrity="sha256-yvJQOINiH9fWemHn0vCA5lsHWJaHs6/ZmO+1Ft04SvM=" crossorigin="anonymous"></script>
-  <script class="next-config" data-name="quicklink" type="application/json">{"enable":true,"home":true,"archive":true,"delay":true,"timeout":3000,"priority":true,"url":"http://example.com/2024/01/15/%E7%9B%91%E6%8E%A7mysql%E8%84%9A%E6%9C%AC/"}</script>
+  <script class="next-config" data-name="quicklink" type="application/json">{"enable":true,"home":true,"archive":true,"delay":true,"timeout":3000,"priority":true,"url":"http://example.com/2024/07/28/shell%E8%84%9A%E6%9C%AC%E7%BB%99linux%E6%B7%BB%E5%8A%A0%E5%9B%9E%E6%94%B6%E7%AB%99%E5%B9%B6%E5%AE%9E%E7%8E%B0%E8%87%AA%E5%8A%A8%E7%BB%B4%E6%8A%A4/"}</script>
   <script src="/js/third-party/quicklink.js"></script>
 
 </body>
