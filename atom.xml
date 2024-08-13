@@ -38,6 +38,27 @@
   </entry>
   
   <entry>
+    <title>在Linux系统中正确的删除文件</title>
+    <link href="http://example.com/2024/07/31/%E5%A6%82%E4%BD%95%E5%9C%A8linux%E7%B3%BB%E7%BB%9F%E4%B8%AD%E6%AD%A3%E7%A1%AE%E7%9A%84%E5%88%A0%E9%99%A4%E6%96%87%E4%BB%B6/"/>
+    <id>http://example.com/2024/07/31/%E5%A6%82%E4%BD%95%E5%9C%A8linux%E7%B3%BB%E7%BB%9F%E4%B8%AD%E6%AD%A3%E7%A1%AE%E7%9A%84%E5%88%A0%E9%99%A4%E6%96%87%E4%BB%B6/</id>
+    <published>2024-07-31T01:25:00.000Z</published>
+    <updated>2024-07-31T01:25:00.000Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="如何在Linux系统中正确的删除文件"><a href="#如何在Linux系统中正确的删除文件" class="headerlink" title="如何在Linux系统中正确的删除文件"></a>如何在Linux系统中正确的删除文件</h1><p>提到删除文件，首先想到的就是rm命令，但并不是所有的文件删除都需要通过rm命令，本文重点来普及下，在Linux命令行中如何正确的删除文件。</p><h3 id="1、删除单一文件"><a href="#1、删除单一文件" class="headerlink" title="1、删除单一文件"></a>1、删除单一文件</h3><p><code>unlink命令</code>：用于删除指定的单一文件，只能同时删除一个文件或链接，不能删除目录，不能批量删除，适合删除单一的文件。</p><p>例：<code>unlink wlnmp.sql</code></p><h3 id="2、删除一个或多个文件"><a href="#2、删除一个或多个文件" class="headerlink" title="2、删除一个或多个文件"></a>2、删除一个或多个文件</h3><p><code>rm命令</code>：也是我们最常用的删除命令，它可以删除一个、多个文件或目录，</p><p>注意：因为<code>rm</code>命令格外强大，在使用删除时需要格外小心，尤其要注意<code>-rf</code>和<code>-f</code>参数，在删除一个或多个文件时，请不要使用<code>-rf</code>，不要附加<code>-r</code>目录选项（养成一个良好的习惯），一旦误操作是毁灭性的。</p><p>例：删除whsir目录下的wh.log文件，并二次确认</p><p><code>rm whsir/wh.log</code></p><p>例：删除whsir目录及目录下所有文件</p><p><code>rm -rf whsir/</code></p><h3 id="3、删除正在有日志写入的文件"><a href="#3、删除正在有日志写入的文件" class="headerlink" title="3、删除正在有日志写入的文件"></a>3、删除正在有日志写入的文件</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&gt;：通过标准输出方式删除，&gt;等同于<span class="built_in">echo</span> &gt;。</span><br></pre></td></tr></table></figure><p>例：当前有个MySQL日志文件whsir.log，不断有新的日志文件产生。</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> &gt; whsir.log</span><br></pre></td></tr></table></figure><h3 id="4、通过查找删除文件"><a href="#4、通过查找删除文件" class="headerlink" title="4、通过查找删除文件"></a>4、通过查找删除文件</h3><p><code>find</code>：使用过Linux的都知道他是一个很强大的搜索命令，但是少数人知道，它本身也具有删除文件功能。</p><p>例：删除whsir目录下所有以.txt结尾的文件</p><p><code>find /whsir -type f -name &quot;\*.txt&quot; -delete</code></p><h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>1、删除文件需要结合当前场景，什么场景适用什么命令，不要一味的使用rm命令。</p><p>2、使用<strong>rm命令</strong>时，应当养成一个良好的习惯，<strong>不要一味的使用<code>-rf</code>参数</strong>，一旦哪天手抖了（不要抱有侥幸心里）</p><p>3、删除一个指定的文件可以选择<code>unlink</code>或<code>rm FILE</code>。</p><p>4、当删除有日志不断产生的文件时，首选&gt;标准输出方式清除文件内容，应避免直接删除，直接删除可能会导致空间无法释放，造成服务必须重启才能释放空间，<strong>这非常重要</strong>。</p><p>5、建议单独的创建一个回收站目录，使用mv将需要删除的文件放入这个回收站，定期的去清空它，这样可以更大限度的保障误删文件后的找回。</p>]]></content>
+    
+    
+    <summary type="html">在Linux系统中正确的删除文件</summary>
+    
+    
+    
+    <category term="Linux" scheme="http://example.com/categories/Linux/"/>
+    
+    
+    <category term="Linux" scheme="http://example.com/tags/Linux/"/>
+    
+  </entry>
+  
+  <entry>
     <title>常用的网络排查命令</title>
     <link href="http://example.com/2024/07/25/%E5%B8%B8%E7%94%A8%E7%9A%84%E7%BD%91%E7%BB%9C%E5%91%BD%E4%BB%A4/"/>
     <id>http://example.com/2024/07/25/%E5%B8%B8%E7%94%A8%E7%9A%84%E7%BD%91%E7%BB%9C%E5%91%BD%E4%BB%A4/</id>
