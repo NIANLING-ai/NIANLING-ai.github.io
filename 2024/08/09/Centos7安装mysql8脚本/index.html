@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 7.2.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=ZCOOL+XiaoWei:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha256-XOqroi11tY4EFQMR9ZYwZWKj5ZXiftSx36RRuC3anlA=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancyapps-ui/5.0.31/fancybox/fancybox.css" integrity="sha256-gkQVf8UKZgQ0HyuxL/VnacadJ+D2Kox2TCEBuNQg5+w=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/black/pace-theme-material.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.20.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"copycode":{"enable":true,"style":"mac"},"fold":{"enable":false,"height":500},"bookmark":{"enable":true,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="Centos7.9安装mysql8，仅适用于centos7">
+<meta property="og:type" content="blog">
+<meta property="og:title" content="Centos7安装mysql8脚本">
+<meta property="og:url" content="http://example.com/2024/08/09/Centos7%E5%AE%89%E8%A3%85mysql8%E8%84%9A%E6%9C%AC/index.html">
+<meta property="og:site_name" content="清风">
+<meta property="og:description" content="Centos7.9安装mysql8，仅适用于centos7">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2024-08-09T01:25:00.000Z">
+<meta property="article:modified_time" content="2024-08-09T01:25:00.000Z">
+<meta property="article:author" content="ZHANG">
+<meta property="article:tag" content="Shell脚本">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://example.com/2024/08/09/Centos7%E5%AE%89%E8%A3%85mysql8%E8%84%9A%E6%9C%AC/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2024/08/09/Centos7%E5%AE%89%E8%A3%85mysql8%E8%84%9A%E6%9C%AC/","path":"2024/08/09/Centos7安装mysql8脚本/","title":"Centos7安装mysql8脚本"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Centos7安装mysql8脚本 | 清风</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/atom.xml" title="清风" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">清风</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">虽不能至，心向往之</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li><li class="menu-item menu-item-rss"><a href="/atom.xml" rel="section"><i class="fa fa-rss fa-fw"></i>RSS</a></li><li class="menu-item menu-item-资源"><a href="/resources/" rel="section"><i class="fa fa-download fa-fw"></i>资源</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="搜索..." spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Centos7%E5%AE%89%E8%A3%85mysql8%E8%84%9A%E6%9C%AC"><span class="nav-number">1.</span> <span class="nav-text">Centos7安装mysql8脚本</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="ZHANG"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">ZHANG</p>
+  <div class="site-description" itemprop="description">不闻不若闻之，闻之不若见之，见之不若知之，知之不若行之</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">72</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">23</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">36</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://nianling-ai.github.io/" title="GitHub → https:&#x2F;&#x2F;nianling-ai.github.io" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:zyxjga@foxmail.com" title="E-Mail → mailto:zyxjga@foxmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+    <div class="sidebar-inner sidebar-blogroll">
+      <div class="links-of-blogroll animated">
+        <div class="links-of-blogroll-title"><i class="fa fa-globe fa-fw"></i>
+          链接
+        </div>
+        <ul class="links-of-blogroll-list">
+            <li class="links-of-blogroll-item">
+              <a href="https://www.runoob.com/" title="https:&#x2F;&#x2F;www.runoob.com&#x2F;" rel="noopener" target="_blank">菜鸟教程</a>
+            </li>
+            <li class="links-of-blogroll-item">
+              <a href="http://c.biancheng.net/sitemap/" title="http:&#x2F;&#x2F;c.biancheng.net&#x2F;sitemap&#x2F;" rel="noopener" target="_blank">C语言中文网</a>
+            </li>
+            <li class="links-of-blogroll-item">
+              <a href="https://csdiy.wiki/" title="https:&#x2F;&#x2F;csdiy.wiki&#x2F;" rel="noopener" target="_blank">CS自学指南</a>
+            </li>
+            <li class="links-of-blogroll-item">
+              <a href="https://www.r2coding.com/#/" title="https:&#x2F;&#x2F;www.r2coding.com&#x2F;#&#x2F;" rel="noopener" target="_blank">Road To Coding</a>
+            </li>
+            <li class="links-of-blogroll-item">
+              <a href="https://hackway.org/docs/cs/intro" title="https:&#x2F;&#x2F;hackway.org&#x2F;docs&#x2F;cs&#x2F;intro" rel="noopener" target="_blank">计算机专业学习路线</a>
+            </li>
+        </ul>
+      </div>
+    </div>
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2024/08/09/Centos7%E5%AE%89%E8%A3%85mysql8%E8%84%9A%E6%9C%AC/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="ZHANG">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="清风">
+      <meta itemprop="description" content="不闻不若闻之，闻之不若见之，见之不若知之，知之不若行之">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Centos7安装mysql8脚本 | 清风">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Centos7安装mysql8脚本
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2024-08-09 09:25:00" itemprop="dateCreated datePublished" datetime="2024-08-09T09:25:00+08:00">2024-08-09</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Shell%E8%84%9A%E6%9C%AC/" itemprop="url" rel="index"><span itemprop="name">Shell脚本</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>6.7k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>6 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h3 id="Centos7安装mysql8脚本"><a href="#Centos7安装mysql8脚本" class="headerlink" title="Centos7安装mysql8脚本"></a>Centos7安装mysql8脚本</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/env bash</span></span><br><span class="line"><span class="comment"># =================================================                         #</span></span><br><span class="line"><span class="comment"># Description: MySQL automatic installation tool  #</span></span><br><span class="line"><span class="comment">#实测Centos7.9没问题，其余系统不行，优化改进中</span></span><br><span class="line"><span class="comment"># =================================================</span></span><br><span class="line"><span class="built_in">export</span> PATH=/sbin:/bin:/usr/sbin:/usr/bin:/usr/local/sbin:/usr/local/bin</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="title">Install_MySQL</span></span>() &#123;</span><br><span class="line">	<span class="comment"># CentOS 8 mysql: error while loading shared libraries: libncurses.so.5</span></span><br><span class="line">	yum install ncurses ncurses-compat-libs -y</span><br><span class="line">	<span class="comment"># Install dependencies</span></span><br><span class="line">	setenforce 0</span><br><span class="line">	yum -y install epel-release</span><br><span class="line">	yum -y install wget tar jemalloc jemalloc-devel gcc gcc-c++</span><br><span class="line"></span><br><span class="line">	<span class="comment"># MySQL configuration</span></span><br><span class="line">	mysql_version=<span class="string">&quot;8.0.21&quot;</span></span><br><span class="line">	mysql_password=<span class="string">&quot;123456&quot;</span></span><br><span class="line">	<span class="built_in">mkdir</span> -p /apps/server/mysql/data</span><br><span class="line">	mysql_install_dir=<span class="string">&quot;/apps/server/mysql&quot;</span></span><br><span class="line">	mysql_data_dir=<span class="string">&quot;/apps/server/mysql/data&quot;</span></span><br><span class="line">	download_mysql=<span class="string">&quot;https://downloads.mysql.com/archives/get/p/23/file&quot;</span></span><br><span class="line"></span><br><span class="line">	<span class="comment"># Download MySQL</span></span><br><span class="line">	<span class="built_in">cd</span> /mnt</span><br><span class="line">	useradd -M -s /sbin/nologin mysql &gt;/dev/null 2&gt;&amp;1</span><br><span class="line">	wget -c <span class="variable">$&#123;download_mysql&#125;</span>/mysql-<span class="variable">$&#123;mysql_version&#125;</span>-linux-glibc2.12-x86_64.tar.xz</span><br><span class="line">    <span class="built_in">echo</span> <span class="string">&quot;========== Start installing MySQL ============&quot;</span></span><br><span class="line">	tar xJf mysql-<span class="variable">$&#123;mysql_version&#125;</span>-linux-glibc2.12-x86_64.tar.xz</span><br><span class="line">	\<span class="built_in">mv</span> mysql-<span class="variable">$&#123;mysql_version&#125;</span>-linux-glibc2.12-x86_64/* <span class="variable">$&#123;mysql_install_dir&#125;</span></span><br><span class="line">	</span><br><span class="line">	<span class="keyword">if</span> [[ -d <span class="string">&quot;<span class="variable">$&#123;mysql_install_dir&#125;</span>/support-files&quot;</span> ]]; <span class="keyword">then</span></span><br><span class="line">		<span class="built_in">rm</span> -rf mysql-<span class="variable">$&#123;mysql_version&#125;</span>-linux-glibc2.12-x86_64</span><br><span class="line">	<span class="keyword">else</span></span><br><span class="line">		<span class="built_in">rm</span> -rf <span class="variable">$&#123;mysql_install_dir&#125;</span></span><br><span class="line">		<span class="built_in">echo</span> <span class="string">&quot;Error: MySQL install failed, Please contact the author&quot;</span></span><br><span class="line">		<span class="built_in">kill</span> -9 $$</span><br><span class="line">	<span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line">	<span class="comment"># Initialize the database</span></span><br><span class="line">	<span class="variable">$&#123;mysql_install_dir&#125;</span>/bin/mysqld --initialize-insecure --user=mysql --basedir=<span class="variable">$&#123;mysql_install_dir&#125;</span> --datadir=<span class="variable">$&#123;mysql_data_dir&#125;</span></span><br><span class="line">	<span class="built_in">chown</span> -R root . <span class="variable">$&#123;mysql_install_dir&#125;</span></span><br><span class="line">	<span class="built_in">chown</span> -R mysql.mysql <span class="variable">$&#123;mysql_data_dir&#125;</span></span><br><span class="line">	\<span class="built_in">cp</span> -f <span class="variable">$&#123;mysql_install_dir&#125;</span>/support-files/mysql.server /etc/init.d/mysqld</span><br><span class="line">	sed -i <span class="string">&quot;s@^basedir=.*@basedir=<span class="variable">$&#123;mysql_install_dir&#125;</span>@&quot;</span> /etc/init.d/mysqld</span><br><span class="line">	sed -i <span class="string">&quot;s@^datadir=.*@datadir=<span class="variable">$&#123;mysql_data_dir&#125;</span>@&quot;</span> /etc/init.d/mysqld</span><br><span class="line">	sed -i <span class="string">&quot;s@/usr/local/mysql@<span class="variable">$&#123;mysql_install_dir&#125;</span>@g&quot;</span> <span class="variable">$&#123;mysql_install_dir&#125;</span>/bin/mysqld_safe</span><br><span class="line">	sed -i <span class="string">&#x27;s@executing mysqld_safe@executing mysqld_safe\nexport LD_PRELOAD=/usr/lib64/libjemalloc.so@&#x27;</span> <span class="variable">$&#123;mysql_install_dir&#125;</span>/bin/mysqld_safe</span><br><span class="line">	<span class="built_in">echo</span> <span class="string">&#x27;PATH=$PATH:&#x27;</span><span class="variable">$&#123;mysql_install_dir&#125;</span><span class="string">&#x27;/bin&#x27;</span> &gt;/etc/profile.d/mariadb_renwole.com.sh</span><br><span class="line"></span><br><span class="line">	<span class="comment"># my.conf configuration</span></span><br><span class="line">	<span class="built_in">cat</span> &gt; /etc/my.cnf &lt;&lt; <span class="string">EOF</span></span><br><span class="line"><span class="string">[client]</span></span><br><span class="line"><span class="string">port = 3306</span></span><br><span class="line"><span class="string">socket = /tmp/mysql.sock</span></span><br><span class="line"><span class="string">default-character-set = utf8mb4</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">[mysql]</span></span><br><span class="line"><span class="string">prompt=&quot;MySQL [\\d]&gt; &quot;</span></span><br><span class="line"><span class="string">no-auto-rehash</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">[mysqld]</span></span><br><span class="line"><span class="string">port = 3306</span></span><br><span class="line"><span class="string">socket = /tmp/mysql.sock</span></span><br><span class="line"><span class="string">default_authentication_plugin = mysql_native_password</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">basedir = $&#123;mysql_install_dir&#125;</span></span><br><span class="line"><span class="string">datadir = $&#123;mysql_data_dir&#125;</span></span><br><span class="line"><span class="string">pid-file = $&#123;mysql_data_dir&#125;/mysql.pid</span></span><br><span class="line"><span class="string">user = mysql</span></span><br><span class="line"><span class="string">bind-address = 0.0.0.0</span></span><br><span class="line"><span class="string">server-id = 1</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">init-connect = &#x27;SET NAMES utf8mb4&#x27;</span></span><br><span class="line"><span class="string">character-set-server = utf8mb4</span></span><br><span class="line"><span class="string">collation-server = utf8mb4_0900_ai_ci</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">skip-name-resolve</span></span><br><span class="line"><span class="string">#skip-networking</span></span><br><span class="line"><span class="string">back_log = 300</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">max_connections = 1000</span></span><br><span class="line"><span class="string">max_connect_errors = 6000</span></span><br><span class="line"><span class="string">open_files_limit = 65535</span></span><br><span class="line"><span class="string">table_open_cache = 128</span></span><br><span class="line"><span class="string">max_allowed_packet = 500M</span></span><br><span class="line"><span class="string">binlog_cache_size = 1M</span></span><br><span class="line"><span class="string">max_heap_table_size = 8M</span></span><br><span class="line"><span class="string">tmp_table_size = 16M</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">read_buffer_size = 2M</span></span><br><span class="line"><span class="string">read_rnd_buffer_size = 8M</span></span><br><span class="line"><span class="string">sort_buffer_size = 8M</span></span><br><span class="line"><span class="string">join_buffer_size = 8M</span></span><br><span class="line"><span class="string">key_buffer_size = 4M</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">thread_cache_size = 8</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">ft_min_word_len = 4</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">log_bin = mysql-bin</span></span><br><span class="line"><span class="string">binlog_format = mixed</span></span><br><span class="line"><span class="string">binlog_expire_logs_seconds = 604800</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">log_error = $&#123;mysql_data_dir&#125;/mysql-error.log</span></span><br><span class="line"><span class="string">slow_query_log = 1</span></span><br><span class="line"><span class="string">long_query_time = 1</span></span><br><span class="line"><span class="string">slow_query_log_file = $&#123;mysql_data_dir&#125;/mysql-slow.log</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">performance_schema = 0</span></span><br><span class="line"><span class="string">explicit_defaults_for_timestamp</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">#lower_case_table_names = 1</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">skip-external-locking</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">default_storage_engine = InnoDB</span></span><br><span class="line"><span class="string">#default-storage-engine = MyISAM</span></span><br><span class="line"><span class="string">innodb_file_per_table = 1</span></span><br><span class="line"><span class="string">innodb_open_files = 500</span></span><br><span class="line"><span class="string">innodb_buffer_pool_size = 64M</span></span><br><span class="line"><span class="string">innodb_write_io_threads = 4</span></span><br><span class="line"><span class="string">innodb_read_io_threads = 4</span></span><br><span class="line"><span class="string">innodb_thread_concurrency = 0</span></span><br><span class="line"><span class="string">innodb_purge_threads = 1</span></span><br><span class="line"><span class="string">innodb_flush_log_at_trx_commit = 2</span></span><br><span class="line"><span class="string">innodb_log_buffer_size = 2M</span></span><br><span class="line"><span class="string">innodb_log_file_size = 32M</span></span><br><span class="line"><span class="string">innodb_log_files_in_group = 3</span></span><br><span class="line"><span class="string">innodb_max_dirty_pages_pct = 90</span></span><br><span class="line"><span class="string">innodb_lock_wait_timeout = 120</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">bulk_insert_buffer_size = 8M</span></span><br><span class="line"><span class="string">myisam_sort_buffer_size = 8M</span></span><br><span class="line"><span class="string">myisam_max_sort_file_size = 10G</span></span><br><span class="line"><span class="string">myisam_repair_threads = 1</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">interactive_timeout = 28800</span></span><br><span class="line"><span class="string">wait_timeout = 28800</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">[mysqldump]</span></span><br><span class="line"><span class="string">quick</span></span><br><span class="line"><span class="string">max_allowed_packet = 500M</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">[myisamchk]</span></span><br><span class="line"><span class="string">key_buffer_size = 8M</span></span><br><span class="line"><span class="string">sort_buffer_size = 8M</span></span><br><span class="line"><span class="string">read_buffer = 4M</span></span><br><span class="line"><span class="string">write_buffer = 4M</span></span><br><span class="line"><span class="string">EOF</span></span><br><span class="line">	<span class="comment"># Set up MySQL</span></span><br><span class="line">	<span class="built_in">chmod</span> 600 /etc/my.cnf</span><br><span class="line">	<span class="built_in">chmod</span> +x /etc/init.d/mysqld</span><br><span class="line">	systemctl <span class="built_in">enable</span> mysqld</span><br><span class="line">  	systemctl start mysqld</span><br><span class="line">  	<span class="variable">$&#123;mysql_install_dir&#125;</span>/bin/mysql -uroot -hlocalhost -e <span class="string">&quot;create user root@&#x27;127.0.0.1&#x27; identified by \&quot;<span class="variable">$&#123;mysql_password&#125;</span>\&quot;;&quot;</span></span><br><span class="line">  	<span class="variable">$&#123;mysql_install_dir&#125;</span>/bin/mysql -uroot -hlocalhost -e <span class="string">&quot;grant all privileges on *.* to root@&#x27;127.0.0.1&#x27; with grant option;&quot;</span></span><br><span class="line"> 	<span class="variable">$&#123;mysql_install_dir&#125;</span>/bin/mysql -uroot -hlocalhost -e <span class="string">&quot;grant all privileges on *.* to root@&#x27;localhost&#x27; with grant option;&quot;</span></span><br><span class="line">  	<span class="variable">$&#123;mysql_install_dir&#125;</span>/bin/mysql -uroot -hlocalhost -e <span class="string">&quot;alter user root@&#x27;localhost&#x27; identified by \&quot;<span class="variable">$&#123;mysql_password&#125;</span>\&quot;;&quot;</span></span><br><span class="line">  	<span class="variable">$&#123;mysql_install_dir&#125;</span>/bin/mysql -uroot -p<span class="variable">$&#123;mysql_password&#125;</span> -e <span class="string">&quot;reset master;&quot;</span></span><br><span class="line">  	<span class="variable">$&#123;mysql_install_dir&#125;</span>/bin/mysql -uroot -hlocalhost -p<span class="variable">$&#123;mysql_password&#125;</span> -e <span class="string">&quot;CREATE USER &#x27;root&#x27;@&#x27;%&#x27; IDENTIFIED BY &#x27;<span class="variable">$&#123;mysql_password&#125;</span>&#x27;;&quot;</span></span><br><span class="line">    <span class="variable">$&#123;mysql_install_dir&#125;</span>/bin/mysql -uroot -hlocalhost -p<span class="variable">$&#123;mysql_password&#125;</span> -e <span class="string">&quot;GRANT ALL PRIVILEGES ON *.* TO &#x27;root&#x27;@&#x27;%&#x27; WITH GRANT OPTION;&quot;</span></span><br><span class="line"></span><br><span class="line">  	<span class="built_in">rm</span> -rf /etc/ld.so.conf.d/&#123;mysql,mariadb,percona,alisql&#125;*.conf</span><br><span class="line">  	<span class="built_in">echo</span> <span class="string">&quot;<span class="variable">$&#123;mysql_install_dir&#125;</span>/lib&quot;</span> &gt; /etc/ld.so.conf.d/mysql_renwole.com.conf</span><br><span class="line">  	ldconfig</span><br><span class="line">  	<span class="built_in">echo</span> <span class="string">&quot;========== MySQL installing Successfully =====&quot;</span></span><br><span class="line">  	<span class="built_in">echo</span></span><br><span class="line">	<span class="built_in">echo</span> <span class="string">&quot;==============================================&quot;</span></span><br><span class="line">	<span class="built_in">echo</span> <span class="string">&quot;    Thank you for using Renwole.com script&quot;</span></span><br><span class="line">	<span class="built_in">echo</span> <span class="string">&quot;==============================================&quot;</span></span><br><span class="line">	<span class="built_in">echo</span> <span class="string">&quot;MySQL:&quot;</span></span><br><span class="line">	<span class="built_in">echo</span> <span class="string">&quot;account: root&quot;</span></span><br><span class="line">	<span class="built_in">echo</span> <span class="string">&quot;password: <span class="variable">$&#123;mysql_password&#125;</span>&quot;</span></span><br><span class="line">	<span class="built_in">echo</span> <span class="string">&quot;database: <span class="variable">$&#123;mysql_data_dir&#125;</span>&quot;</span></span><br><span class="line">	<span class="built_in">echo</span> <span class="string">&quot;==============================================&quot;</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Install_MySQL</span><br><span class="line"><span class="built_in">source</span> /etc/profile</span><br><span class="line"><span class="built_in">ln</span> -s <span class="variable">$&#123;mysql_install_dir&#125;</span>/bin /usr/bin/mysql</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">#如果上面的配置文件里不想添加对任意ip开放，就注释掉配置里的，等安装完后用下列命令赋权</span></span><br><span class="line"><span class="comment"># CREATE USER &#x27;root&#x27;@&#x27;192.168.190.1&#x27; IDENTIFIED BY &#x27;Renwole.com#Node&#x27;;</span></span><br><span class="line"><span class="comment"># GRANT ALL PRIVILEGES ON *.* TO &#x27;root&#x27;@&#x27;192.168.190.1&#x27;;</span></span><br><span class="line"><span class="comment"># FLUSH PRIVILEGES;</span></span><br></pre></td></tr></table></figure>
+
+
+    </div>
+
+
+  <div style="text-align:center;color: #ccc;font-size:18px;">
+    ---------Thanks for your attention---------
+  </div>
+
+
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="followme">
+  <span>欢迎关注我的其它发布渠道</span>
+
+  <div class="social-list">
+
+      <div class="social-item">
+          <a target="_blank" class="social-link" href="/atom.xml">
+            <span class="icon">
+              <i class="fa fa-rss"></i>
+            </span>
+
+            <span class="label">RSS</span>
+          </a>
+      </div>
+  </div>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/Shell%E8%84%9A%E6%9C%AC/" rel="tag"><i class="fa fa-tag"></i> Shell脚本</a>
+          </div>
+
+
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2024/08/05/centos7%E5%81%9C%E6%9C%8D%E5%90%8Eyum%E6%BA%90%E9%85%8D%E7%BD%AE%E6%8C%87%E5%8D%97/" rel="prev" title="CentOS7停服后yum源配置指南">
+                  <i class="fa fa-angle-left"></i> CentOS7停服后yum源配置指南
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2024/08/10/%E7%AD%89%E4%BF%9D%E5%AE%89%E5%85%A8%E5%8A%A0%E5%9B%BA%E8%84%9A%E6%9C%AC/" rel="next" title="等保安全加固脚本">
+                  等保安全加固脚本 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2024</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">ZHANG</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+      <span>站点总字数：</span>
+    <span title="站点总字数">736k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span>站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">11:09</span>
+  </span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script size="30" alpha="0.6" zIndex="-1" src="https://cdnjs.cloudflare.com/ajax/libs/ribbon.js/1.0.2/ribbon.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fancyapps-ui/5.0.31/fancybox/fancybox.umd.js" integrity="sha256-a+H7FYzJv6oU2hfsfDGM2Ohw/cR9v+hPfxHCLdmCrE8=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lozad.js/1.16.0/lozad.min.js" integrity="sha256-mOFREFhqmHeQbXpK2lp4nA3qooVgACfh88fpJftLBbc=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pangu/4.0.7/pangu.min.js" integrity="sha256-j+yj56cdEY2CwkVtGyz18fNybFGpMGJ8JxG3GSyO2+I=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/sidebar.js"></script><script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+  <script src="/js/third-party/fancybox.js"></script>
+
+  <script src="/js/third-party/pace.js"></script>
+
+
+  
+
+
+
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/quicklink/2.3.0/quicklink.umd.js" integrity="sha256-yvJQOINiH9fWemHn0vCA5lsHWJaHs6/ZmO+1Ft04SvM=" crossorigin="anonymous"></script>
+  <script class="next-config" data-name="quicklink" type="application/json">{"enable":true,"home":true,"archive":true,"delay":true,"timeout":3000,"priority":true,"url":"http://example.com/2024/08/09/Centos7%E5%AE%89%E8%A3%85mysql8%E8%84%9A%E6%9C%AC/"}</script>
+  <script src="/js/third-party/quicklink.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 7.2.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=ZCOOL+XiaoWei:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha256-XOqroi11tY4EFQMR9ZYwZWKj5ZXiftSx36RRuC3anlA=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancyapps-ui/5.0.31/fancybox/fancybox.css" integrity="sha256-gkQVf8UKZgQ0HyuxL/VnacadJ+D2Kox2TCEBuNQg5+w=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/black/pace-theme-material.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.20.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"copycode":{"enable":true,"style":"mac"},"fold":{"enable":false,"height":500},"bookmark":{"enable":true,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="基于等保要求的系统安全检查脚本">
+<meta property="og:type" content="blog">
+<meta property="og:title" content="系统安全检查脚本">
+<meta property="og:url" content="http://example.com/2024/08/11/%E7%B3%BB%E7%BB%9F%E5%AE%89%E5%85%A8%E6%A3%80%E6%9F%A5%E8%84%9A%E6%9C%AC/index.html">
+<meta property="og:site_name" content="清风">
+<meta property="og:description" content="基于等保要求的系统安全检查脚本">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2024-08-11T01:25:00.000Z">
+<meta property="article:modified_time" content="2024-08-11T01:25:00.000Z">
+<meta property="article:author" content="ZHANG">
+<meta property="article:tag" content="Shell脚本">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://example.com/2024/08/11/%E7%B3%BB%E7%BB%9F%E5%AE%89%E5%85%A8%E6%A3%80%E6%9F%A5%E8%84%9A%E6%9C%AC/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2024/08/11/%E7%B3%BB%E7%BB%9F%E5%AE%89%E5%85%A8%E6%A3%80%E6%9F%A5%E8%84%9A%E6%9C%AC/","path":"2024/08/11/系统安全检查脚本/","title":"系统安全检查脚本"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>系统安全检查脚本 | 清风</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/atom.xml" title="清风" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">清风</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">虽不能至，心向往之</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li><li class="menu-item menu-item-rss"><a href="/atom.xml" rel="section"><i class="fa fa-rss fa-fw"></i>RSS</a></li><li class="menu-item menu-item-资源"><a href="/resources/" rel="section"><i class="fa fa-download fa-fw"></i>资源</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="搜索..." spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%B3%BB%E7%BB%9F%E5%AE%89%E5%85%A8%E6%A3%80%E6%9F%A5%E8%84%9A%E6%9C%AC"><span class="nav-number">1.</span> <span class="nav-text">系统安全检查脚本</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="ZHANG"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">ZHANG</p>
+  <div class="site-description" itemprop="description">不闻不若闻之，闻之不若见之，见之不若知之，知之不若行之</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">72</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">23</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">36</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://nianling-ai.github.io/" title="GitHub → https:&#x2F;&#x2F;nianling-ai.github.io" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:zyxjga@foxmail.com" title="E-Mail → mailto:zyxjga@foxmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+    <div class="sidebar-inner sidebar-blogroll">
+      <div class="links-of-blogroll animated">
+        <div class="links-of-blogroll-title"><i class="fa fa-globe fa-fw"></i>
+          链接
+        </div>
+        <ul class="links-of-blogroll-list">
+            <li class="links-of-blogroll-item">
+              <a href="https://www.runoob.com/" title="https:&#x2F;&#x2F;www.runoob.com&#x2F;" rel="noopener" target="_blank">菜鸟教程</a>
+            </li>
+            <li class="links-of-blogroll-item">
+              <a href="http://c.biancheng.net/sitemap/" title="http:&#x2F;&#x2F;c.biancheng.net&#x2F;sitemap&#x2F;" rel="noopener" target="_blank">C语言中文网</a>
+            </li>
+            <li class="links-of-blogroll-item">
+              <a href="https://csdiy.wiki/" title="https:&#x2F;&#x2F;csdiy.wiki&#x2F;" rel="noopener" target="_blank">CS自学指南</a>
+            </li>
+            <li class="links-of-blogroll-item">
+              <a href="https://www.r2coding.com/#/" title="https:&#x2F;&#x2F;www.r2coding.com&#x2F;#&#x2F;" rel="noopener" target="_blank">Road To Coding</a>
+            </li>
+            <li class="links-of-blogroll-item">
+              <a href="https://hackway.org/docs/cs/intro" title="https:&#x2F;&#x2F;hackway.org&#x2F;docs&#x2F;cs&#x2F;intro" rel="noopener" target="_blank">计算机专业学习路线</a>
+            </li>
+        </ul>
+      </div>
+    </div>
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2024/08/11/%E7%B3%BB%E7%BB%9F%E5%AE%89%E5%85%A8%E6%A3%80%E6%9F%A5%E8%84%9A%E6%9C%AC/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="ZHANG">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="清风">
+      <meta itemprop="description" content="不闻不若闻之，闻之不若见之，见之不若知之，知之不若行之">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="系统安全检查脚本 | 清风">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          系统安全检查脚本
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2024-08-11 09:25:00" itemprop="dateCreated datePublished" datetime="2024-08-11T09:25:00+08:00">2024-08-11</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Shell%E8%84%9A%E6%9C%AC/" itemprop="url" rel="index"><span itemprop="name">Shell脚本</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>16k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>15 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h3 id="系统安全检查脚本"><a href="#系统安全检查脚本" class="headerlink" title="系统安全检查脚本"></a>系统安全检查脚本</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br><span class="line">233</span><br><span class="line">234</span><br><span class="line">235</span><br><span class="line">236</span><br><span class="line">237</span><br><span class="line">238</span><br><span class="line">239</span><br><span class="line">240</span><br><span class="line">241</span><br><span class="line">242</span><br><span class="line">243</span><br><span class="line">244</span><br><span class="line">245</span><br><span class="line">246</span><br><span class="line">247</span><br><span class="line">248</span><br><span class="line">249</span><br><span class="line">250</span><br><span class="line">251</span><br><span class="line">252</span><br><span class="line">253</span><br><span class="line">254</span><br><span class="line">255</span><br><span class="line">256</span><br><span class="line">257</span><br><span class="line">258</span><br><span class="line">259</span><br><span class="line">260</span><br><span class="line">261</span><br><span class="line">262</span><br><span class="line">263</span><br><span class="line">264</span><br><span class="line">265</span><br><span class="line">266</span><br><span class="line">267</span><br><span class="line">268</span><br><span class="line">269</span><br><span class="line">270</span><br><span class="line">271</span><br><span class="line">272</span><br><span class="line">273</span><br><span class="line">274</span><br><span class="line">275</span><br><span class="line">276</span><br><span class="line">277</span><br><span class="line">278</span><br><span class="line">279</span><br><span class="line">280</span><br><span class="line">281</span><br><span class="line">282</span><br><span class="line">283</span><br><span class="line">284</span><br><span class="line">285</span><br><span class="line">286</span><br><span class="line">287</span><br><span class="line">288</span><br><span class="line">289</span><br><span class="line">290</span><br><span class="line">291</span><br><span class="line">292</span><br><span class="line">293</span><br><span class="line">294</span><br><span class="line">295</span><br><span class="line">296</span><br><span class="line">297</span><br><span class="line">298</span><br><span class="line">299</span><br><span class="line">300</span><br><span class="line">301</span><br><span class="line">302</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"><span class="comment">##Filename:     CentOS_Check_Script.sh</span></span><br><span class="line"><span class="comment">##Description:  Security detection script</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;##########################################################################&quot;</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;#                                                                        #&quot;</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;#                         health check script                            #&quot;</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;#                                                                        #&quot;</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;#警告:本脚本只是一个检查的操作,未对服务器做任何修改,管理员可以根据此报告 #&quot;</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;#进行相应的安全整改                                                      #&quot;</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;##########################################################################&quot;</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot; &quot;</span></span><br><span class="line"><span class="comment">#read -p &quot;=====================Are You Ready,Please press enter==================&quot;</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot; &quot;</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;##########################################################################&quot;</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;#                                                                        #&quot;</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;#                               主机安全检测                             #&quot;</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;#                                                                        #&quot;</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;##########################################################################&quot;</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot; &quot;</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;系统基本信息&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&quot;</span></span><br><span class="line">hostname=$(<span class="built_in">uname</span> -n)</span><br><span class="line">system=$(<span class="built_in">cat</span> /etc/os-release | grep <span class="string">&quot;^NAME&quot;</span> | awk -F\&quot; <span class="string">&#x27;&#123;print $2&#125;&#x27;</span>)</span><br><span class="line">version=$(<span class="built_in">cat</span> /etc/os-release | awk <span class="string">&#x27;&#123;print $4$5&#125;&#x27;</span>)</span><br><span class="line">kernel=$(<span class="built_in">uname</span> -r)</span><br><span class="line">platform=$(<span class="built_in">uname</span> -p)</span><br><span class="line">address=$(ip addr | grep inet | grep -v <span class="string">&quot;inet6&quot;</span> | grep -v <span class="string">&quot;127.0.0.1&quot;</span> | awk <span class="string">&#x27;&#123; print $2; &#125;&#x27;</span> | <span class="built_in">tr</span> <span class="string">&#x27;\n&#x27;</span> <span class="string">&#x27;\t&#x27;</span> )</span><br><span class="line">cpumodel=$(<span class="built_in">cat</span> /proc/cpuinfo | grep name | <span class="built_in">cut</span> -f2 -d: | <span class="built_in">uniq</span>)</span><br><span class="line">cpu=$(<span class="built_in">cat</span> /proc/cpuinfo | grep <span class="string">&#x27;processor&#x27;</span> | <span class="built_in">sort</span> | <span class="built_in">uniq</span> | <span class="built_in">wc</span> -l)</span><br><span class="line">machinemodel=$(dmidecode | grep <span class="string">&quot;Product Name&quot;</span> | sed <span class="string">&#x27;s/^[ \t]*//g&#x27;</span> | <span class="built_in">tr</span> <span class="string">&#x27;\n&#x27;</span> <span class="string">&#x27;\t&#x27;</span> )</span><br><span class="line"><span class="built_in">date</span>=$(<span class="built_in">date</span>)</span><br><span class="line"></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;主机名:           <span class="variable">$hostname</span>&quot;</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;系统名称:         <span class="variable">$system</span>&quot;</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;系统版本:         <span class="variable">$version</span>&quot;</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;内核版本:         <span class="variable">$kernel</span>&quot;</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;系统类型:         <span class="variable">$platform</span>&quot;</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;本机IP地址:       <span class="variable">$address</span>&quot;</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;CPU型号:          <span class="variable">$cpumodel</span>&quot;</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;CPU核数:          <span class="variable">$cpu</span>&quot;</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;机器型号:         <span class="variable">$machinemodel</span>&quot;</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;系统时间:         <span class="variable">$date</span>&quot;</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot; &quot;</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;资源使用情况&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&quot;</span></span><br><span class="line">summemory=$(free -h |grep <span class="string">&quot;Mem:&quot;</span> | awk <span class="string">&#x27;&#123;print $2&#125;&#x27;</span>)</span><br><span class="line">freememory=$(free -h |grep <span class="string">&quot;Mem:&quot;</span> | awk <span class="string">&#x27;&#123;print $4&#125;&#x27;</span>)</span><br><span class="line">usagememory=$(free -h |grep <span class="string">&quot;Mem:&quot;</span> | awk <span class="string">&#x27;&#123;print $3&#125;&#x27;</span>)</span><br><span class="line"><span class="built_in">uptime</span>=$(<span class="built_in">uptime</span> | awk <span class="string">&#x27;&#123;print $2&quot; &quot;$3&quot; &quot;$4&quot; &quot;$5&#125;&#x27;</span> | sed <span class="string">&#x27;s/,$//g&#x27;</span>)</span><br><span class="line">loadavg=$(<span class="built_in">uptime</span> | awk <span class="string">&#x27;&#123;print $9&quot; &quot;$10&quot; &quot;$11&quot; &quot;$12&quot; &quot;$13&#125;&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;总内存大小:           <span class="variable">$summemory</span>&quot;</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;已使用内存大小:       <span class="variable">$usagememory</span>&quot;</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;可使用内存大小:       <span class="variable">$freememory</span>&quot;</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;系统运行时间:         <span class="variable">$uptime</span>&quot;</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;系统负载:             <span class="variable">$loadavg</span>&quot;</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;=============================dividing line================================&quot;</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;内存状态:&quot;</span></span><br><span class="line">vmstat 2 5</span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;=============================dividing line================================&quot;</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;僵尸进程:&quot;</span></span><br><span class="line">ps -ef | grep zombie | grep -v grep</span><br><span class="line"><span class="keyword">if</span> [ $? == 1 ];<span class="keyword">then</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">&quot;&gt;&gt;&gt;无僵尸进程&quot;</span></span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">&quot;&gt;&gt;&gt;有僵尸进程------[需调整]&quot;</span></span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;=============================dividing line================================&quot;</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;耗CPU最多的进程:&quot;</span></span><br><span class="line">ps auxf |<span class="built_in">sort</span> -nr -k 3 |<span class="built_in">head</span> -5</span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;=============================dividing line================================&quot;</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;耗内存最多的进程:&quot;</span></span><br><span class="line">ps auxf |<span class="built_in">sort</span> -nr -k 4 |<span class="built_in">head</span> -5</span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;=============================dividing line================================&quot;</span></span><br><span class="line"><span class="built_in">echo</span>  <span class="string">&quot;环境变量:&quot;</span></span><br><span class="line"><span class="built_in">env</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;=============================dividing line================================&quot;</span></span><br><span class="line"><span class="built_in">echo</span>  <span class="string">&quot;路由表:&quot;</span></span><br><span class="line">route -n</span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;=============================dividing line================================&quot;</span></span><br><span class="line"><span class="built_in">echo</span>  <span class="string">&quot;监听端口:&quot;</span></span><br><span class="line">netstat -tunlp</span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;=============================dividing line================================&quot;</span></span><br><span class="line"><span class="built_in">echo</span>  <span class="string">&quot;当前建立的连接:&quot;</span></span><br><span class="line">netstat -n | awk <span class="string">&#x27;/^tcp/ &#123;++S[$NF]&#125; END &#123;for(a in S) print a, S[a]&#125;&#x27;</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;=============================dividing line================================&quot;</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;开机启动的服务:&quot;</span></span><br><span class="line">systemctl list-unit-files | grep enabled</span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot; &quot;</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;系统用户情况&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&quot;</span></span><br><span class="line"><span class="built_in">echo</span>  <span class="string">&quot;活动用户:&quot;</span></span><br><span class="line">w | <span class="built_in">tail</span> -n +2</span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;=============================dividing line================================&quot;</span></span><br><span class="line"><span class="built_in">echo</span>  <span class="string">&quot;系统所有用户:&quot;</span></span><br><span class="line"><span class="built_in">cut</span> -d: -f1,2,3,4 /etc/passwd</span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;=============================dividing line================================&quot;</span></span><br><span class="line"><span class="built_in">echo</span>  <span class="string">&quot;系统所有组:&quot;</span></span><br><span class="line"><span class="built_in">cut</span> -d: -f1,2,3 /etc/group</span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;=============================dividing line================================&quot;</span></span><br><span class="line"><span class="built_in">echo</span>  <span class="string">&quot;当前用户的计划任务:&quot;</span></span><br><span class="line">crontab -l</span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot; &quot;</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;身份鉴别安全&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&quot;</span></span><br><span class="line">grep -i <span class="string">&quot;^password.*requisite.*pam_cracklib.so&quot;</span> /etc/pam.d/system-auth  &gt; /dev/null</span><br><span class="line"><span class="keyword">if</span> [ $? == 0 ];<span class="keyword">then</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">&quot;&gt;&gt;&gt;密码复杂度:已设置&quot;</span></span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">    grep -i <span class="string">&quot;pam_pwquality\.so&quot;</span> /etc/pam.d/system-auth &gt; /dev/null</span><br><span class="line">    <span class="keyword">if</span> [ $? == 0 ];<span class="keyword">then</span></span><br><span class="line">	<span class="built_in">echo</span> <span class="string">&quot;&gt;&gt;&gt;密码复杂度:已设置&quot;</span></span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">	<span class="built_in">echo</span> <span class="string">&quot;&gt;&gt;&gt;密码复杂度:未设置,请加固密码--------[需调整]&quot;</span></span><br><span class="line">    <span class="keyword">fi</span></span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;=============================dividing line================================&quot;</span></span><br><span class="line">awk -F<span class="string">&quot;:&quot;</span> <span class="string">&#x27;&#123;if($2!~/^!|^*/)&#123;print &quot;&gt;&gt;&gt;(&quot;$1&quot;)&quot; &quot; 是一个未被锁定的账户,请管理员检查是否是可疑账户--------[需调整]&quot;&#125;&#125;&#x27;</span> /etc/shadow</span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;=============================dividing line================================&quot;</span></span><br><span class="line">more /etc/login.defs | grep -E <span class="string">&quot;PASS_MAX_DAYS&quot;</span> | grep -v <span class="string">&quot;#&quot;</span> |awk -F<span class="string">&#x27; &#x27;</span>  <span class="string">&#x27;&#123;if($2!=90)&#123;print &quot;&gt;&gt;&gt;密码过期天数是&quot;$2&quot;天,请管理员改成90天------[需调整]&quot;&#125;&#125;&#x27;</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;=============================dividing line================================&quot;</span></span><br><span class="line">grep -i <span class="string">&quot;^auth.*required.*pam_tally2.so.*$&quot;</span> /etc/pam.d/sshd  &gt; /dev/null</span><br><span class="line"><span class="keyword">if</span> [ $? == 0 ];<span class="keyword">then</span></span><br><span class="line">  <span class="built_in">echo</span> <span class="string">&quot;&gt;&gt;&gt;登入失败处理:已开启&quot;</span></span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">  <span class="built_in">echo</span> <span class="string">&quot;&gt;&gt;&gt;登入失败处理:未开启,请加固登入失败锁定功能----------[需调整]&quot;</span></span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot; &quot;</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;访问控制安全&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&quot;</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;系统中存在以下非系统默认用户:&quot;</span></span><br><span class="line">more /etc/passwd |awk -F <span class="string">&quot;:&quot;</span> <span class="string">&#x27;&#123;if($3&gt;500)&#123;print &quot;&gt;&gt;&gt;/etc/passwd里面的&quot;$1 &quot;的UID为&quot;$3&quot;，该账户非系统默认账户，请管理员确认是否为可疑账户--------[需调整]&quot;&#125;&#125;&#x27;</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;=============================dividing line================================&quot;</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;系统特权用户:&quot;</span></span><br><span class="line">awk -F: <span class="string">&#x27;$3==0 &#123;print $1&#125;&#x27;</span> /etc/passwd</span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;=============================dividing line================================&quot;</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;系统中空口令账户:&quot;</span></span><br><span class="line">awk -F: <span class="string">&#x27;($2==&quot;!!&quot;) &#123;print $1&quot;该账户为空口令账户，请管理员确认是否为新增账户，如果为新建账户，请配置密码-------[需调整]&quot;&#125;&#x27;</span> /etc/shadow</span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot; &quot;</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;安全审计&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&quot;</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;正常情况下登录到本机30天内的所有用户的历史记录:&quot;</span></span><br><span class="line">last | <span class="built_in">head</span> -n 30</span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;=============================dividing line================================&quot;</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;查看syslog日志审计服务是否开启:&quot;</span></span><br><span class="line"><span class="keyword">if</span> service rsyslog status | egrep <span class="string">&quot; active \(running&quot;</span>;<span class="keyword">then</span></span><br><span class="line">  <span class="built_in">echo</span> <span class="string">&quot;&gt;&gt;&gt;经分析,syslog服务已开启&quot;</span></span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">  <span class="built_in">echo</span> <span class="string">&quot;&gt;&gt;&gt;经分析,syslog服务未开启，建议通过service rsyslog start开启日志审计功能---------[需调整]&quot;</span></span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;=============================dividing line================================&quot;</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;查看syslog日志是否开启外发:&quot;</span></span><br><span class="line"><span class="keyword">if</span> more /etc/rsyslog.conf | egrep <span class="string">&quot;@...\.|@..\.|@.\.|\*.\* @...\.|\*\.\* @..\.|\*\.\* @.\.&quot;</span>;<span class="keyword">then</span></span><br><span class="line">  <span class="built_in">echo</span> <span class="string">&quot;&gt;&gt;&gt;经分析,客户端syslog日志已开启外发--------[需调整]&quot;</span></span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">  <span class="built_in">echo</span> <span class="string">&quot;&gt;&gt;&gt;经分析,客户端syslog日志未开启外发---------[无需调整]&quot;</span></span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;=============================dividing line================================&quot;</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;审计的要素和审计日志:&quot;</span></span><br><span class="line">more /etc/rsyslog.conf  | grep -v <span class="string">&quot;^[$|#]&quot;</span> | grep -v <span class="string">&quot;^$&quot;</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;=============================dividing line================================&quot;</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;系统中关键文件修改时间:&quot;</span></span><br><span class="line"><span class="built_in">ls</span> -ltr /bin/ls /bin/login /etc/passwd  /bin/ps /etc/shadow|awk <span class="string">&#x27;&#123;print &quot;&gt;&gt;&gt;文件名：&quot;$9&quot;  &quot;&quot;最后修改时间：&quot;$6&quot; &quot;$7&quot; &quot;$8&#125;&#x27;</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;</span></span><br><span class="line"><span class="string">###############################################################################################</span></span><br><span class="line"><span class="string">#   ls文件:是存储ls命令的功能函数,被删除以后,就无法执行ls命令                                 #</span></span><br><span class="line"><span class="string">#   login文件:login是控制用户登录的文件,一旦被篡改或删除,系统将无法切换用户或登陆用户         #</span></span><br><span class="line"><span class="string">#   /etc/passwd是一个文件,主要是保存用户信息                                                  #</span></span><br><span class="line"><span class="string">#   /bin/ps 进程查看命令功能支持文件,文件损坏或被更改后,无法正常使用ps命令                    #</span></span><br><span class="line"><span class="string">#   /etc/shadow是/etc/passwd的影子文件,密码存放在该文件当中,并且只有root用户可读              #</span></span><br><span class="line"><span class="string">###############################################################################################&quot;</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;=============================dividing line================================&quot;</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;检查重要日志文件是否存在:&quot;</span></span><br><span class="line">log_secure=/var/log/secure</span><br><span class="line">log_messages=/var/log/messages</span><br><span class="line">log_cron=/var/log/cron</span><br><span class="line">log_boot=/var/log/boot.log</span><br><span class="line">log_dmesg=/var/log/dmesg</span><br><span class="line"><span class="keyword">if</span> [ -e <span class="string">&quot;<span class="variable">$log_secure</span>&quot;</span> ]; <span class="keyword">then</span></span><br><span class="line">  <span class="built_in">echo</span>  <span class="string">&quot;&gt;&gt;&gt;/var/log/secure日志文件存在&quot;</span></span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">  <span class="built_in">echo</span>  <span class="string">&quot;&gt;&gt;&gt;/var/log/secure日志文件不存在------[需调整]&quot;</span></span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"><span class="keyword">if</span> [ -e <span class="string">&quot;<span class="variable">$log_messages</span>&quot;</span> ]; <span class="keyword">then</span></span><br><span class="line">  <span class="built_in">echo</span>  <span class="string">&quot;&gt;&gt;&gt;/var/log/messages日志文件存在&quot;</span></span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">  <span class="built_in">echo</span>  <span class="string">&quot;&gt;&gt;&gt;/var/log/messages日志文件不存在------[需调整]&quot;</span></span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"><span class="keyword">if</span> [ -e <span class="string">&quot;<span class="variable">$log_cron</span>&quot;</span> ]; <span class="keyword">then</span></span><br><span class="line">  <span class="built_in">echo</span>  <span class="string">&quot;&gt;&gt;&gt;/var/log/cron日志文件存在&quot;</span></span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">  <span class="built_in">echo</span>  <span class="string">&quot;&gt;&gt;&gt;/var/log/cron日志文件不存在--------[需调整]&quot;</span></span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"><span class="keyword">if</span> [ -e <span class="string">&quot;<span class="variable">$log_boot</span>&quot;</span> ]; <span class="keyword">then</span></span><br><span class="line">  <span class="built_in">echo</span>  <span class="string">&quot;&gt;&gt;&gt;/var/log/boot.log日志文件存在&quot;</span></span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">  <span class="built_in">echo</span>  <span class="string">&quot;&gt;&gt;&gt;/var/log/boot.log日志文件不存在--------[需调整]&quot;</span></span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"><span class="keyword">if</span> [ -e <span class="string">&quot;<span class="variable">$log_dmesg</span>&quot;</span> ]; <span class="keyword">then</span></span><br><span class="line">  <span class="built_in">echo</span>  <span class="string">&quot;&gt;&gt;&gt;/var/log/dmesg日志文件存在&quot;</span></span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">  <span class="built_in">echo</span>  <span class="string">&quot;&gt;&gt;&gt;/var/log/dmesg日志文件不存在--------[需调整]&quot;</span></span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot; &quot;</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;剩余信息保护&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&quot;</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;分区情况:&quot;</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;如果磁盘空间利用率过高，请及时调整---------[需调整]&quot;</span></span><br><span class="line"><span class="built_in">df</span> -h</span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;=============================dividing line================================&quot;</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;可用块设备信息:&quot;</span></span><br><span class="line">lsblk</span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;=============================dividing line================================&quot;</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;文件系统信息:&quot;</span></span><br><span class="line">more /etc/fstab  | grep -v <span class="string">&quot;^#&quot;</span> | grep -v <span class="string">&quot;^$&quot;</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot; &quot;</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;入侵防范安全&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&quot;</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;系统入侵行为:&quot;</span></span><br><span class="line">more /var/log/secure |grep refused</span><br><span class="line"><span class="keyword">if</span> [ $? == 0 ];<span class="keyword">then</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">&quot;有入侵行为，请分析处理--------[需调整]&quot;</span></span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">&quot;&gt;&gt;&gt;无入侵行为&quot;</span></span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;=============================dividing line================================&quot;</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;用户错误登入列表:&quot;</span></span><br><span class="line">lastb | <span class="built_in">head</span> &gt; /dev/null</span><br><span class="line"><span class="keyword">if</span> [ $? == 1 ];<span class="keyword">then</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">&quot;&gt;&gt;&gt;无用户错误登入列表&quot;</span></span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">&quot;&gt;&gt;&gt;用户错误登入--------[需调整]&quot;</span></span><br><span class="line">    lastb | <span class="built_in">head</span> </span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;=============================dividing line================================&quot;</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;ssh暴力登入信息:&quot;</span></span><br><span class="line">more /var/log/secure | grep  <span class="string">&quot;Failed&quot;</span> &gt; /dev/null</span><br><span class="line"><span class="keyword">if</span> [ $? == 1 ];<span class="keyword">then</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">&quot;&gt;&gt;&gt;无ssh暴力登入信息&quot;</span></span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">    more /var/log/secure|awk <span class="string">&#x27;/Failed/&#123;print $(NF-3)&#125;&#x27;</span>|<span class="built_in">sort</span>|<span class="built_in">uniq</span> -c|awk <span class="string">&#x27;&#123;print &quot;&gt;&gt;&gt;登入失败的IP和尝试次数: &quot;$2&quot;=&quot;$1&quot;次---------[需调整]&quot;;&#125;&#x27;</span></span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot; &quot;</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;恶意代码防范&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&quot;</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;检查是否安装病毒软件:&quot;</span></span><br><span class="line">crontab -l | grep clamscan.sh &gt; /dev/null</span><br><span class="line"><span class="keyword">if</span> [ $? == 0 ];<span class="keyword">then</span></span><br><span class="line">  <span class="built_in">echo</span> <span class="string">&quot;&gt;&gt;&gt;已安装ClamAV杀毒软件&quot;</span></span><br><span class="line">  crontab -l | grep freshclam.sh &gt; /dev/null</span><br><span class="line">  <span class="keyword">if</span> [ $? == 0 ];<span class="keyword">then</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">&quot;&gt;&gt;&gt;已部署定时更新病毒库&quot;</span></span><br><span class="line">  <span class="keyword">fi</span></span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">  <span class="built_in">echo</span> <span class="string">&quot;&gt;&gt;&gt;未安装ClamAV杀毒软件,请部署杀毒软件加固主机防护--------[无需调整]&quot;</span></span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot; &quot;</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;资源控制安全&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&quot;</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;查看是否开启了xinetd服务:&quot;</span></span><br><span class="line"><span class="keyword">if</span> ps -elf |grep xinet |grep -v <span class="string">&quot;grep xinet&quot;</span>;<span class="keyword">then</span></span><br><span class="line">  <span class="built_in">echo</span> <span class="string">&quot;&gt;&gt;&gt;xinetd服务正在运行，请检查是否可以把xinetd服务关闭--------[无需调整]&quot;</span></span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">  <span class="built_in">echo</span> <span class="string">&quot;&gt;&gt;&gt;xinetd服务未开启-------[无需调整]&quot;</span></span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;=============================dividing line================================&quot;</span></span><br><span class="line"><span class="built_in">echo</span>  <span class="string">&quot;查看是否开启了ssh服务:&quot;</span></span><br><span class="line"><span class="keyword">if</span> service sshd status | grep -E <span class="string">&quot;listening on|active \(running\)&quot;</span>; <span class="keyword">then</span></span><br><span class="line">  <span class="built_in">echo</span> <span class="string">&quot;&gt;&gt;&gt;SSH服务已开启&quot;</span></span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">  <span class="built_in">echo</span> <span class="string">&quot;&gt;&gt;&gt;SSH服务未开启--------[需调整]&quot;</span></span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;=============================dividing line================================&quot;</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;查看是否开启了Telnet-Server服务:&quot;</span></span><br><span class="line"><span class="keyword">if</span> more /etc/xinetd.d/telnetd 2&gt;&amp;1|grep -E <span class="string">&quot;disable=no&quot;</span>; <span class="keyword">then</span></span><br><span class="line">  <span class="built_in">echo</span> <span class="string">&quot;&gt;&gt;&gt;Telnet-Server服务已开启&quot;</span></span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">  <span class="built_in">echo</span> <span class="string">&quot;&gt;&gt;&gt;Telnet-Server服务未开启--------[无需调整]&quot;</span></span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;=============================dividing line================================&quot;</span></span><br><span class="line">ps axu | grep iptables | grep -v grep || ps axu | grep firewalld | grep -v grep </span><br><span class="line"><span class="keyword">if</span> [ $? == 0 ];<span class="keyword">then</span></span><br><span class="line">  <span class="built_in">echo</span> <span class="string">&quot;&gt;&gt;&gt;防火墙已启用&quot;</span></span><br><span class="line">iptables -nvL --line-numbers</span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">  <span class="built_in">echo</span> <span class="string">&quot;&gt;&gt;&gt;防火墙未启用--------[需调整]&quot;</span></span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;=============================dividing line================================&quot;</span></span><br><span class="line"><span class="built_in">echo</span>  <span class="string">&quot;查看系统SSH远程访问设置策略(host.deny拒绝列表):&quot;</span></span><br><span class="line"><span class="keyword">if</span> more /etc/hosts.deny | grep -E <span class="string">&quot;sshd&quot;</span>; <span class="keyword">then</span></span><br><span class="line">  <span class="built_in">echo</span> <span class="string">&quot;&gt;&gt;&gt;远程访问策略已设置--------[需调整]&quot;</span></span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">  <span class="built_in">echo</span> <span class="string">&quot;&gt;&gt;&gt;远程访问策略未设置--------[无需调整]&quot;</span></span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;=============================dividing line================================&quot;</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;查看系统SSH远程访问设置策略(hosts.allow允许列表):&quot;</span></span><br><span class="line"><span class="keyword">if</span> more /etc/hosts.allow | grep -E <span class="string">&quot;sshd&quot;</span>; <span class="keyword">then</span></span><br><span class="line">  <span class="built_in">echo</span> <span class="string">&quot;&gt;&gt;&gt;远程访问策略已设置--------[需调整]&quot;</span></span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">  <span class="built_in">echo</span> <span class="string">&quot;&gt;&gt;&gt;远程访问策略未设置--------[无需调整]&quot;</span></span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;=============================dividing line================================&quot;</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;当hosts.allow和host.deny相冲突时,以hosts.allow设置为准&quot;</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;=============================dividing line================================&quot;</span></span><br><span class="line">grep -i <span class="string">&quot;TMOUT&quot;</span> /etc/profile /etc/bashrc</span><br><span class="line"><span class="keyword">if</span> [ $? == 0 ];<span class="keyword">then</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">&quot;&gt;&gt;&gt;已设置登入超时限制&quot;</span></span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">&quot;&gt;&gt;&gt;未设置登入超时限制,请设置,设置方法:在/etc/profile或者/etc/bashrc里面添加参数TMOUT=600 --------[需调整]&quot;</span></span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;end&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&quot;</span></span><br></pre></td></tr></table></figure>
+
+
+
+
+    </div>
+
+
+  <div style="text-align:center;color: #ccc;font-size:18px;">
+    ---------Thanks for your attention---------
+  </div>
+
+
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="followme">
+  <span>欢迎关注我的其它发布渠道</span>
+
+  <div class="social-list">
+
+      <div class="social-item">
+          <a target="_blank" class="social-link" href="/atom.xml">
+            <span class="icon">
+              <i class="fa fa-rss"></i>
+            </span>
+
+            <span class="label">RSS</span>
+          </a>
+      </div>
+  </div>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/Shell%E8%84%9A%E6%9C%AC/" rel="tag"><i class="fa fa-tag"></i> Shell脚本</a>
+          </div>
+
+
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2024/08/10/%E7%AD%89%E4%BF%9D%E5%AE%89%E5%85%A8%E5%8A%A0%E5%9B%BA%E8%84%9A%E6%9C%AC/" rel="prev" title="等保安全加固脚本">
+                  <i class="fa fa-angle-left"></i> 等保安全加固脚本
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2024</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">ZHANG</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+      <span>站点总字数：</span>
+    <span title="站点总字数">736k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span>站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">11:09</span>
+  </span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script size="30" alpha="0.6" zIndex="-1" src="https://cdnjs.cloudflare.com/ajax/libs/ribbon.js/1.0.2/ribbon.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fancyapps-ui/5.0.31/fancybox/fancybox.umd.js" integrity="sha256-a+H7FYzJv6oU2hfsfDGM2Ohw/cR9v+hPfxHCLdmCrE8=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lozad.js/1.16.0/lozad.min.js" integrity="sha256-mOFREFhqmHeQbXpK2lp4nA3qooVgACfh88fpJftLBbc=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pangu/4.0.7/pangu.min.js" integrity="sha256-j+yj56cdEY2CwkVtGyz18fNybFGpMGJ8JxG3GSyO2+I=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/sidebar.js"></script><script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+  <script src="/js/third-party/fancybox.js"></script>
+
+  <script src="/js/third-party/pace.js"></script>
+
+
+  
+
+
+
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/quicklink/2.3.0/quicklink.umd.js" integrity="sha256-yvJQOINiH9fWemHn0vCA5lsHWJaHs6/ZmO+1Ft04SvM=" crossorigin="anonymous"></script>
+  <script class="next-config" data-name="quicklink" type="application/json">{"enable":true,"home":true,"archive":true,"delay":true,"timeout":3000,"priority":true,"url":"http://example.com/2024/08/11/%E7%B3%BB%E7%BB%9F%E5%AE%89%E5%85%A8%E6%A3%80%E6%9F%A5%E8%84%9A%E6%9C%AC/"}</script>
+  <script src="/js/third-party/quicklink.js"></script>
+
+</body>
+</html>
