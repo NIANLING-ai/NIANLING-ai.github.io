@@ -6,7 +6,7 @@
   <link href="http://example.com/atom.xml" rel="self"/>
   
   <link href="http://example.com/"/>
-  <updated>2024-08-11T01:25:00.000Z</updated>
+  <updated>2024-08-25T01:25:00.000Z</updated>
   <id>http://example.com/</id>
   
   <author>
@@ -15,6 +15,27 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Linux扩容的两种方法探索</title>
+    <link href="http://example.com/2024/08/25/Linux%E6%89%A9%E5%AE%B9%E7%9A%84%E4%B8%A4%E7%A7%8D%E5%81%9A%E6%B3%95%E6%8E%A2%E7%B4%A2/"/>
+    <id>http://example.com/2024/08/25/Linux%E6%89%A9%E5%AE%B9%E7%9A%84%E4%B8%A4%E7%A7%8D%E5%81%9A%E6%B3%95%E6%8E%A2%E7%B4%A2/</id>
+    <published>2024-08-25T01:25:00.000Z</published>
+    <updated>2024-08-25T01:25:00.000Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="Linux扩容的两种方法探索"><a href="#Linux扩容的两种方法探索" class="headerlink" title="Linux扩容的两种方法探索"></a>Linux扩容的两种方法探索</h2><ul><li>要扩展的vg和lv的名称要确定</li></ul><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">vgdisplay</span><br><span class="line">lvdisplay</span><br></pre></td></tr></table></figure><h3 id="先分区再扩容"><a href="#先分区再扩容" class="headerlink" title="先分区再扩容"></a>先分区再扩容</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">fdisk /dev/sdb</span><br><span class="line">n</span><br><span class="line">p</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">w</span><br><span class="line">vgextend myvg /dev/sdb1</span><br><span class="line">lvresize  -L +20G  /dev/myvg-mylv</span><br><span class="line">xfs_growfs /dev/myvg-mylv</span><br></pre></td></tr></table></figure><h3 id="不分区直接扩"><a href="#不分区直接扩" class="headerlink" title="不分区直接扩"></a>不分区直接扩</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">mkfs.xfs /dev/sdb</span><br><span class="line">pvcreate /dev/sdb</span><br><span class="line">vgextend myvg /dev/sdb</span><br><span class="line">lvextend -l +100%FREE /dev/myvg-mylv</span><br><span class="line">xfs_growfs /dev/myvg-mylv</span><br></pre></td></tr></table></figure><h3 id="本质区别"><a href="#本质区别" class="headerlink" title="本质区别"></a>本质区别</h3><ol><li><strong>分区 vs. 整个磁盘</strong>：第一种方法直接使用整个磁盘，而第二种方法则是通过分区来管理磁盘空间。</li><li><strong>灵活性</strong>：第二种方法提供了更大的灵活性，可以在同一块磁盘上创建多个分区，适合需要在同一磁盘上管理多个逻辑卷的场景。</li><li><strong>空间管理</strong>：第一种方法在扩展时会使用整个磁盘的空间，而第二种方法可以根据需要选择扩展的大小。</li></ol><h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>选择哪种方法取决于具体的需求和环境。如果需要简单快速的扩展，第一种方法可能更合适；如果需要更细致的空间管理和灵活性，第二种方法则更为合适。</p><h3 id="在多路径磁盘的场景下"><a href="#在多路径磁盘的场景下" class="headerlink" title="在多路径磁盘的场景下"></a>在多路径磁盘的场景下</h3><p>在多路径（Multipath）配置的环境中，通常建议使用第一种方法，即直接在整个磁盘上进行操作。这是因为多路径设备通常会被视为一个逻辑设备，而不是多个物理分区。以下是一些原因和建议。</p><h4 id="原因"><a href="#原因" class="headerlink" title="原因"></a>原因</h4><ol><li><strong>多路径设备的特性</strong>：多路径设备通常会将多个物理路径聚合为一个逻辑设备。在这种情况下，直接在整个设备上进行操作，可以避免潜在的分区问题。</li><li><strong>分区问题</strong>：如果你尝试在多路径设备上创建分区，可能会导致设备识别错误或路径不一致，从而引发错误。这是因为多路径设备的管理和分区可能会与预期不符。</li><li><strong>简化管理</strong>：使用整个磁盘作为物理卷可以简化管理，避免在多路径环境中处理多个分区的复杂性。</li><li><strong>多路径设备</strong>：如果你在多路径环境中工作，确保你使用的是多路径设备的正确名称（例如 <code>/dev/mapper/mpath0</code>），而不是物理设备名称。</li></ol><h4 id="建议"><a href="#建议" class="headerlink" title="建议"></a>建议</h4><ul><li><strong>使用第一种方法</strong>：在多路径环境中，建议直接使用整个磁盘进行物理卷的创建和逻辑卷的扩展。</li><li><strong>确保多路径配置正确</strong>：在进行任何操作之前，确保多路径配置正确，并且可以通过 <code>multipath -ll</code> 命令查看多路径设备的状态。</li><li><strong>备份数据</strong>：在进行扩展操作之前，始终备份重要数据，以防止意外情况导致数据丢失。</li></ul>]]></content>
+    
+    
+    <summary type="html">Linux扩容的两种方法探索</summary>
+    
+    
+    
+    <category term="Linux" scheme="http://example.com/categories/Linux/"/>
+    
+    
+    <category term="Linux" scheme="http://example.com/tags/Linux/"/>
+    
+  </entry>
   
   <entry>
     <title>系统安全检查脚本</title>
@@ -69,6 +90,27 @@
     
     
     <summary type="html">Centos7.9安装mysql8，仅适用于centos7</summary>
+    
+    
+    
+    <category term="Shell脚本" scheme="http://example.com/categories/Shell%E8%84%9A%E6%9C%AC/"/>
+    
+    
+    <category term="Shell脚本" scheme="http://example.com/tags/Shell%E8%84%9A%E6%9C%AC/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Centos同步yum源到本地</title>
+    <link href="http://example.com/2024/08/07/Centos%E5%90%8C%E6%AD%A5yum%E6%BA%90%E5%88%B0%E6%9C%AC%E5%9C%B0/"/>
+    <id>http://example.com/2024/08/07/Centos%E5%90%8C%E6%AD%A5yum%E6%BA%90%E5%88%B0%E6%9C%AC%E5%9C%B0/</id>
+    <published>2024-08-07T01:25:00.000Z</published>
+    <updated>2024-08-07T01:25:00.000Z</updated>
+    
+    <content type="html"><![CDATA[<h3 id="Centos7同步yum源到本地"><a href="#Centos7同步yum源到本地" class="headerlink" title="Centos7同步yum源到本地"></a>Centos7同步yum源到本地</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 安装必要的工具</span></span><br><span class="line">yum install createrepo yum-utils rsync -y</span><br><span class="line"></span><br><span class="line"><span class="comment"># 配置 CentOS 7 的仓库源地址</span></span><br><span class="line">REPO_URL=<span class="string">&quot;http://mirrors.aliyun.com/centos/7/&quot;</span></span><br><span class="line">BASE_REPO_ID=<span class="string">&quot;base&quot;</span></span><br><span class="line">UPDATES_REPO_ID=<span class="string">&quot;updates&quot;</span></span><br><span class="line">EXTRAS_REPO_ID=<span class="string">&quot;extras&quot;</span></span><br><span class="line">CENTOSPLUS_REPO_ID=<span class="string">&quot;centosplus&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建目标目录</span></span><br><span class="line">DEST_DIR=<span class="string">&quot;/home/wwwroot/default/yum/centos7&quot;</span></span><br><span class="line"><span class="built_in">mkdir</span> -p <span class="variable">$&#123;DEST_DIR&#125;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 同步 CentOS 7 仓库</span></span><br><span class="line">reposync -r <span class="variable">$&#123;BASE_REPO_ID&#125;</span> -d <span class="variable">$&#123;DEST_DIR&#125;</span> --norepopath --download-metadata</span><br><span class="line">reposync -r <span class="variable">$&#123;UPDATES_REPO_ID&#125;</span> -d <span class="variable">$&#123;DEST_DIR&#125;</span> --norepopath --download-metadata</span><br><span class="line">reposync -r <span class="variable">$&#123;EXTRAS_REPO_ID&#125;</span> -d <span class="variable">$&#123;DEST_DIR&#125;</span> --norepopath --download-metadata</span><br><span class="line">reposync -r <span class="variable">$&#123;CENTOSPLUS_REPO_ID&#125;</span> -d <span class="variable">$&#123;DEST_DIR&#125;</span> --norepopath --download-metadata</span><br><span class="line"></span><br><span class="line"><span class="comment"># 生成元数据</span></span><br><span class="line">createrepo <span class="variable">$&#123;DEST_DIR&#125;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 通知用户每个仓库的保存目录</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;同步完成！所有仓库的包已保存到：<span class="variable">$&#123;DEST_DIR&#125;</span>&quot;</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;具体目录如下：&quot;</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;  - Base 仓库: <span class="variable">$&#123;DEST_DIR&#125;</span>/base&quot;</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;  - Updates 仓库: <span class="variable">$&#123;DEST_DIR&#125;</span>/updates&quot;</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;  - Extras 仓库: <span class="variable">$&#123;DEST_DIR&#125;</span>/extras&quot;</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;  - CentOSPlus 仓库: <span class="variable">$&#123;DEST_DIR&#125;</span>/centosplus&quot;</span></span><br></pre></td></tr></table></figure>]]></content>
+    
+    
+    <summary type="html">Centos7同步yum源到本地</summary>
     
     
     

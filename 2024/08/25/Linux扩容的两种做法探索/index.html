@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 7.2.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=ZCOOL+XiaoWei:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha256-XOqroi11tY4EFQMR9ZYwZWKj5ZXiftSx36RRuC3anlA=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancyapps-ui/5.0.31/fancybox/fancybox.css" integrity="sha256-gkQVf8UKZgQ0HyuxL/VnacadJ+D2Kox2TCEBuNQg5+w=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/black/pace-theme-material.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.20.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"copycode":{"enable":true,"style":"mac"},"fold":{"enable":false,"height":500},"bookmark":{"enable":true,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="Linux扩容的两种方法探索">
+<meta property="og:type" content="blog">
+<meta property="og:title" content="Linux扩容的两种方法探索">
+<meta property="og:url" content="http://example.com/2024/08/25/Linux%E6%89%A9%E5%AE%B9%E7%9A%84%E4%B8%A4%E7%A7%8D%E5%81%9A%E6%B3%95%E6%8E%A2%E7%B4%A2/index.html">
+<meta property="og:site_name" content="清风">
+<meta property="og:description" content="Linux扩容的两种方法探索">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2024-08-25T01:25:00.000Z">
+<meta property="article:modified_time" content="2024-08-25T01:25:00.000Z">
+<meta property="article:author" content="ZHANG">
+<meta property="article:tag" content="Linux">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://example.com/2024/08/25/Linux%E6%89%A9%E5%AE%B9%E7%9A%84%E4%B8%A4%E7%A7%8D%E5%81%9A%E6%B3%95%E6%8E%A2%E7%B4%A2/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2024/08/25/Linux%E6%89%A9%E5%AE%B9%E7%9A%84%E4%B8%A4%E7%A7%8D%E5%81%9A%E6%B3%95%E6%8E%A2%E7%B4%A2/","path":"2024/08/25/Linux扩容的两种做法探索/","title":"Linux扩容的两种方法探索"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Linux扩容的两种方法探索 | 清风</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/atom.xml" title="清风" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">清风</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">虽不能至，心向往之</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li><li class="menu-item menu-item-rss"><a href="/atom.xml" rel="section"><i class="fa fa-rss fa-fw"></i>RSS</a></li><li class="menu-item menu-item-资源"><a href="/resources/" rel="section"><i class="fa fa-download fa-fw"></i>资源</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="搜索..." spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Linux%E6%89%A9%E5%AE%B9%E7%9A%84%E4%B8%A4%E7%A7%8D%E6%96%B9%E6%B3%95%E6%8E%A2%E7%B4%A2"><span class="nav-number">1.</span> <span class="nav-text">Linux扩容的两种方法探索</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%88%E5%88%86%E5%8C%BA%E5%86%8D%E6%89%A9%E5%AE%B9"><span class="nav-number">1.1.</span> <span class="nav-text">先分区再扩容</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%8D%E5%88%86%E5%8C%BA%E7%9B%B4%E6%8E%A5%E6%89%A9"><span class="nav-number">1.2.</span> <span class="nav-text">不分区直接扩</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9C%AC%E8%B4%A8%E5%8C%BA%E5%88%AB"><span class="nav-number">1.3.</span> <span class="nav-text">本质区别</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">1.4.</span> <span class="nav-text">总结</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9C%A8%E5%A4%9A%E8%B7%AF%E5%BE%84%E7%A3%81%E7%9B%98%E7%9A%84%E5%9C%BA%E6%99%AF%E4%B8%8B"><span class="nav-number">1.5.</span> <span class="nav-text">在多路径磁盘的场景下</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8E%9F%E5%9B%A0"><span class="nav-number">1.5.1.</span> <span class="nav-text">原因</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%BB%BA%E8%AE%AE"><span class="nav-number">1.5.2.</span> <span class="nav-text">建议</span></a></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="ZHANG"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">ZHANG</p>
+  <div class="site-description" itemprop="description">不闻不若闻之，闻之不若见之，见之不若知之，知之不若行之</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">76</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">23</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">36</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://nianling-ai.github.io/" title="GitHub → https:&#x2F;&#x2F;nianling-ai.github.io" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:zyxjga@foxmail.com" title="E-Mail → mailto:zyxjga@foxmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+    <div class="sidebar-inner sidebar-blogroll">
+      <div class="links-of-blogroll animated">
+        <div class="links-of-blogroll-title"><i class="fa fa-globe fa-fw"></i>
+          链接
+        </div>
+        <ul class="links-of-blogroll-list">
+            <li class="links-of-blogroll-item">
+              <a href="https://www.runoob.com/" title="https:&#x2F;&#x2F;www.runoob.com&#x2F;" rel="noopener" target="_blank">菜鸟教程</a>
+            </li>
+            <li class="links-of-blogroll-item">
+              <a href="http://c.biancheng.net/sitemap/" title="http:&#x2F;&#x2F;c.biancheng.net&#x2F;sitemap&#x2F;" rel="noopener" target="_blank">C语言中文网</a>
+            </li>
+            <li class="links-of-blogroll-item">
+              <a href="https://csdiy.wiki/" title="https:&#x2F;&#x2F;csdiy.wiki&#x2F;" rel="noopener" target="_blank">CS自学指南</a>
+            </li>
+            <li class="links-of-blogroll-item">
+              <a href="https://www.r2coding.com/#/" title="https:&#x2F;&#x2F;www.r2coding.com&#x2F;#&#x2F;" rel="noopener" target="_blank">Road To Coding</a>
+            </li>
+            <li class="links-of-blogroll-item">
+              <a href="https://hackway.org/docs/cs/intro" title="https:&#x2F;&#x2F;hackway.org&#x2F;docs&#x2F;cs&#x2F;intro" rel="noopener" target="_blank">计算机专业学习路线</a>
+            </li>
+        </ul>
+      </div>
+    </div>
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2024/08/25/Linux%E6%89%A9%E5%AE%B9%E7%9A%84%E4%B8%A4%E7%A7%8D%E5%81%9A%E6%B3%95%E6%8E%A2%E7%B4%A2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="ZHANG">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="清风">
+      <meta itemprop="description" content="不闻不若闻之，闻之不若见之，见之不若知之，知之不若行之">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Linux扩容的两种方法探索 | 清风">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Linux扩容的两种方法探索
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2024-08-25 09:25:00" itemprop="dateCreated datePublished" datetime="2024-08-25T09:25:00+08:00">2024-08-25</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Linux/" itemprop="url" rel="index"><span itemprop="name">Linux</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>988</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>1 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h2 id="Linux扩容的两种方法探索"><a href="#Linux扩容的两种方法探索" class="headerlink" title="Linux扩容的两种方法探索"></a>Linux扩容的两种方法探索</h2><ul>
+<li>要扩展的vg和lv的名称要确定</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">vgdisplay</span><br><span class="line">lvdisplay</span><br></pre></td></tr></table></figure>
+
+<h3 id="先分区再扩容"><a href="#先分区再扩容" class="headerlink" title="先分区再扩容"></a>先分区再扩容</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">fdisk /dev/sdb</span><br><span class="line">n</span><br><span class="line">p</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">w</span><br><span class="line">vgextend myvg /dev/sdb1</span><br><span class="line">lvresize  -L +20G  /dev/myvg-mylv</span><br><span class="line">xfs_growfs /dev/myvg-mylv</span><br></pre></td></tr></table></figure>
+
+<h3 id="不分区直接扩"><a href="#不分区直接扩" class="headerlink" title="不分区直接扩"></a>不分区直接扩</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">mkfs.xfs /dev/sdb</span><br><span class="line">pvcreate /dev/sdb</span><br><span class="line">vgextend myvg /dev/sdb</span><br><span class="line">lvextend -l +100%FREE /dev/myvg-mylv</span><br><span class="line">xfs_growfs /dev/myvg-mylv</span><br></pre></td></tr></table></figure>
+
+<h3 id="本质区别"><a href="#本质区别" class="headerlink" title="本质区别"></a>本质区别</h3><ol>
+<li><strong>分区 vs. 整个磁盘</strong>：第一种方法直接使用整个磁盘，而第二种方法则是通过分区来管理磁盘空间。</li>
+<li><strong>灵活性</strong>：第二种方法提供了更大的灵活性，可以在同一块磁盘上创建多个分区，适合需要在同一磁盘上管理多个逻辑卷的场景。</li>
+<li><strong>空间管理</strong>：第一种方法在扩展时会使用整个磁盘的空间，而第二种方法可以根据需要选择扩展的大小。</li>
+</ol>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>选择哪种方法取决于具体的需求和环境。如果需要简单快速的扩展，第一种方法可能更合适；如果需要更细致的空间管理和灵活性，第二种方法则更为合适。</p>
+<h3 id="在多路径磁盘的场景下"><a href="#在多路径磁盘的场景下" class="headerlink" title="在多路径磁盘的场景下"></a>在多路径磁盘的场景下</h3><p>在多路径（Multipath）配置的环境中，通常建议使用第一种方法，即直接在整个磁盘上进行操作。这是因为多路径设备通常会被视为一个逻辑设备，而不是多个物理分区。以下是一些原因和建议。</p>
+<h4 id="原因"><a href="#原因" class="headerlink" title="原因"></a>原因</h4><ol>
+<li><strong>多路径设备的特性</strong>：多路径设备通常会将多个物理路径聚合为一个逻辑设备。在这种情况下，直接在整个设备上进行操作，可以避免潜在的分区问题。</li>
+<li><strong>分区问题</strong>：如果你尝试在多路径设备上创建分区，可能会导致设备识别错误或路径不一致，从而引发错误。这是因为多路径设备的管理和分区可能会与预期不符。</li>
+<li><strong>简化管理</strong>：使用整个磁盘作为物理卷可以简化管理，避免在多路径环境中处理多个分区的复杂性。</li>
+<li><strong>多路径设备</strong>：如果你在多路径环境中工作，确保你使用的是多路径设备的正确名称（例如 <code>/dev/mapper/mpath0</code>），而不是物理设备名称。</li>
+</ol>
+<h4 id="建议"><a href="#建议" class="headerlink" title="建议"></a>建议</h4><ul>
+<li><strong>使用第一种方法</strong>：在多路径环境中，建议直接使用整个磁盘进行物理卷的创建和逻辑卷的扩展。</li>
+<li><strong>确保多路径配置正确</strong>：在进行任何操作之前，确保多路径配置正确，并且可以通过 <code>multipath -ll</code> 命令查看多路径设备的状态。</li>
+<li><strong>备份数据</strong>：在进行扩展操作之前，始终备份重要数据，以防止意外情况导致数据丢失。</li>
+</ul>
+
+    </div>
+
+
+  <div style="text-align:center;color: #ccc;font-size:18px;">
+    ---------Thanks for your attention---------
+  </div>
+
+
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="followme">
+  <span>欢迎关注我的其它发布渠道</span>
+
+  <div class="social-list">
+
+      <div class="social-item">
+          <a target="_blank" class="social-link" href="/atom.xml">
+            <span class="icon">
+              <i class="fa fa-rss"></i>
+            </span>
+
+            <span class="label">RSS</span>
+          </a>
+      </div>
+  </div>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/Linux/" rel="tag"><i class="fa fa-tag"></i> Linux</a>
+          </div>
+
+
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2024/08/11/%E7%B3%BB%E7%BB%9F%E5%AE%89%E5%85%A8%E6%A3%80%E6%9F%A5%E8%84%9A%E6%9C%AC/" rel="prev" title="系统安全检查脚本">
+                  <i class="fa fa-angle-left"></i> 系统安全检查脚本
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2024</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">ZHANG</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+      <span>站点总字数：</span>
+    <span title="站点总字数">743k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span>站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">11:15</span>
+  </span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script size="30" alpha="0.6" zIndex="-1" src="https://cdnjs.cloudflare.com/ajax/libs/ribbon.js/1.0.2/ribbon.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fancyapps-ui/5.0.31/fancybox/fancybox.umd.js" integrity="sha256-a+H7FYzJv6oU2hfsfDGM2Ohw/cR9v+hPfxHCLdmCrE8=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lozad.js/1.16.0/lozad.min.js" integrity="sha256-mOFREFhqmHeQbXpK2lp4nA3qooVgACfh88fpJftLBbc=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pangu/4.0.7/pangu.min.js" integrity="sha256-j+yj56cdEY2CwkVtGyz18fNybFGpMGJ8JxG3GSyO2+I=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/sidebar.js"></script><script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+  <script src="/js/third-party/fancybox.js"></script>
+
+  <script src="/js/third-party/pace.js"></script>
+
+
+  
+
+
+
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/quicklink/2.3.0/quicklink.umd.js" integrity="sha256-yvJQOINiH9fWemHn0vCA5lsHWJaHs6/ZmO+1Ft04SvM=" crossorigin="anonymous"></script>
+  <script class="next-config" data-name="quicklink" type="application/json">{"enable":true,"home":true,"archive":true,"delay":true,"timeout":3000,"priority":true,"url":"http://example.com/2024/08/25/Linux%E6%89%A9%E5%AE%B9%E7%9A%84%E4%B8%A4%E7%A7%8D%E5%81%9A%E6%B3%95%E6%8E%A2%E7%B4%A2/"}</script>
+  <script src="/js/third-party/quicklink.js"></script>
+
+</body>
+</html>
