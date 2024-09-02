@@ -145,7 +145,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#MySQL-%E5%AF%86%E7%A0%81%E5%BF%98%E8%AE%B0%E4%BA%86%E6%80%8E%E4%B9%88%E5%8A%9E%EF%BC%9F"><span class="nav-number">1.</span> <span class="nav-text">MySQL 密码忘记了怎么办？</span></a></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#MySQL-%E5%AF%86%E7%A0%81%E5%BF%98%E8%AE%B0%E4%BA%86%E6%80%8E%E4%B9%88%E5%8A%9E%EF%BC%9F"><span class="nav-number">1.</span> <span class="nav-text">MySQL 密码忘记了怎么办？</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%B9%E6%B3%951"><span class="nav-number">1.1.</span> <span class="nav-text">方法1</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%B9%E6%B3%952"><span class="nav-number">1.2.</span> <span class="nav-text">方法2</span></a></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -297,8 +297,7 @@
     
     <div class="post-body" itemprop="articleBody"><h2 id="MySQL-密码忘记了怎么办？"><a href="#MySQL-密码忘记了怎么办？" class="headerlink" title="MySQL 密码忘记了怎么办？"></a>MySQL 密码忘记了怎么办？</h2><p>如果 MySQL 普通账户忘记了密码，很容易解决，可以通过登录 root 账户来重置普通账户密码。然而，如果 root 账户的密码也忘记或丢失了，该怎么办呢？</p>
 <p>版本：MySQL5.7</p>
-<p><strong>方法1：</strong></p>
-<p><strong>1.</strong> <strong>停止MySQL服务</strong></p>
+<h3 id="方法1"><a href="#方法1" class="headerlink" title="方法1"></a><strong>方法1</strong></h3><p><strong>1.</strong> <strong>停止MySQL服务</strong></p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">kill</span> `<span class="built_in">cat</span> /var/run/mysqld/mysqld.pid` </span><br><span class="line">或者</span><br><span class="line">pkill mysqld</span><br></pre></td></tr></table></figure>
 
 <p><strong>2.</strong> <strong>创建一个密码赋值语句的文本文件</strong></p>
@@ -314,8 +313,7 @@
 <p><strong>5.</strong> <strong>停止MySQL服务并正常启动</strong></p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">kill</span> `<span class="built_in">cat</span> /var/run/mysqld/mysqld.pid`</span><br><span class="line">systemctl start mysqld</span><br></pre></td></tr></table></figure>
 
-<p><strong>方法2：</strong></p>
-<p><strong>1.</strong> <strong>停止MySQL服务</strong></p>
+<h3 id="方法2"><a href="#方法2" class="headerlink" title="方法2"></a><strong>方法2</strong></h3><p><strong>1.</strong> <strong>停止MySQL服务</strong></p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">kill</span> `<span class="built_in">cat</span> /var/run/mysqld/mysqld.pid`</span><br><span class="line">或者</span><br><span class="line">pkill mysql</span><br></pre></td></tr></table></figure>
 
 <p><strong>2.</strong> <strong>使用–skip-grant-tables和–skip-networking选项启动MySQL服务</strong></p>
