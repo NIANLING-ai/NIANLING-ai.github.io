@@ -101,6 +101,27 @@
   </entry>
   
   <entry>
+    <title>Centos7进入单用户模式修改密码</title>
+    <link href="http://example.com/2024/08/25/centos7%E8%BF%9B%E5%85%A5%E5%8D%95%E7%94%A8%E6%88%B7%E6%A8%A1%E5%BC%8F%E4%BF%AE%E6%94%B9%E5%AF%86%E7%A0%81/"/>
+    <id>http://example.com/2024/08/25/centos7%E8%BF%9B%E5%85%A5%E5%8D%95%E7%94%A8%E6%88%B7%E6%A8%A1%E5%BC%8F%E4%BF%AE%E6%94%B9%E5%AF%86%E7%A0%81/</id>
+    <published>2024-08-25T01:25:00.000Z</published>
+    <updated>2024-08-25T01:25:00.000Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="Centos7进入单用户模式修改密码"><a href="#Centos7进入单用户模式修改密码" class="headerlink" title="Centos7进入单用户模式修改密码"></a>Centos7进入单用户模式修改密码</h2><p>本篇文章适用于经常忘记自己root用户密码的初学者！！！，会进入单用户模式修改root密码即可。</p><ol><li>系统启动进入到如下界面后输入字母“e”;</li><li>可以看到进入到如下界面；</li></ol><p><img data-src="https://img-130165.oss-cn-shanghai.aliyuncs.com/img/20240913104710.png"></p><p>3.一直下翻到图中圈起来的这部分；</p><p><img data-src="https://img-130165.oss-cn-shanghai.aliyuncs.com/img/20240913104739.png"></p><p>4.在Linux16这一段的最后（UTF-8）加上 <code>init=/bin/sh</code>;</p><p><img data-src="https://img-130165.oss-cn-shanghai.aliyuncs.com/img/20240913104812.png"></p><p>5.按下<code>Ctrl X</code>,进入到如下界面；<br><img data-src="https://img-130165.oss-cn-shanghai.aliyuncs.com/img/20240913104855.png"><br>6.输入命令：<code>mount -o remount,rw /</code>,如下图所示；<br><img data-src="https://img-130165.oss-cn-shanghai.aliyuncs.com/img/20240913104956.png"></p><p>7.修改root密码；<code>passwd root</code><br><img data-src="https://img-130165.oss-cn-shanghai.aliyuncs.com/img/20240913105031.png"></p><p>8.输入命令<code>touch /.autorelabel</code>;<br><img data-src="https://img-130165.oss-cn-shanghai.aliyuncs.com/img/20240913105110.png"></p><p>9.输入命令<code>exec /sbin/init</code>,退出单用户模式；</p><p>10、出现如下界面，等待即可</p><p><img data-src="https://img-130165.oss-cn-shanghai.aliyuncs.com/img/20240913105159.png"></p><p>11、验证效果，密码修改成功；</p><p><strong>注意事项 ：</strong></p><p>linux还有一个紧急救援模式，这里做一个简单区分。单用户模式适用于可以进入系统，只是root密码忘记 的场景；而紧急救援模式适用于系统无法进入，如grub损坏或某个配置文件改错等情况，<strong>救援模式需要挂载镜像</strong></p>]]></content>
+    
+    
+    <summary type="html">Centos7进入单用户模式修改密码</summary>
+    
+    
+    
+    <category term="Linux" scheme="http://example.com/categories/Linux/"/>
+    
+    
+    <category term="Linux" scheme="http://example.com/tags/Linux/"/>
+    
+  </entry>
+  
+  <entry>
     <title>lsof命令</title>
     <link href="http://example.com/2024/08/25/linux%E4%B8%80%E4%B8%AA%E5%BE%88%E5%BC%BA%E5%A4%A7%E7%9A%84%E5%91%BD%E4%BB%A4%EF%BC%9Alsof/"/>
     <id>http://example.com/2024/08/25/linux%E4%B8%80%E4%B8%AA%E5%BE%88%E5%BC%BA%E5%A4%A7%E7%9A%84%E5%91%BD%E4%BB%A4%EF%BC%9Alsof/</id>
