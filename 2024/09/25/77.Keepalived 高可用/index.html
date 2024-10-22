@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 7.2.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=ZCOOL+XiaoWei:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha256-XOqroi11tY4EFQMR9ZYwZWKj5ZXiftSx36RRuC3anlA=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancyapps-ui/5.0.31/fancybox/fancybox.css" integrity="sha256-gkQVf8UKZgQ0HyuxL/VnacadJ+D2Kox2TCEBuNQg5+w=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/black/pace-theme-material.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.20.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"copycode":{"enable":true,"style":"mac"},"fold":{"enable":false,"height":500},"bookmark":{"enable":true,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="Keepalived 高可用概述">
+<meta property="og:type" content="blog">
+<meta property="og:title" content="Keepalived 高可用">
+<meta property="og:url" content="http://example.com/2024/09/25/77.Keepalived%20%E9%AB%98%E5%8F%AF%E7%94%A8/index.html">
+<meta property="og:site_name" content="清风">
+<meta property="og:description" content="Keepalived 高可用概述">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2024-09-25T01:25:00.000Z">
+<meta property="article:modified_time" content="2024-09-25T01:25:00.000Z">
+<meta property="article:author" content="ZHANG">
+<meta property="article:tag" content="Linux">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://example.com/2024/09/25/77.Keepalived%20%E9%AB%98%E5%8F%AF%E7%94%A8/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2024/09/25/77.Keepalived%20%E9%AB%98%E5%8F%AF%E7%94%A8/","path":"2024/09/25/77.Keepalived 高可用/","title":"Keepalived 高可用"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Keepalived 高可用 | 清风</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/atom.xml" title="清风" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">清风</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">虽不能至，心向往之</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li><li class="menu-item menu-item-rss"><a href="/atom.xml" rel="section"><i class="fa fa-rss fa-fw"></i>RSS</a></li><li class="menu-item menu-item-资源"><a href="/resources/" rel="section"><i class="fa fa-download fa-fw"></i>资源</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="搜索..." spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Keepalived-%E9%AB%98%E5%8F%AF%E7%94%A8%E6%A6%82%E8%BF%B0"><span class="nav-number">1.</span> <span class="nav-text">Keepalived 高可用概述</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#VRRP%E5%8E%9F%E7%90%86"><span class="nav-number">1.1.</span> <span class="nav-text">VRRP原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Keepalived%E9%AB%98%E5%8F%AF%E7%94%A8%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE"><span class="nav-number">1.2.</span> <span class="nav-text">Keepalived高可用安装配置</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AE%89%E8%A3%85keepalived"><span class="nav-number">1.2.1.</span> <span class="nav-text">安装keepalived</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%85%8D%E7%BD%AEmaster"><span class="nav-number">1.2.2.</span> <span class="nav-text">配置master</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE%E8%87%AA%E5%B7%B1%E7%9A%84BACKUP"><span class="nav-number">1.2.3.</span> <span class="nav-text">配置自己的BACKUP</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#master%E4%B8%8EBackup%E7%9A%84keepalived%E9%85%8D%E7%BD%AE%E5%8C%BA%E5%88%AB"><span class="nav-number">1.2.4.</span> <span class="nav-text">master与Backup的keepalived配置区别</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%90%AF%E5%8A%A8Master%E5%92%8CBackup%E8%8A%82%E7%82%B9%E7%9A%84keepalived"><span class="nav-number">1.2.5.</span> <span class="nav-text">启动Master和Backup节点的keepalived</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#keepalived%E6%8A%A2%E5%8D%A0%E5%BC%8F%E4%B8%8E%E9%9D%9E%E6%8A%A2%E5%8D%A0%E5%BC%8F"><span class="nav-number">1.3.</span> <span class="nav-text">keepalived抢占式与非抢占式</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE%E6%8A%A2%E5%8D%A0%E5%BC%8F"><span class="nav-number">1.3.1.</span> <span class="nav-text">配置抢占式</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%B5%8B%E8%AF%95VIP%E6%8A%A2%E5%A4%BA"><span class="nav-number">1.3.1.1.</span> <span class="nav-text">测试VIP抢夺</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE%E9%9D%9E%E6%8A%A2%E5%8D%A0%E5%BC%8F"><span class="nav-number">1.3.2.</span> <span class="nav-text">配置非抢占式</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%AB%98%E5%8F%AF%E7%94%A8keepalived%E6%95%85%E9%9A%9C%E8%84%91%E8%A3%82"><span class="nav-number">1.4.</span> <span class="nav-text">高可用keepalived故障脑裂</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%84%91%E8%A3%82%E6%95%85%E9%9A%9C%E5%8E%9F%E5%9B%A0"><span class="nav-number">1.4.1.</span> <span class="nav-text">脑裂故障原因</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%A7%A3%E5%86%B3%E8%84%91%E8%A3%82%E6%95%85%E9%9A%9C%E6%96%B9%E6%A1%88"><span class="nav-number">1.4.2.</span> <span class="nav-text">解决脑裂故障方案</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%AB%98%E5%8F%AF%E7%94%A8keepalived%E4%B8%8Enginx"><span class="nav-number">1.5.</span> <span class="nav-text">高可用keepalived与nginx</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="ZHANG"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">ZHANG</p>
+  <div class="site-description" itemprop="description">不闻不若闻之，闻之不若见之，见之不若知之，知之不若行之</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">93</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">23</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">36</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://nianling-ai.github.io/" title="GitHub → https:&#x2F;&#x2F;nianling-ai.github.io" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:zyxjga@foxmail.com" title="E-Mail → mailto:zyxjga@foxmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+    <div class="sidebar-inner sidebar-blogroll">
+      <div class="links-of-blogroll animated">
+        <div class="links-of-blogroll-title"><i class="fa fa-globe fa-fw"></i>
+          链接
+        </div>
+        <ul class="links-of-blogroll-list">
+            <li class="links-of-blogroll-item">
+              <a href="https://www.runoob.com/" title="https:&#x2F;&#x2F;www.runoob.com&#x2F;" rel="noopener" target="_blank">菜鸟教程</a>
+            </li>
+            <li class="links-of-blogroll-item">
+              <a href="http://c.biancheng.net/sitemap/" title="http:&#x2F;&#x2F;c.biancheng.net&#x2F;sitemap&#x2F;" rel="noopener" target="_blank">C语言中文网</a>
+            </li>
+            <li class="links-of-blogroll-item">
+              <a href="https://csdiy.wiki/" title="https:&#x2F;&#x2F;csdiy.wiki&#x2F;" rel="noopener" target="_blank">CS自学指南</a>
+            </li>
+            <li class="links-of-blogroll-item">
+              <a href="https://www.r2coding.com/#/" title="https:&#x2F;&#x2F;www.r2coding.com&#x2F;#&#x2F;" rel="noopener" target="_blank">Road To Coding</a>
+            </li>
+            <li class="links-of-blogroll-item">
+              <a href="https://hackway.org/docs/cs/intro" title="https:&#x2F;&#x2F;hackway.org&#x2F;docs&#x2F;cs&#x2F;intro" rel="noopener" target="_blank">计算机专业学习路线</a>
+            </li>
+        </ul>
+      </div>
+    </div>
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2024/09/25/77.Keepalived%20%E9%AB%98%E5%8F%AF%E7%94%A8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="ZHANG">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="清风">
+      <meta itemprop="description" content="不闻不若闻之，闻之不若见之，见之不若知之，知之不若行之">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Keepalived 高可用 | 清风">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Keepalived 高可用
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2024-09-25 09:25:00" itemprop="dateCreated datePublished" datetime="2024-09-25T09:25:00+08:00">2024-09-25</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Linux/" itemprop="url" rel="index"><span itemprop="name">Linux</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>6.5k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>6 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h2 id="Keepalived-高可用概述"><a href="#Keepalived-高可用概述" class="headerlink" title="Keepalived 高可用概述"></a>Keepalived 高可用概述</h2><p>一般是指2台机器启动着完全相同的业务系统，当有一台机器down机了，另外一台服务器就能快速的接管，对于访问的用户是无感知的。</p>
+<ul>
+<li>硬件通常使用 F5，比较贵</li>
+<li>软件通常使用 keepalived<br>keepalived软件是基于VRRP协议实现的，VRRP虚拟路由冗余协议，主要用于解决单点故障问题</li>
+</ul>
+<h3 id="VRRP原理"><a href="#VRRP原理" class="headerlink" title="VRRP原理"></a>VRRP原理</h3><p>Virtual Router Redundancy Protocol，也即虚拟路由器冗余协议。VRRP协议是一种<strong>容错的主备模式</strong>的协议，保证当主机的下一跳路由出现故障时，由另一台路由器来代替出现故障的路由器进行工作，通过VRRP可以在网络发生故障时透明的进行设备切换而不影响主机之间的数据通信。</p>
+<ul>
+<li><strong>虚拟路由器</strong>：VRRP组中所有的路由器，拥有虚拟的IP+MAC(00-00-5e-00-01-VRID)地址</li>
+<li><strong>主路由器</strong>：虚拟路由器内部通常只有一台物理路由器对外提供服务，主路由器是由选举算法产生，对外提供各种网络功能。</li>
+<li><strong>备份路由器</strong>：VRRP组中除主路由器之外的所有路由器，<strong>不对外提供任何服务，只接受主路由的通告</strong>，当主路由器挂掉之后，重新进行选举算法接替master路由器。<br>![[Pasted image 20230226151406.png]]</li>
+<li>选举机制<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">优先级</span><br><span class="line">抢占模式下，一旦有优先级高的路由器加入，即成为Master</span><br><span class="line">非抢占模式下，只要Master不挂掉，优先级高的路由器只能等待</span><br></pre></td></tr></table></figure></li>
+<li>三种状态<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Initialize状态：系统启动后进入initialize状态</span><br><span class="line">Master状态</span><br><span class="line">Backup状态</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="Keepalived高可用安装配置"><a href="#Keepalived高可用安装配置" class="headerlink" title="Keepalived高可用安装配置"></a>Keepalived高可用安装配置</h3><h4 id="安装keepalived"><a href="#安装keepalived" class="headerlink" title="安装keepalived"></a>安装keepalived</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@lb1 ~]# yum install -y keepalived</span><br><span class="line">[root@lb2 ~]# yum install -y keepalived</span><br></pre></td></tr></table></figure>
+<h4 id="配置master"><a href="#配置master" class="headerlink" title="配置master"></a>配置master</h4><ul>
+<li>找到配置文件<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@lb1 ~]# rpm -qc keepalived</span><br><span class="line">/etc/keepalived/keepalived.conf</span><br><span class="line">/etc/sysconfig/keepalived</span><br></pre></td></tr></table></figure></li>
+<li>这是官方配置，备份一下，自己写一份新的<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">[root@lb1 ~]# vim /etc/keepalived/keepalived.conf</span><br><span class="line">! Configuration File for keepalived</span><br><span class="line">global_defs &#123;      #全局配置</span><br><span class="line">   notification_email &#123;  </span><br><span class="line">     acassen@firewall.loc</span><br><span class="line">     failover@firewall.loc</span><br><span class="line">     sysadmin@firewall.loc</span><br><span class="line">   &#125;</span><br><span class="line">   notification_email_from Alexandre.Cassen@firewall.loc</span><br><span class="line">   smtp_server 192.168.200.1</span><br><span class="line">   smtp_connect_timeout 30</span><br><span class="line">   router_id LVS_DEVEL     #标识身份-&gt;名称</span><br><span class="line">   vrrp_skip_check_adv_addr</span><br><span class="line">   vrrp_strict</span><br><span class="line">   vrrp_garp_interval 0</span><br><span class="line">   vrrp_gna_interval 0</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">vrrp_instance VI_1 &#123;</span><br><span class="line">    state MASTER      #标识角色状态</span><br><span class="line">    interface eth0     #网卡绑定接口</span><br><span class="line">    virtual_router_id 51 #虚拟路由id</span><br><span class="line">    priority 100      #优先级</span><br><span class="line">    advert_int 1     #监测间隔时间</span><br><span class="line">    authentication &#123; #认证</span><br><span class="line">        auth_type PASS  #认证方式</span><br><span class="line">        auth_pass 1111  #认证密码</span><br><span class="line">    &#125;</span><br><span class="line">    virtual_ipaddress &#123;  #虚拟的VIP地址</span><br><span class="line">        192.168.200.16</span><br><span class="line">        192.168.200.17</span><br><span class="line">        192.168.200.18</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li>自己的master配置<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">[root@lb1 keepalived]# mv keepalived.conf keepalived.conf.bak</span><br><span class="line">[root@lb1 ~]# vim /etc/keepalived/keepalived.conf</span><br><span class="line">global_defs &#123;</span><br><span class="line"> router_id lb01</span><br><span class="line">&#125;</span><br><span class="line">vrrp_instance VI_1 &#123;</span><br><span class="line"> state MASTER</span><br><span class="line"> interface ens33</span><br><span class="line"> virtual_router_id 50</span><br><span class="line"> priority 150</span><br><span class="line"> advert_int 1</span><br><span class="line"><span class="meta prompt_"> #</span><span class="language-bash">use_vmac   <span class="comment">#使用虚拟mac地址，因为虚拟机问题，可能导致原本的IP不可用</span></span></span><br><span class="line"> authentication &#123;</span><br><span class="line">   auth_type PASS</span><br><span class="line">   auth_pass 1111</span><br><span class="line"> &#125;</span><br><span class="line"> virtual_ipaddress &#123;    </span><br><span class="line">   192.168.153.100</span><br><span class="line"> &#125;</span><br><span class="line">&#125;</span><br><span class="line">[root@lb1 ~]# systemctl start keepalived</span><br><span class="line">[root@lb1 ~]# ip a</span><br><span class="line">虚拟ip就绑定到主机器上了，备用机器没有</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h4 id="配置自己的BACKUP"><a href="#配置自己的BACKUP" class="headerlink" title="配置自己的BACKUP"></a>配置自己的BACKUP</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">[root@lb2 ~]# cd /etc/keepalived/</span><br><span class="line">[root@lb2 keepalived]# mv keepalived.conf keepalived.conf.bak</span><br><span class="line">[root@lb2 ~]# vim /etc/keepalived/keepalived.conf</span><br><span class="line">global_defs &#123;</span><br><span class="line"> router_id lb02</span><br><span class="line">&#125;</span><br><span class="line">vrrp_instance VI_1 &#123;</span><br><span class="line"> state BACKUP</span><br><span class="line"> interface ens33</span><br><span class="line"> virtual_router_id 50</span><br><span class="line"> priority 100</span><br><span class="line"> advert_int 1</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">use_vmac   <span class="comment">#使用虚拟mac地址，因为虚拟机问题，可能导致原本的IP不可用</span></span></span><br><span class="line"> authentication &#123;</span><br><span class="line">   auth_type PASS</span><br><span class="line">   auth_pass 1111</span><br><span class="line"> &#125;</span><br><span class="line"> virtual_ipaddress &#123;</span><br><span class="line">   192.168.153.100</span><br><span class="line"> &#125;</span><br><span class="line">&#125;</span><br><span class="line">[root@lb2 keepalived]# systemctl start keepalived</span><br></pre></td></tr></table></figure>
+<h4 id="master与Backup的keepalived配置区别"><a href="#master与Backup的keepalived配置区别" class="headerlink" title="master与Backup的keepalived配置区别"></a>master与Backup的keepalived配置区别</h4><p>![[Pasted image 20230226191201.png]]</p>
+<h4 id="启动Master和Backup节点的keepalived"><a href="#启动Master和Backup节点的keepalived" class="headerlink" title="启动Master和Backup节点的keepalived"></a>启动Master和Backup节点的keepalived</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[root@lb1 keepalived]# systemctl start keepalived</span><br><span class="line">[root@lb1 keepalived]# systemctl enable keepalived</span><br><span class="line"></span><br><span class="line">[root@lb2 keepalived]# systemctl start keepalived</span><br><span class="line">[root@lb2 keepalived]# systemctl enable keepalived</span><br></pre></td></tr></table></figure>
+<h3 id="keepalived抢占式与非抢占式"><a href="#keepalived抢占式与非抢占式" class="headerlink" title="keepalived抢占式与非抢占式"></a>keepalived抢占式与非抢占式</h3><h4 id="配置抢占式"><a href="#配置抢占式" class="headerlink" title="配置抢占式"></a>配置抢占式</h4><p>默认就是抢占式的，优先级高的会抢。由于节点1的优先级高于节点2，所以VIP在节点1上面,记得关闭防火墙selinux，否则会发现两个上都有vip。</p>
+<h5 id="测试VIP抢夺"><a href="#测试VIP抢夺" class="headerlink" title="测试VIP抢夺"></a>测试VIP抢夺</h5><ul>
+<li>关闭节点1的keepalived<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@lb1 keepalived]# systemctl stop keepalived </span><br></pre></td></tr></table></figure></li>
+<li>节点2联系不上节点1，主动接管VIP<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@lb2 keepalived]# ip addr |grep 192.168.153.100</span><br><span class="line">    inet 192.168.153.100/32 scope global ens33</span><br></pre></td></tr></table></figure></li>
+<li>此时重新启动Master上的keepalived，会发现VIP被强行抢占<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@lb1 keepalived]# systemctl start keepalived</span><br><span class="line">[root@lb1 keepalived]# ip addr |grep 192.168.153.100</span><br><span class="line">    inet 192.168.153.100/32 scope global ens33</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h4 id="配置非抢占式"><a href="#配置非抢占式" class="headerlink" title="配置非抢占式"></a>配置非抢占式</h4><ul>
+<li>非抢占的条件<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">1.两个节点的state都必须配置为BACKUP</span><br><span class="line">2.两个节点都必须加上配置 nopreempt</span><br><span class="line">3.其中一个节点的优先级必须要高于另外一个节点的优先级。</span><br><span class="line">4.两台服务器都角色状态启用nopreempt后，必须修改角色状态统一为BACKUP，唯一的区分就是优先级。</span><br></pre></td></tr></table></figure></li>
+<li>两个机器都配置非抢占<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash">两个机器都设置成BACKUP，并添加nopreempt，只有优先级不同</span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">master：</span></span><br><span class="line">vrrp_instance VI_1 &#123;</span><br><span class="line"> state BACKUP</span><br><span class="line"> interface ens33</span><br><span class="line"> virtual_router_id 50</span><br><span class="line"> priority 150</span><br><span class="line"> advert_int 1</span><br><span class="line"> nopreempt</span><br><span class="line"> &#125;</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">backup：</span></span><br><span class="line">vrrp_instance VI_1 &#123;</span><br><span class="line"> state BACKUP</span><br><span class="line"> interface ens33</span><br><span class="line">virtual_router_id 50</span><br><span class="line"> priority 100</span><br><span class="line"> advert_int 1</span><br><span class="line"> nopreempt</span><br><span class="line"> &#125;</span><br><span class="line"></span><br><span class="line">systemctl restart keepalived</span><br></pre></td></tr></table></figure></li>
+<li>通过windows的arp去验证，是否会切换MAC地址<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash">当前在节点1上</span></span><br><span class="line">[root@lb1 keepalived]# ip addr |grep 192.168.153.100</span><br><span class="line">    inet 192.168.153.100/32 scope global ens33</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">断开节点1</span></span><br><span class="line">[root@lb1 keepalived]# systemctl stop keepalived</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">节点2接管</span></span><br><span class="line">[root@lb2 keepalived]# ip addr |grep 192.168.153.100</span><br><span class="line">    inet 192.168.153.100/32 scope global ens33</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">再开启节点1，VIP还是在节点2上</span></span><br><span class="line">[root@lb1 keepalived]# systemctl start keepalived</span><br><span class="line">[root@lb2 keepalived]# ip addr |grep 192.168.153.100</span><br><span class="line">    inet 192.168.153.100/32 scope global ens33</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">C:\Users\&gt;arp -a |findstr 192.168.153.100</span><br><span class="line">  192.168.153.100       00-0c-29-8c-cb-06     dynamic</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="高可用keepalived故障脑裂"><a href="#高可用keepalived故障脑裂" class="headerlink" title="高可用keepalived故障脑裂"></a>高可用keepalived故障脑裂</h3><p>由于某些原因，导致两台keepalived高可用服务器在指定时间内，无法检测到对方的心跳，各自取得资源及服务的所有权，而此时的两台高可用服务器又都还活着。这样相互都认为自己是主，就会发生脑裂故障。</p>
+<h4 id="脑裂故障原因"><a href="#脑裂故障原因" class="headerlink" title="脑裂故障原因"></a>脑裂故障原因</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">1.服务器网线松动等网络故障</span><br><span class="line">2.服务器硬件故障发生损坏现象而崩溃</span><br><span class="line">3.主备都开启firewalld防火墙</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash">两台都有VIP</span></span><br><span class="line">[root@lb1 ~]# ip a |grep 192.168.153.100</span><br><span class="line"> inet 192.168.153.100/24 scope global secondary ens33</span><br><span class="line"> </span><br><span class="line">[root@lb2 ~]# ip a |grep 192.168.175.100</span><br><span class="line"> inet 192.168.153.100/24 scope global secondary ens33</span><br></pre></td></tr></table></figure>
+<h4 id="解决脑裂故障方案"><a href="#解决脑裂故障方案" class="headerlink" title="解决脑裂故障方案"></a>解决脑裂故障方案</h4><ul>
+<li>如果发生脑裂，则随机kill掉一台即可</li>
+<li>在backup上编写检测脚本, 测试如果能ping通master并且backup节点还有VIP的话则认为产生了脑裂<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash">将两台机器都开启防火墙，这时已经产生脑裂</span></span><br><span class="line">[root@lb1 ~]# systemctl start firewalld</span><br><span class="line">[root@lb2 ~]# systemctl start firewalld</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash">在挑选backup机器上编写脚本，这里以30为例</span></span><br><span class="line">[root@lb2 ~]# vim check_split_brain.sh</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">!/bin/sh</span></span><br><span class="line">vip=192.168.153.100</span><br><span class="line">lb01_ip=192.168.153.20</span><br><span class="line">while true;do</span><br><span class="line">      ping -c 2 $lb01_ip &amp;&gt;/dev/null</span><br><span class="line">      if [ $? -eq 0 -a `ip add|grep &quot;$vip&quot;|wc -l` -eq 1 ];then</span><br><span class="line">            echo &quot;device is split brain.warning.&quot;</span><br><span class="line">            systemctl stop keepalived</span><br><span class="line">            echo &quot;stop keepalived&quot;</span><br><span class="line">      else</span><br><span class="line">            echo &quot;device is ok&quot;</span><br><span class="line">      fi</span><br><span class="line">sleep 5</span><br><span class="line">done</span><br><span class="line"></span><br><span class="line">[root@lb2 ~]# sh check_split_brain.sh</span><br><span class="line">device is split brain.warning.</span><br><span class="line">stop keepalived</span><br><span class="line">device is ok</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">这时候节点2的keepalive已经关了，恢复了正常，关闭防火墙，再重新开启keepalived</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="高可用keepalived与nginx"><a href="#高可用keepalived与nginx" class="headerlink" title="高可用keepalived与nginx"></a>高可用keepalived与nginx</h3><p>Nginx默认监听在所有的IP地址上，VIP会飘到一台节点上，相当于那台nginx多了VIP这么一个网卡，所以可以访问到nginx所在机器。<br>但是如果nginx宕机，会导致用户请求失败，但是keepalived没有挂掉不会进行切换，所以需要编写一个脚本检测Nginx的存活状态，如果不存活则kill掉keepalived。</p>
+<ul>
+<li>先给两台机器都装上nginx<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">yum install -y epel-release</span><br><span class="line">yum install -y nginx</span><br><span class="line">systemctl enable nginx --now</span><br><span class="line"></span><br><span class="line">[root@lb1 ~]# echo &quot;in lb01&quot; &gt; /usr/share/nginx/html/index.html</span><br><span class="line">[root@lb2 ~]# echo &quot;in lb02&quot; &gt; /usr/share/nginx/html/index.html</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">因为当前VIP是挂在节点1上的，访问192.168.153.100的效果就是<span class="keyword">in</span> lb01，但是如果关闭lb01的keepalived，就变成<span class="keyword">in</span> lb02，但是如果nginx挂了，网页将会无法正常访问，因为keepalived只监控自己的进程</span></span><br></pre></td></tr></table></figure></li>
+<li>用脚本解决nginx挂了vip没有切换的问题<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash">在主节点上写脚本</span></span><br><span class="line">[root@lb2 ~]# vim check_web.sh</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">!/bin/sh</span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">1.判断Nginx是否存活,如果不存活则尝试启动Nginx</span></span><br><span class="line">nginxpid=$(ps -C nginx --no-header|wc -l)</span><br><span class="line">   if [ $nginxpid -eq 0 ];then</span><br><span class="line">   systemctl start nginx</span><br><span class="line">   sleep 3</span><br><span class="line">    #2.等待3秒后再次获取一次Nginx状态</span><br><span class="line">   nginxpid=$(ps -C nginx --no-header|wc -l)</span><br><span class="line"><span class="meta prompt_">   #</span><span class="language-bash">3.再次进行判断, 如Nginx还不存活则停止Keepalived,让地址进行漂移,并退出脚本</span></span><br><span class="line">   if [ $nginxpid -eq 0 ];then</span><br><span class="line">      systemctl stop keepalived</span><br><span class="line">      echo &quot;keepalived has been killd&quot;</span><br><span class="line">    fi</span><br><span class="line">fi</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">关掉主节点nginx，这时候就看不了了，因为没有飘移，用脚本，nginx恢复，还是<span class="keyword">in</span> lb02</span></span><br><span class="line">[root@lb2 ~]# systemctl stop nginx</span><br><span class="line">[root@lb2 ~]# sh check_web.sh</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">给nginx配置文件弄坏，让它彻底起不来以后，再用脚本，就会杀死keepalived,ip发生漂移，再刷网页，就会显示<span class="keyword">in</span> lb01</span></span><br><span class="line">[root@lb2 ~]# vim /etc/nginx/nginx.conf</span><br><span class="line">[root@lb2 ~]# systemctl stop nginx</span><br><span class="line">[root@lb2 ~]# sh check_web.sh</span><br></pre></td></tr></table></figure></li>
+</ul>
+
+    </div>
+
+
+  <div style="text-align:center;color: #ccc;font-size:18px;">
+    ---------Thanks for your attention---------
+  </div>
+
+
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="followme">
+  <span>欢迎关注我的其它发布渠道</span>
+
+  <div class="social-list">
+
+      <div class="social-item">
+          <a target="_blank" class="social-link" href="/atom.xml">
+            <span class="icon">
+              <i class="fa fa-rss"></i>
+            </span>
+
+            <span class="label">RSS</span>
+          </a>
+      </div>
+  </div>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/Linux/" rel="tag"><i class="fa fa-tag"></i> Linux</a>
+          </div>
+
+
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2024/09/24/Centos7.9%E5%8D%87%E7%BA%A7glibc2.31/" rel="prev" title="Centos7编译升级glibc">
+                  <i class="fa fa-angle-left"></i> Centos7编译升级glibc
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2024/10/01/%E7%AD%89%E4%BF%9D%E5%B0%8F%E4%BC%98%E5%8C%96%E8%84%9A%E6%9C%AC/" rel="next" title="等保要求Linux优化脚本">
+                  等保要求Linux优化脚本 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2024</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">ZHANG</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+      <span>站点总字数：</span>
+    <span title="站点总字数">825k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span>站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">12:30</span>
+  </span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script size="30" alpha="0.6" zIndex="-1" src="https://cdnjs.cloudflare.com/ajax/libs/ribbon.js/1.0.2/ribbon.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fancyapps-ui/5.0.31/fancybox/fancybox.umd.js" integrity="sha256-a+H7FYzJv6oU2hfsfDGM2Ohw/cR9v+hPfxHCLdmCrE8=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lozad.js/1.16.0/lozad.min.js" integrity="sha256-mOFREFhqmHeQbXpK2lp4nA3qooVgACfh88fpJftLBbc=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pangu/4.0.7/pangu.min.js" integrity="sha256-j+yj56cdEY2CwkVtGyz18fNybFGpMGJ8JxG3GSyO2+I=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/sidebar.js"></script><script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+  <script src="/js/third-party/fancybox.js"></script>
+
+  <script src="/js/third-party/pace.js"></script>
+
+
+  
+
+
+
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/quicklink/2.3.0/quicklink.umd.js" integrity="sha256-yvJQOINiH9fWemHn0vCA5lsHWJaHs6/ZmO+1Ft04SvM=" crossorigin="anonymous"></script>
+  <script class="next-config" data-name="quicklink" type="application/json">{"enable":true,"home":true,"archive":true,"delay":true,"timeout":3000,"priority":true,"url":"http://example.com/2024/09/25/77.Keepalived%20%E9%AB%98%E5%8F%AF%E7%94%A8/"}</script>
+  <script src="/js/third-party/quicklink.js"></script>
+
+</body>
+</html>
